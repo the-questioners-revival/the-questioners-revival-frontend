@@ -59,25 +59,25 @@ const TodoList = ({
         </Heading>
         <Flex>
           <Select
-            value={type}
-            onChange={(evt) => setType && setType(evt.target.value)}
-            placeholder="Type"
-            color="black"
-            bg="white"
-            marginRight="10px"
-          >
-            {typeOptions?.map((option) => (
-              <option value={option.value}>{option.name}</option>
-            ))}
-          </Select>
-          <Select
             value={status}
             onChange={(evt) => setStatus && setStatus(evt.target.value)}
             placeholder="Status"
             color="black"
             bg="white"
+            marginRight="10px"
           >
             {statusOptions?.map((option) => (
+              <option value={option.value}>{option.name}</option>
+            ))}
+          </Select>
+          <Select
+            value={type}
+            onChange={(evt) => setType && setType(evt.target.value)}
+            placeholder="Type"
+            color="black"
+            bg="white"
+          >
+            {typeOptions?.map((option) => (
               <option value={option.value}>{option.name}</option>
             ))}
           </Select>

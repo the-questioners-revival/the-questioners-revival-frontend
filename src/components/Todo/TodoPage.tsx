@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import CustomLayout from '../layout/Layout';
 
 const TodoPage = () => {
-  const [status, setStatus] = useState();
+  const [status, setStatus] = useState('inprogress');
   const [type, setType] = useState();
   const { data, refetch }: { data: any; refetch: Function } =
     useAbstractProvider(TodoApi.getLatestTodos);
