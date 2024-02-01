@@ -45,7 +45,7 @@ const TodoPage = () => {
       createTodoData ||
       removeTodoData
     ) {
-      refetch();
+      refetch({ type, status });
     }
   }, [completeTodoData, inprogressTodoData, createTodoData, removeTodoData]);
 

@@ -1,6 +1,8 @@
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, Select, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
+import CustomModal from '../custom/CustomModal';
+import { useRef, useState } from 'react';
 
 const statusOptions = [
   {
@@ -51,6 +53,8 @@ const TodoList = ({
   type?: string;
   setType?: Function;
 }) => {
+  const modalRef = useRef<any>();
+  const [todoSelected, setTodoSelected] = useState<any>();
   return (
     <Box paddingTop="15px">
       <Flex justifyContent="space-between">
@@ -123,11 +127,25 @@ const TodoList = ({
               w={4}
               h={4}
               color="white"
-              onClick={() => removeTodo(todo?.id)}
+              onClick={() => {
+                modalRef?.current?.isOpen
+                  ? modalRef?.current?.closeModal()
+                  : modalRef?.current?.openModal();
+                setTodoSelected(todo);
+              }}
             />
           </Box>
         </Box>
       ))}
+      <CustomModal
+        ref={modalRef as any}
+        primaryAction={() => removeTodo(todoSelected?.id)}
+        secondaryAction={() => {}}
+        title={`Remove todo`}
+        description={`Are you sure you want to remove todo with id ${todoSelected?.id}`}
+        primaryActionText='Remove'
+        secondaryActionText='Cancel'
+      />
     </Box>
   );
 };
