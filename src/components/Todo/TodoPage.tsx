@@ -35,9 +35,7 @@ const TodoPage = () => {
   }: { data: any; mutate: Function } = useAbstractMutator(TodoApi.removeTodo);
 
   useEffect(() => {
-    if (type || status) {
-      refetch({ type, status });
-    }
+    refetch({ type, status });
   }, [type, status]);
 
   useEffect(() => {

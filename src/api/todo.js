@@ -15,7 +15,7 @@ async function getLatestTodos(params) {
   if (params && params.status !== null && params.status !== undefined) {
     // If type is already present, use "&" to add the status parameter
     url +=
-      params.type !== null ? `&status=${params.status}` : `?params.=${params.status}`;
+      params.type !== null && params.type !== undefined ? `&status=${params.status}` : `?status=${params.status}`;
   }
   const res = await API.get(url, true);
   return res;
