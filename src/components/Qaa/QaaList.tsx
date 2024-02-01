@@ -1,5 +1,5 @@
 import { CloseIcon } from '@chakra-ui/icons';
-import { Box, Flex, Heading, Select, Tag, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Link, Select, Tag, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
 const showOptions = [
@@ -140,6 +140,9 @@ const QaaList = ({
             >
               {qaa.answer}
             </Text>
+            <Link href={qaa.link} isExternal fontSize="lg" paddingRight="7px">
+              {qaa.link}
+            </Link>
           </Box>
         </Box>
       ))}
