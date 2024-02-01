@@ -1,8 +1,48 @@
 import { CloseIcon } from '@chakra-ui/icons';
-import { Box, Heading, Tag, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Select, Tag, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
-const QaaList = ({ qaas, removeQaa }: { qaas: any; removeQaa: Function }) => {
+const showOptions = [
+  {
+    name: 'true',
+    value: 'true',
+  },
+  {
+    name: 'false',
+    value: 'false',
+  },
+];
+
+const typeOptions = [
+  {
+    name: 'Personal',
+    value: 'personal',
+  },
+  {
+    name: 'Project',
+    value: 'project',
+  },
+  {
+    name: 'Work',
+    value: 'work',
+  },
+];
+
+const QaaList = ({
+  qaas,
+  removeQaa,
+  type,
+  setType,
+  showRemoved,
+  setShowRemoved,
+}: {
+  qaas: any;
+  removeQaa: Function;
+  type?: string;
+  setType?: Function;
+  showRemoved?: string;
+  setShowRemoved?: Function;
+}) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
 
   const handleItemClick = (itemId: any) => {
@@ -19,9 +59,38 @@ const QaaList = ({ qaas, removeQaa }: { qaas: any; removeQaa: Function }) => {
 
   return (
     <Box paddingTop="15px">
-      <Heading as="h2" size="lg">
-        Qaas
-      </Heading>
+      <Flex justifyContent="space-between">
+        <Heading as="h2" size="lg">
+          Qaas
+        </Heading>
+        <Flex>
+          <Select
+            value={showRemoved}
+            onChange={(evt) =>
+              setShowRemoved && setShowRemoved(evt.target.value)
+            }
+            placeholder="Show Removed"
+            color="black"
+            bg="white"
+            marginRight="10px"
+          >
+            {showOptions?.map((option) => (
+              <option value={option.value}>{option.name}</option>
+            ))}
+          </Select>
+          <Select
+            value={type}
+            onChange={(evt) => setType && setType(evt.target.value)}
+            placeholder="Type"
+            color="black"
+            bg="white"
+          >
+            {typeOptions?.map((option) => (
+              <option value={option.value}>{option.name}</option>
+            ))}
+          </Select>
+        </Flex>
+      </Flex>
       <Text>Number of qaas: {qaas?.length}</Text>
       {qaas?.map((qaa: any) => (
         <Box
@@ -44,7 +113,11 @@ const QaaList = ({ qaas, removeQaa }: { qaas: any; removeQaa: Function }) => {
               onClick={() => handleItemClick(qaa?.id)}
             >
               {/* <CheckIcon w={4} h={4} color="black" /> */}
-              <Text fontSize="lg" paddingRight="7px">
+              <Text
+                fontSize="lg"
+                paddingRight="7px"
+                textDecorationLine={`${qaa?.deleted_at ? 'line-through' : ''}`}
+              >
                 {qaa.question}
               </Text>
               <Tag>{qaa.type}</Tag>
