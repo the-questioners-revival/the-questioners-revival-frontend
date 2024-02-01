@@ -26,21 +26,23 @@ const options = [
   },
 ];
 
-const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => { // Updated component name
+const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
+  // Updated component name
   return (
     <Formik
-      initialValues={{}}
+      initialValues={{ question: '', answer: '', type: '' }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
           console.log('values: ', values);
           createQaa(values); // Updated function name
           actions.setSubmitting(false);
+          actions.resetForm();
         }, 1000);
       }}
     >
       {(props) => (
         <Form>
-          <Container bg="#F1F0EA" p={0} maxW='100%'>
+          <Container bg="#F1F0EA" p={0} maxW="100%">
             <Box
               bg="#4CAF4F"
               display={'flex'}

@@ -29,18 +29,19 @@ const options = [
 const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
   return (
     <Formik
-      initialValues={{}}
+      initialValues={{ title: '', type: '' }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
           console.log('values: ', values);
           createTodo(values);
           actions.setSubmitting(false);
+          actions.resetForm();
         }, 1000);
       }}
     >
       {(props) => (
         <Form>
-          <Container bg="#F1F0EA" p={0} maxW='100%'>
+          <Container bg="#F1F0EA" p={0} maxW="100%">
             <Box
               bg="#4CAF4F"
               display={'flex'}
