@@ -4,10 +4,12 @@ import TodoApi from '../../api/todo';
 import { Box, Heading } from '@chakra-ui/react';
 import TodoList from './TodoList';
 import useAbstractMutator from '../../providers/AbstractMutator';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CustomLayout from '../layout/Layout';
 
 const TodoPage = () => {
+  const [status, setStatus] = useState();
+  const [type, setType] = useState();
   const { data, refetch }: { data: any; refetch: Function } =
     useAbstractProvider(TodoApi.getLatestTodos);
   const {
@@ -33,6 +35,12 @@ const TodoPage = () => {
   }: { data: any; mutate: Function } = useAbstractMutator(TodoApi.removeTodo);
 
   useEffect(() => {
+    if (type || status) {
+      refetch({ type, status });
+    }
+  }, [type, status]);
+
+  useEffect(() => {
     if (
       completeTodoData ||
       inprogressTodoData ||
@@ -45,13 +53,17 @@ const TodoPage = () => {
 
   return (
     <CustomLayout>
-      <Box paddingTop='20px'>
+      <Box paddingTop="20px">
         <CreateTodoForm createTodo={createTodo} />
         <TodoList
           todos={data}
           completeTodo={completeTodo}
           inprogressTodo={inprogressTodo}
           removeTodo={removeTodo}
+          status={status}
+          setStatus={setStatus}
+          type={type}
+          setType={setType}
         ></TodoList>
       </Box>
     </CustomLayout>

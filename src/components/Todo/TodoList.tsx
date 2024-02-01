@@ -1,23 +1,88 @@
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import { Box, Heading, Tag, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Select, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
+
+const statusOptions = [
+  {
+    name: 'in progress',
+    value: 'inprogress',
+  },
+  {
+    name: 'completed',
+    value: 'completed',
+  },
+  {
+    name: 'removed',
+    value: 'removed',
+  },
+];
+
+const typeOptions = [
+  {
+    name: 'Personal',
+    value: 'personal',
+  },
+  {
+    name: 'Project',
+    value: 'project',
+  },
+  {
+    name: 'Work',
+    value: 'work',
+  },
+];
 
 const TodoList = ({
   todos,
   completeTodo,
   inprogressTodo,
   removeTodo,
+  status,
+  setStatus,
+  type,
+  setType,
 }: {
   todos: any;
   completeTodo: Function;
   inprogressTodo: Function;
   removeTodo: Function;
+  status?: string;
+  setStatus?: Function;
+  type?: string;
+  setType?: Function;
 }) => {
   return (
     <Box paddingTop="15px">
-      <Heading as="h2" size="lg">
-        Todos
-      </Heading>
+      <Flex justifyContent="space-between">
+        <Heading as="h2" size="lg">
+          Todos
+        </Heading>
+        <Flex>
+          <Select
+            value={type}
+            onChange={(evt) => setType && setType(evt.target.value)}
+            placeholder="Type"
+            color="black"
+            bg="white"
+            marginRight="10px"
+          >
+            {typeOptions?.map((option) => (
+              <option value={option.value}>{option.name}</option>
+            ))}
+          </Select>
+          <Select
+            value={status}
+            onChange={(evt) => setStatus && setStatus(evt.target.value)}
+            placeholder="Status"
+            color="black"
+            bg="white"
+          >
+            {statusOptions?.map((option) => (
+              <option value={option.value}>{option.name}</option>
+            ))}
+          </Select>
+        </Flex>
+      </Flex>
       <Text>Number of todos: {todos?.length}</Text>
       {todos?.map((todo: any) => (
         <Box

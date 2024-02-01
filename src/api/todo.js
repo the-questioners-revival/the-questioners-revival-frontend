@@ -3,8 +3,21 @@ import Api from '.';
 
 const API = Api();
 
-async function getLatestTodos() {
-  const res = await API.get(`${BACKEND_URL}/todo/latest`, true);
+async function getLatestTodos(params) {
+  let url = `${BACKEND_URL}/todo/latest`;
+
+  // Add type parameter if not null
+  if (params && params.type !== null && params.type !== undefined) {
+    url += `?type=${params.type}`;
+  }
+
+  // Add status parameter if not null
+  if (params && params.status !== null && params.status !== undefined) {
+    // If type is already present, use "&" to add the status parameter
+    url +=
+      params.type !== null ? `&status=${params.status}` : `?params.=${params.status}`;
+  }
+  const res = await API.get(url, true);
   return res;
 }
 

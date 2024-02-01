@@ -8,6 +8,7 @@ const CustomRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<TodoPage />} />
         <Route path="/todos" element={<TodoPage />} />
         <Route path="/qaas" element={<QaaPage />} />
         <Route path="/summary" element={<SummaryPage />} />
