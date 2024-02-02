@@ -30,7 +30,7 @@ const QaaPage = () => {
 
   useEffect(() => {
     if (createQaaData || removeQaaData) {
-      refetch();
+      refetch({ type, showRemoved });
     }
   }, [createQaaData, removeQaaData]);
 
