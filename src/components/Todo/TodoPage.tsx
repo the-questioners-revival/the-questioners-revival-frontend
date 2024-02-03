@@ -34,6 +34,11 @@ const TodoPage = () => {
     mutate: removeTodo,
   }: { data: any; mutate: Function } = useAbstractMutator(TodoApi.removeTodo);
 
+  const {
+    data: editTodoData,
+    mutate: editTodo,
+  }: { data: any; mutate: Function } = useAbstractMutator(TodoApi.editTodo);
+
   useEffect(() => {
     refetch({ type, status });
   }, [type, status]);
@@ -43,11 +48,18 @@ const TodoPage = () => {
       completeTodoData ||
       inprogressTodoData ||
       createTodoData ||
-      removeTodoData
+      removeTodoData ||
+      editTodoData
     ) {
       refetch({ type, status });
     }
-  }, [completeTodoData, inprogressTodoData, createTodoData, removeTodoData]);
+  }, [
+    completeTodoData,
+    inprogressTodoData,
+    createTodoData,
+    removeTodoData,
+    editTodoData,
+  ]);
 
   return (
     <CustomLayout>
@@ -62,6 +74,7 @@ const TodoPage = () => {
           setStatus={setStatus}
           type={type}
           setType={setType}
+          editTodo={editTodo}
         ></TodoList>
       </Box>
     </CustomLayout>

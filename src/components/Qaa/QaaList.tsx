@@ -1,6 +1,22 @@
-import { CloseIcon } from '@chakra-ui/icons';
-import { Box, Flex, Heading, Link, Select, Tag, Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { CloseIcon, EditIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  ModalHeader,
+  Select,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
+import { useRef, useState } from 'react';
+import CustomModal from '../custom/CustomModal';
+import EditQaaForm from './EditQaaForm';
+import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 
 const showOptions = [
   {
@@ -35,6 +51,7 @@ const QaaList = ({
   setType,
   showRemoved,
   setShowRemoved,
+  editQaa,
 }: {
   qaas: any;
   removeQaa: Function;
@@ -42,8 +59,12 @@ const QaaList = ({
   setType?: Function;
   showRemoved?: string;
   setShowRemoved?: Function;
+  editQaa: Function;
 }) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
+  const editModalRef = useRef<any>();
+  const modalRef = useRef<any>();
+  const [qaaSelected, setQaaSelected] = useState<any>();
 
   const handleItemClick = (itemId: any) => {
     setSelectedItemIds((prevSelectedIds: any) => {
@@ -123,14 +144,31 @@ const QaaList = ({
               <Tag>{qaa.type}</Tag>
             </Box>
 
-            <Box>
+            <Flex>
+              <EditIcon
+                w={4}
+                h={4}
+                marginRight="10px"
+                color="white"
+                onClick={() => {
+                  editModalRef?.current?.isOpen
+                    ? editModalRef?.current?.closeModal()
+                    : editModalRef?.current?.openModal();
+                  setQaaSelected(qaa);
+                }}
+              />
               <CloseIcon
                 w={4}
                 h={4}
                 color="white"
-                onClick={() => removeQaa(qaa?.id)}
+                onClick={() => {
+                  modalRef?.current?.isOpen
+                    ? modalRef?.current?.closeModal()
+                    : modalRef?.current?.openModal();
+                  setQaaSelected(qaa);
+                }}
               />
-            </Box>
+            </Flex>
           </Box>
           <Box>
             <Text
@@ -146,6 +184,31 @@ const QaaList = ({
           </Box>
         </Box>
       ))}
+      <CustomConfirmationModal
+        ref={modalRef as any}
+        primaryAction={() => {
+          removeQaa(qaaSelected?.id);
+          modalRef?.current?.closeModal();
+        }}
+        secondaryAction={() => {}}
+        title={`Remove qaa`}
+        description={`Are you sure you want to remove qaa with id ${qaaSelected?.id}`}
+        primaryActionText="Remove"
+        secondaryActionText="Cancel"
+      />
+      <CustomModal ref={editModalRef as any}>
+        <ModalHeader>Edit Qaa</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <EditQaaForm
+            qaa={qaaSelected}
+            editQaa={(data: any) => {
+              editQaa(data);
+              editModalRef?.current?.closeModal();
+            }}
+          />
+        </ModalBody>
+      </CustomModal>
     </Box>
   );
 };

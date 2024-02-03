@@ -24,15 +24,20 @@ const QaaPage = () => {
     mutate: removeQaa,
   }: { data: any; mutate: Function } = useAbstractMutator(QaaApi.removeQaa); // Updated provider function
 
+  const {
+    data: editQaaData,
+    mutate: editQaa,
+  }: { data: any; mutate: Function } = useAbstractMutator(QaaApi.editQaa);
+
   useEffect(() => {
     refetch({ type, showRemoved });
   }, [type, showRemoved]);
 
   useEffect(() => {
-    if (createQaaData || removeQaaData) {
+    if (createQaaData || removeQaaData || editQaaData) {
       refetch({ type, showRemoved });
     }
-  }, [createQaaData, removeQaaData]);
+  }, [createQaaData, removeQaaData, editQaaData]);
 
   return (
     <CustomLayout>
@@ -45,6 +50,7 @@ const QaaPage = () => {
           setType={setType}
           showRemoved={showRemoved}
           setShowRemoved={setShowRemoved}
+          editQaa={editQaa}
         ></QaaList>
       </Box>
     </CustomLayout>

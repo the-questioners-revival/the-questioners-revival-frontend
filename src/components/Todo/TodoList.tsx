@@ -1,8 +1,20 @@
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import { Box, Flex, Heading, Select, Tag, Text } from '@chakra-ui/react';
+import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  Flex,
+  Heading,
+  ModalBody,
+  ModalCloseButton,
+  ModalHeader,
+  Select,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
-import CustomModal from '../custom/CustomModal';
+import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import { useRef, useState } from 'react';
+import CustomModal from '../custom/CustomModal';
+import EditTodoForm from './EditTodoForm';
 
 const statusOptions = [
   {
@@ -43,6 +55,7 @@ const TodoList = ({
   setStatus,
   type,
   setType,
+  editTodo,
 }: {
   todos: any;
   completeTodo: Function;
@@ -52,8 +65,10 @@ const TodoList = ({
   setStatus?: Function;
   type?: string;
   setType?: Function;
+  editTodo: Function;
 }) => {
   const modalRef = useRef<any>();
+  const editModalRef = useRef<any>();
   const [todoSelected, setTodoSelected] = useState<any>();
   return (
     <Box paddingTop="15px">
@@ -122,7 +137,19 @@ const TodoList = ({
             </Text>
             <Tag>{todo.type}</Tag>
           </Box>
-          <Box padding="5px 10px">
+          <Flex padding="5px 10px">
+            <EditIcon
+              w={4}
+              h={4}
+              marginRight="10px"
+              color="white"
+              onClick={() => {
+                editModalRef?.current?.isOpen
+                  ? editModalRef?.current?.closeModal()
+                  : editModalRef?.current?.openModal();
+                setTodoSelected(todo);
+              }}
+            />
             <CloseIcon
               w={4}
               h={4}
@@ -134,18 +161,34 @@ const TodoList = ({
                 setTodoSelected(todo);
               }}
             />
-          </Box>
+          </Flex>
         </Box>
       ))}
-      <CustomModal
+      <CustomConfirmationModal
         ref={modalRef as any}
-        primaryAction={() => removeTodo(todoSelected?.id)}
+        primaryAction={() => {
+          removeTodo(todoSelected?.id);
+          modalRef?.current?.closeModal();
+        }}
         secondaryAction={() => {}}
         title={`Remove todo`}
         description={`Are you sure you want to remove todo with id ${todoSelected?.id}`}
-        primaryActionText='Remove'
-        secondaryActionText='Cancel'
+        primaryActionText="Remove"
+        secondaryActionText="Cancel"
       />
+      <CustomModal ref={editModalRef as any}>
+        <ModalHeader>Edit Todo</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <EditTodoForm
+            todo={todoSelected}
+            editTodo={(data: any) => {
+              editTodo(data);
+              editModalRef?.current?.closeModal();
+            }}
+          />
+        </ModalBody>
+      </CustomModal>
     </Box>
   );
 };

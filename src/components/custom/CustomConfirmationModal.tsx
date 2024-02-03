@@ -40,8 +40,7 @@ const CustomModal = forwardRef((props: any, ref) => {
     <Modal isOpen={isOpen} onClose={closeModal}>
       <ModalOverlay />
       <ModalContent>
-        {props.children}
-        {/* <ModalHeader>{props.title}</ModalHeader>
+        <ModalHeader>{props.title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{props.description}</ModalBody>
 
@@ -59,7 +58,7 @@ const CustomModal = forwardRef((props: any, ref) => {
           <Button variant="ghost" onClick={() => closeModal()}>
             {props.secondaryActionText}
           </Button>
-        </ModalFooter> */}
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

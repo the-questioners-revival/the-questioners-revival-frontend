@@ -26,35 +26,26 @@ const options = [
   },
 ];
 
-const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
+const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
   // Updated component name
   return (
     <Formik
-      initialValues={{ question: '', answer: '', type: ''}}
+      initialValues={{
+        question: qaa.question,
+        answer: qaa.answer,
+        type: qaa.type,
+        link: qaa.link,
+      }}
       onSubmit={(values, actions) => {
-        setTimeout(() => {
-          console.log('values: ', values);
-          createQaa(values); // Updated function name
-          actions.setSubmitting(false);
-          actions.resetForm();
-        }, 1000);
+        editQaa({ id: qaa.id, ...values }); // Updated function name
+        actions.setSubmitting(false);
+        actions.resetForm();
       }}
     >
       {(props) => (
         <Form>
-          <Container bg="#F1F0EA" p={0} maxW="100%">
-            <Box
-              bg="#4CAF4F"
-              display={'flex'}
-              p="0 1.5rem"
-              h="50px"
-              alignItems="center"
-            >
-              <Heading as="h2" size="lg">
-                New Qaa {/* Updated text */}
-              </Heading>
-            </Box>
-            <Box p="1rem 1.5rem" color="black">
+          <Container p={0} maxW="100%">
+            <Box color="black">
               <CustomField name="question" type="input" />
               <CustomField name="answer" type="input" />
               <CustomField name="type" type="select" options={options} />
@@ -76,4 +67,4 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
   );
 };
 
-export default CreateQaaForm; // Updated component name
+export default EditQaaForm; // Updated component name
