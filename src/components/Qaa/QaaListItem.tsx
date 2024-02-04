@@ -81,6 +81,9 @@ const QaaListItem = ({
       onDragStart={(e) => handleOnDragStart(e)}
       onDragOver={(e) => ondrag(e)}
       onDragEnd={(e) => ondragend(e)}
+      style={{
+        position: 'relative',
+      }}
     >
       <Box
         padding="5px 10px"
@@ -102,7 +105,9 @@ const QaaListItem = ({
           {qaa.question}
         </Text>
         <Tag>{qaa.type}</Tag>
-        <Box
+       
+      </Box>
+      <Box
           style={{
             position: 'absolute',
             display: 'flex',
@@ -112,6 +117,7 @@ const QaaListItem = ({
             height: '100%',
             width: Y_WIDTH,
             right: checkY,
+            top: 0
           }}
         >
           <Flex
@@ -139,7 +145,6 @@ const QaaListItem = ({
             <CloseIcon w={4} h={4} color="white" />
           </Flex>
         </Box>
-      </Box>
       <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
         <Text fontSize="lg" paddingRight="7px">
           {qaa.answer}

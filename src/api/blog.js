@@ -23,9 +23,15 @@ async function createBlog(data) {
   return res;
 }
 
+async function editBlog(data) {
+  const res = await API.put(`${BACKEND_URL}/blog/${data.id}`, data, true);
+  return res;
+}
+
 export default {
   getLatestBlogs,
   getAllBlogsGroupedByDate,
   removeBlog,
   createBlog,
+  editBlog
 };

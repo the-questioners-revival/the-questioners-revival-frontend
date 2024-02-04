@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-const CustomModal = (props: any) => {
+const CustomConfirmationModal = (props: any) => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.closeModal}>
       <ModalOverlay />
@@ -40,4 +40,4 @@ const CustomModal = (props: any) => {
   );
 };
 
-export default CustomModal;
+export default CustomConfirmationModal;

@@ -2,6 +2,7 @@ import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Flex, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
 import { useEffect, useRef, useState } from 'react';
+import moment from 'moment-timezone';
 
 const TodoListItem = ({
   todo,
@@ -12,6 +13,8 @@ const TodoListItem = ({
   setIsOpenEditTodoModal,
   isOpenDeleteTodoModal,
   setIsOpenDeleteTodoModal,
+  isOpenAnswer,
+  openAnswer,
 }: {
   todo: any;
   completeTodo: Function;
@@ -21,6 +24,8 @@ const TodoListItem = ({
   setIsOpenEditTodoModal: Function;
   isOpenDeleteTodoModal: boolean;
   setIsOpenDeleteTodoModal: Function;
+  isOpenAnswer: boolean;
+  openAnswer: Function;
 }) => {
   const X_WIDTH = 40;
   const Y_WIDTH = 80;
@@ -105,9 +110,6 @@ const TodoListItem = ({
   return (
     <Box
       key={todo.id}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
       marginBottom="10px"
       border="2px solid white"
       borderRadius="10"
@@ -118,17 +120,11 @@ const TodoListItem = ({
       onDragStart={(e) => handleOnDragStart(e)}
       onDragOver={(e) => ondrag(e)}
       onDragEnd={(e) => ondragend(e)}
+      style={{
+        position: 'relative',
+      }}
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        w="100%"
-        padding="5px 10px"
-        style={{
-          position: 'relative',
-        }}
-      >
-        <Box
+       <Box
           style={{
             position: 'absolute',
             display: 'flex',
@@ -138,10 +134,23 @@ const TodoListItem = ({
             height: '100%',
             width: X_WIDTH,
             left: checkX,
+            top: 0,
+            zIndex:1
           }}
         >
           <CheckIcon></CheckIcon>
         </Box>
+      <Box
+        display="flex"
+        alignItems="center"
+        w="100%"
+        padding="5px 10px"
+        style={{
+          position: 'relative',
+        }}
+        onClick={() => checkY < 0 && openAnswer(todo.id)}
+      >
+       
         {/* <CheckIcon w={4} h={4} color="black" /> */}
         <Text
           fontSize="lg"
@@ -152,44 +161,76 @@ const TodoListItem = ({
         >
           {todo.title}
         </Text>
+
         <Tag>{todo.type}</Tag>
-        <Box
-          style={{
-            position: 'absolute',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            background: 'red',
-            height: '100%',
-            width: Y_WIDTH,
-            right: checkY,
+      </Box>
+      <Box
+        style={{
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          background: 'red',
+          height: '100%',
+          width: Y_WIDTH,
+          right: checkY,
+          top: 0,
+        }}
+      >
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          w="100%"
+          h="100%"
+          onClick={() => {
+            setIsOpenEditTodoModal(true);
+            setTodoSelected(todo);
           }}
         >
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            w="100%"
-            h="100%"
-            onClick={() => {
-              setIsOpenEditTodoModal(true);
-              setTodoSelected(todo);
-            }}
-          >
-            <EditIcon w={4} h={4} color="white" />
-          </Flex>
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            w="100%"
-            h="100%"
-            onClick={() => {
-              setIsOpenDeleteTodoModal(true);
-              setTodoSelected(todo);
-            }}
-          >
-            <CloseIcon w={4} h={4} color="white" />
-          </Flex>
-        </Box>
+          <EditIcon w={4} h={4} color="white" />
+        </Flex>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          w="100%"
+          h="100%"
+          onClick={() => {
+            setIsOpenDeleteTodoModal(true);
+            setTodoSelected(todo);
+          }}
+        >
+          <CloseIcon w={4} h={4} color="white" />
+        </Flex>
+      </Box>
+      <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
+        <Text fontSize="sm" paddingRight="7px">
+          created:{' '}
+          {moment.tz(todo.created_at, 'Asia/Manila').format('DD.MM.YYYY HH:mm')}
+        </Text>
+        {todo.completed_at ? (
+          <Text fontSize="sm" paddingRight="7px">
+            completed:{' '}
+            {moment
+              .tz(todo.completed_at, 'Asia/Manila')
+              .format('DD.MM.YYYY HH:mm')}
+          </Text>
+        ) : null}
+        {todo.updated_at ? (
+          <Text fontSize="sm" paddingRight="7px">
+            updated:{' '}
+            {moment
+              .tz(todo.updated_at, 'Asia/Manila')
+              .format('DD.MM.YYYY HH:mm')}
+          </Text>
+        ) : null}
+        {todo.deleted_at ? (
+          <Text fontSize="sm" paddingRight="7px">
+            removed:{' '}
+            {moment
+              .tz(todo.removed_at, 'Asia/Manila')
+              .format('DD.MM.YYYY HH:mm')}
+          </Text>
+        ) : null}
       </Box>
     </Box>
   );

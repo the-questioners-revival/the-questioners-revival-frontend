@@ -67,9 +67,22 @@ const TodoList = ({
   setType?: Function;
   editTodo: Function;
 }) => {
+  const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
   const [todoSelected, setTodoSelected] = useState<any>();
   const [isOpenDeleteTodoModal, setIsOpenDeleteTodoModal] = useState(false);
   const [isOpenEditTodoModal, setIsOpenEditTodoModal] = useState(false);
+
+  const handleItemClick = (itemId: any) => {
+    setSelectedItemIds((prevSelectedIds: any) => {
+      if (prevSelectedIds.includes(itemId)) {
+        // If the item is already selected, remove it
+        return prevSelectedIds.filter((id: any) => id !== itemId);
+      } else {
+        // If the item is not selected, add it
+        return [...prevSelectedIds, itemId];
+      }
+    });
+  };
 
   return (
     <Box paddingTop="15px">
@@ -115,6 +128,8 @@ const TodoList = ({
           setIsOpenEditTodoModal={setIsOpenEditTodoModal}
           isOpenDeleteTodoModal={isOpenDeleteTodoModal}
           setIsOpenDeleteTodoModal={setIsOpenDeleteTodoModal}
+          isOpenAnswer={selectedItemIds.includes(todo?.id)}
+          openAnswer={handleItemClick}
         />
       ))}
       <CustomConfirmationModal

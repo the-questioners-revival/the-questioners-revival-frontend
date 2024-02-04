@@ -32,11 +32,9 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
     <Formik
       initialValues={{ question: '', answer: '', link: '', type: '' }}
       onSubmit={(values, actions) => {
-        setTimeout(() => {
-          createQaa(values); // Updated function name
-          actions.setSubmitting(false);
-          actions.resetForm();
-        }, 1000);
+        createQaa(values); // Updated function name
+        actions.setSubmitting(false);
+        actions.resetForm();
       }}
     >
       {(props) => (

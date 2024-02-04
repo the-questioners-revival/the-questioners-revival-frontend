@@ -6,6 +6,7 @@ import TodoApi from '../../api/todo';
 import QaaApi from '../../api/qaa';
 import BlogApi from '../../api/blog';
 import { useEffect, useState } from 'react';
+import useAbstractMutator from '../../providers/AbstractMutator';
 
 const SummaryPage = () => {
   const [data, setData] = useState();
@@ -23,10 +24,20 @@ const SummaryPage = () => {
 
   const {
     data: getAllBlogsGroupedByDateData,
-    refetch,
+    refetch: getAllBlogsGroupedByDate,
   }: { data: any; refetch: Function } = useAbstractProvider(
     BlogApi.getAllBlogsGroupedByDate,
   );
+
+  const {
+    data: createBlogData,
+    mutate: createBlog,
+  }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.createBlog);
+
+  const {
+    data: editBlogData,
+    mutate: editBlog,
+  }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.editBlog);
 
   useEffect(() => {
     if (
@@ -105,10 +116,16 @@ const SummaryPage = () => {
     getAllBlogsGroupedByDateData,
   ]);
 
+  useEffect(() => {
+    if (createBlogData || editBlogData) {
+      getAllBlogsGroupedByDate();
+    }
+  }, [createBlogData, editBlogData]);
+
   return (
     <CustomLayout>
       <Box paddingTop="20px">
-        <SummaryList data={data} />
+        <SummaryList data={data} createBlog={createBlog} editBlog={editBlog} />
       </Box>
     </CustomLayout>
   );
