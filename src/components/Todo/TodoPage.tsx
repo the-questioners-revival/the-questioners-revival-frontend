@@ -11,7 +11,7 @@ const TodoPage = () => {
   const [status, setStatus] = useState('inprogress');
   const [type, setType] = useState();
   const { data, refetch }: { data: any; refetch: Function } =
-    useAbstractProvider(TodoApi.getLatestTodos);
+    useAbstractProvider(TodoApi.getLatestTodos, { type, status });
   const {
     data: completeTodoData,
     mutate: completeTodo,
