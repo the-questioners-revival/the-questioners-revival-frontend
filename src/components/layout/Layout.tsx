@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import Footer from './Footer';
-import CustomHeader from '../custom/CustomHeader';
+import Footer from './CustomFooter';
+import CustomHeader from './CustomHeader';
 
 const CustomLayout = ({ children }: { children: any }) => {
   return (
@@ -38,6 +38,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         display="flex"
         alignItems="center"
         justifyContent="center"
+        h="50px"
         area="footer"
         paddingX={{ base: '10px', md: 150 }}
       >
