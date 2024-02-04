@@ -22,34 +22,47 @@ const QaaListItem = ({
   isOpenAnswer: boolean;
   openAnswer: Function;
 }) => {
-  const Y_WIDTH = 80;
-  const [startY, setStartY] = useState(0);
-  const [checkY, setCheckY] = useState(-Y_WIDTH);
+  const RIGHT_SIDE_WIDTH = 80;
+  const [startRightSide, setStartRightSide] = useState(0);
+  const [rightSide, setRightSide] = useState(-RIGHT_SIDE_WIDTH);
 
   const dragImg = new Image(0, 0);
   dragImg.src =
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
   function handleOnDragStart(e: any) {
-    e.dataTransfer.setDragImage(dragImg, 0, 0);
-    setStartY(e.clientX);
+    if (e.type === 'touchstart') {
+      const touch = e.touches[0];
+      setStartRightSide(touch.clientX);
+    } else {
+      e?.dataTransfer?.setDragImage(dragImg, 0, 0);
+      setStartRightSide(e.clientX);
+    }
   }
 
-  function ondrag(e: any) {
-    let newCheckY = -Y_WIDTH + (startY - e.clientX);
-    setCheckY(newCheckY > 0 ? 0 : newCheckY);
+  function onDrag(e: any) {
+    let clientY;
 
-    e.dataTransfer.setData('text', e.target.id);
-    // e.dataTransfer.setDragImage(img, 0, 0)
+    if (e.type === 'touchmove') {
+      const touch = e.touches[0];
+      clientY = touch.clientX;
+    } else {
+      clientY = e.clientX;
+    }
+
+    let newCheckY = -RIGHT_SIDE_WIDTH + (startRightSide - clientY);
+    setRightSide(newCheckY > 0 ? 0 : newCheckY);
+
+    e?.dataTransfer?.setData('text', e.target.id);
   }
 
-  function ondragend(e: any) {
-    if (checkY >= 0) {
+  function onDragEnd(e: any) {
+    if (rightSide >= 0) {
       // this.deleteTask();
     } else {
       let myVar = setInterval(() => {
-        setCheckY((prevState) => {
-          if (prevState < -Y_WIDTH) {
+        setRightSide((prevState) => {
+          if (prevState < -RIGHT_SIDE_WIDTH) {
             clearInterval(myVar);
             return prevState;
           }
@@ -79,8 +92,11 @@ const QaaListItem = ({
       _hover={{ cursor: 'pointer' }}
       draggable={true}
       onDragStart={(e) => handleOnDragStart(e)}
-      onDragOver={(e) => ondrag(e)}
-      onDragEnd={(e) => ondragend(e)}
+      onDragOver={(e) => onDrag(e)}
+      onDragEnd={(e) => onDragEnd(e)}
+      onTouchStart={(e) => handleOnDragStart(e)}
+      onTouchMove={(e) => onDrag(e)}
+      onTouchEnd={(e) => onDragEnd(e)}
       style={{
         position: 'relative',
       }}
@@ -93,7 +109,7 @@ const QaaListItem = ({
         style={{
           position: 'relative',
         }}
-        onClick={() => checkY < 0 && openAnswer(qaa.id)}
+        onClick={() => rightSide < 0 && openAnswer(qaa.id)}
       >
         <Text
           fontSize="lg"
@@ -105,46 +121,45 @@ const QaaListItem = ({
           {qaa.question}
         </Text>
         <Tag>{qaa.type}</Tag>
-       
       </Box>
       <Box
-          style={{
-            position: 'absolute',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            background: 'red',
-            height: '100%',
-            width: Y_WIDTH,
-            right: checkY,
-            top: 0
+        style={{
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          background: 'red',
+          height: '100%',
+          width: RIGHT_SIDE_WIDTH,
+          right: rightSide,
+          top: 0,
+        }}
+      >
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          w="100%"
+          h="100%"
+          onClick={() => {
+            setIsOpenEditQaaModal(true);
+            setQaaSelected(qaa);
           }}
         >
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            w="100%"
-            h="100%"
-            onClick={() => {
-              setIsOpenEditQaaModal(true);
-              setQaaSelected(qaa);
-            }}
-          >
-            <EditIcon w={4} h={4} color="white" />
-          </Flex>
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            w="100%"
-            h="100%"
-            onClick={() => {
-              setIsOpenDeleteQaaModal(true);
-              setQaaSelected(qaa);
-            }}
-          >
-            <CloseIcon w={4} h={4} color="white" />
-          </Flex>
-        </Box>
+          <EditIcon w={4} h={4} color="white" />
+        </Flex>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          w="100%"
+          h="100%"
+          onClick={() => {
+            setIsOpenDeleteQaaModal(true);
+            setQaaSelected(qaa);
+          }}
+        >
+          <CloseIcon w={4} h={4} color="white" />
+        </Flex>
+      </Box>
       <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
         <Text fontSize="lg" paddingRight="7px">
           {qaa.answer}

@@ -27,12 +27,12 @@ const TodoListItem = ({
   isOpenAnswer: boolean;
   openAnswer: Function;
 }) => {
-  const X_WIDTH = 40;
-  const Y_WIDTH = 80;
-  const [startX, setStartX] = useState(0);
-  const [startY, setStartY] = useState(0);
-  const [checkX, setCheckX] = useState(-X_WIDTH);
-  const [checkY, setCheckY] = useState(-Y_WIDTH);
+  const LEFT_SIDE_WIDTH = 40;
+  const RIGHT_SIDE_WIDTH = 80;
+  const [startLeftSide, setStartLeftSide] = useState(0);
+  const [startRightSide, setStartRightSide] = useState(0);
+  const [leftSide, setLeftSide] = useState(-LEFT_SIDE_WIDTH);
+  const [rightSide, setRightSide] = useState(-RIGHT_SIDE_WIDTH);
 
   const dragImg = new Image(0, 0);
   dragImg.src =
@@ -41,42 +41,39 @@ const TodoListItem = ({
   function handleOnDragStart(e: any) {
     if (e.type === 'touchstart') {
       const touch = e.touches[0];
-      setStartX(touch.clientX);
-      setStartY(touch.clientX);
+      setStartLeftSide(touch.clientX);
+      setStartRightSide(touch.clientX);
     } else {
       e?.dataTransfer?.setDragImage(dragImg, 0, 0);
-      setStartX(e.clientX);
-      setStartY(e.clientX);
+      setStartLeftSide(e.clientX);
+      setStartRightSide(e.clientX);
     }
   }
 
   function onDrag(e: any) {
     let clientX;
-    let clientY;
 
     if (e.type === 'touchmove') {
       const touch = e.touches[0];
       clientX = touch.clientX;
-      clientY = touch.clientY;
     } else {
       clientX = e.clientX;
-      clientY = e.clientY;
     }
 
-    let newCheckX = -X_WIDTH + (clientX - startX);
-    let newCheckY = -Y_WIDTH + (startY - clientX);
-    if (newCheckX <= -X_WIDTH) {
-      newCheckX = -X_WIDTH;
+    let newCheckX = -LEFT_SIDE_WIDTH + (clientX - startLeftSide);
+    let newCheckY = -RIGHT_SIDE_WIDTH + (startRightSide - clientX);
+    if (newCheckX <= -LEFT_SIDE_WIDTH) {
+      newCheckX = -LEFT_SIDE_WIDTH;
     }
 
-    setCheckX(newCheckX > 0 ? 0 : newCheckX);
-    setCheckY(newCheckY > 0 ? 0 : newCheckY);
+    setLeftSide(newCheckX > 0 ? 0 : newCheckX);
+    setRightSide(newCheckY > 0 ? 0 : newCheckY);
 
     e?.dataTransfer?.setData('text', e.target.id);
   }
 
   function onDragEnd(e: any) {
-    if (checkX >= 0) {
+    if (leftSide >= 0) {
       if (
         todo.status === TODO_STATUS.COMPLETED ||
         todo.status === TODO_STATUS.REMOVED
@@ -88,8 +85,8 @@ const TodoListItem = ({
     } else {
     }
     let myVar2 = setInterval(() => {
-      setCheckX((prevState) => {
-        if (prevState < -X_WIDTH) {
+      setLeftSide((prevState) => {
+        if (prevState < -LEFT_SIDE_WIDTH) {
           clearInterval(myVar2);
           return prevState;
         }
@@ -97,12 +94,12 @@ const TodoListItem = ({
         return prevState - 1;
       });
     }, 10);
-    if (checkY >= 0) {
+    if (rightSide >= 0) {
       // this.deleteTask();
     } else {
       let myVar = setInterval(() => {
-        setCheckY((prevState) => {
-          if (prevState < -Y_WIDTH) {
+        setRightSide((prevState) => {
+          if (prevState < -RIGHT_SIDE_WIDTH) {
             clearInterval(myVar);
             return prevState;
           }
@@ -152,8 +149,8 @@ const TodoListItem = ({
           justifyContent: 'center',
           background: '#04A144',
           height: '100%',
-          width: X_WIDTH,
-          left: checkX,
+          width: LEFT_SIDE_WIDTH,
+          left: leftSide,
           top: 0,
           zIndex: 1,
         }}
@@ -168,7 +165,7 @@ const TodoListItem = ({
         style={{
           position: 'relative',
         }}
-        onClick={() => checkY < 0 && openAnswer(todo.id)}
+        onClick={() => rightSide < 0 && openAnswer(todo.id)}
       >
         <Text
           fontSize="lg"
@@ -189,8 +186,8 @@ const TodoListItem = ({
           justifyContent: 'space-around',
           background: 'red',
           height: '100%',
-          width: Y_WIDTH,
-          right: checkY,
+          width: RIGHT_SIDE_WIDTH,
+          right: rightSide,
           top: 0,
         }}
       >
