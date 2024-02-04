@@ -39,25 +39,43 @@ const TodoListItem = ({
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
   function handleOnDragStart(e: any) {
-    e.dataTransfer.setDragImage(dragImg, 0, 0);
-    setStartX(e.clientX);
-    setStartY(e.clientX);
+    if (e.type === 'touchstart') {
+      const touch = e.touches[0];
+      setStartX(touch.clientX);
+      setStartY(touch.clientX);
+    } else {
+      e?.dataTransfer?.setDragImage(dragImg, 0, 0);
+      setStartX(e.clientX);
+      setStartY(e.clientX);
+    }
   }
 
-  function ondrag(e: any) {
-    let newCheckX = -X_WIDTH + (e.clientX - startX);
-    let newCheckY = -Y_WIDTH + (startY - e.clientX);
+  function onDrag(e: any) {
+    let clientX;
+    let clientY;
+
+    if (e.type === 'touchmove') {
+      const touch = e.touches[0];
+      clientX = touch.clientX;
+      clientY = touch.clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    let newCheckX = -X_WIDTH + (clientX - startX);
+    let newCheckY = -Y_WIDTH + (startY - clientX);
     if (newCheckX <= -X_WIDTH) {
       newCheckX = -X_WIDTH;
     }
+
     setCheckX(newCheckX > 0 ? 0 : newCheckX);
     setCheckY(newCheckY > 0 ? 0 : newCheckY);
 
-    e.dataTransfer.setData('text', e.target.id);
-    // e.dataTransfer.setDragImage(img, 0, 0)
+    e?.dataTransfer?.setData('text', e.target.id);
   }
 
-  function ondragend(e: any) {
+  function onDragEnd(e: any) {
     if (checkX >= 0) {
       if (
         todo.status === TODO_STATUS.COMPLETED ||
@@ -94,7 +112,6 @@ const TodoListItem = ({
       }, 10);
     }
   }
-
   function renderBg(status: string) {
     if (status === TODO_STATUS.IN_PROGRESS) {
       return '#4CAF4F';
@@ -113,33 +130,36 @@ const TodoListItem = ({
       marginBottom="10px"
       border="2px solid white"
       borderRadius="10"
-      bg={renderBg(todo.status)}
       overflow="hidden"
       _hover={{ cursor: 'pointer' }}
       draggable={true}
       onDragStart={(e) => handleOnDragStart(e)}
-      onDragOver={(e) => ondrag(e)}
-      onDragEnd={(e) => ondragend(e)}
+      onDragOver={(e) => onDrag(e)}
+      onDragEnd={(e) => onDragEnd(e)}
+      onTouchStart={(e) => handleOnDragStart(e)}
+      onTouchMove={(e) => onDrag(e)}
+      onTouchEnd={(e) => onDragEnd(e)}
       style={{
         position: 'relative',
+        backgroundColor: renderBg(todo.status),
       }}
     >
-       <Box
-          style={{
-            position: 'absolute',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: '#04A144',
-            height: '100%',
-            width: X_WIDTH,
-            left: checkX,
-            top: 0,
-            zIndex:1
-          }}
-        >
-          <CheckIcon></CheckIcon>
-        </Box>
+      <Box
+        style={{
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#04A144',
+          height: '100%',
+          width: X_WIDTH,
+          left: checkX,
+          top: 0,
+          zIndex: 1,
+        }}
+      >
+        <CheckIcon />
+      </Box>
       <Box
         display="flex"
         alignItems="center"
@@ -150,8 +170,6 @@ const TodoListItem = ({
         }}
         onClick={() => checkY < 0 && openAnswer(todo.id)}
       >
-       
-        {/* <CheckIcon w={4} h={4} color="black" /> */}
         <Text
           fontSize="lg"
           paddingRight="7px"
@@ -161,7 +179,6 @@ const TodoListItem = ({
         >
           {todo.title}
         </Text>
-
         <Tag>{todo.type}</Tag>
       </Box>
       <Box
