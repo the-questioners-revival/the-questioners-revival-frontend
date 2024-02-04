@@ -30,7 +30,7 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
   // Updated component name
   return (
     <Formik
-      initialValues={{ question: '', answer: '', type: ''}}
+      initialValues={{ question: '', answer: '', link: '', type: '' }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
           createQaa(values); // Updated function name
@@ -56,6 +56,7 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
             <Box p="1rem 1.5rem" color="black">
               <CustomField name="question" type="input" />
               <CustomField name="answer" type="input" />
+              <CustomField name="link" type="input" />
               <CustomField name="type" type="select" options={options} />
 
               <Button

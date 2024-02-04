@@ -33,8 +33,8 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
       initialValues={{
         question: qaa.question,
         answer: qaa.answer,
-        type: qaa.type,
         link: qaa.link,
+        type: qaa.type,
       }}
       onSubmit={(values, actions) => {
         editQaa({ id: qaa.id, ...values }); // Updated function name
@@ -48,6 +48,7 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
             <Box color="black">
               <CustomField name="question" type="input" />
               <CustomField name="answer" type="input" />
+              <CustomField name="link" type="input" />
               <CustomField name="type" type="select" options={options} />
 
               <Button
