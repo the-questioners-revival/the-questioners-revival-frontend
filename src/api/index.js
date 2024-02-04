@@ -5,8 +5,8 @@ export const getToken = () => getCookies('token')
 
 function API() {
   function handleOffline(error) {
-    if (!error.response && window.location.pathname !== '/offline') {
-      window.location.pathname = '/offline'
+    if (!error.response && window.location.pathname !== '/') {
+      window.location.pathname = '/'
     }
   }
 
