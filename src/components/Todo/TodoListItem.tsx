@@ -130,7 +130,7 @@ const TodoListItem = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'green',
+            background: '#04A144',
             height: '100%',
             width: X_WIDTH,
             left: checkX,
