@@ -12,7 +12,7 @@ const QaaPage = () => {
   const [type, setType] = useState<string>();
   // Updated component name
   const { data, refetch }: { data: any; refetch: Function } =
-    useAbstractProvider(QaaApi.getLatestQaas); // Updated provider function
+    useAbstractProvider(QaaApi.getLatestQaas, { type, showRemoved }); // Updated provider function
 
   const {
     data: createQaaData,
