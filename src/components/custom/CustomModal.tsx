@@ -11,58 +11,16 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-const CustomModal = forwardRef((props: any, ref) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // Function to open the modal
-  const openModal = () => {
-    onOpen();
-  };
-
-  // Function to close the modal
-  const closeModal = () => {
-    onClose();
-  };
-
-  // Expose modal functions to the parent component using ref
-  React.useImperativeHandle(
-    ref,
-    () =>
-      ({
-        isOpen,
-        openModal,
-        closeModal,
-      } as any),
-    [openModal, closeModal, isOpen],
-  );
+const CustomModal = (props: any) => {
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModal}>
+    <Modal isOpen={props.isOpen} onClose={props.closeModal}>
       <ModalOverlay />
       <ModalContent>
         {props.children}
-        {/* <ModalHeader>{props.title}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>{props.description}</ModalBody>
-
-        <ModalFooter>
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={() => {
-              props.primaryAction();
-              closeModal();
-            }}
-          >
-            {props.primaryActionText}
-          </Button>
-          <Button variant="ghost" onClick={() => closeModal()}>
-            {props.secondaryActionText}
-          </Button>
-        </ModalFooter> */}
       </ModalContent>
     </Modal>
   );
-});
+};
 
 export default CustomModal;

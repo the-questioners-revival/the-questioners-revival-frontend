@@ -10,11 +10,11 @@ import {
   Tag,
   Text,
 } from '@chakra-ui/react';
-import { TODO_STATUS } from '../../enums/todo-status';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import CustomModal from '../custom/CustomModal';
 import EditTodoForm from './EditTodoForm';
+import TodoListItem from './TodoListItem';
 
 const statusOptions = [
   {
@@ -67,9 +67,10 @@ const TodoList = ({
   setType?: Function;
   editTodo: Function;
 }) => {
-  const modalRef = useRef<any>();
-  const editModalRef = useRef<any>();
   const [todoSelected, setTodoSelected] = useState<any>();
+  const [isOpenDeleteTodoModal, setIsOpenDeleteTodoModal] = useState(false);
+  const [isOpenEditTodoModal, setIsOpenEditTodoModal] = useState(false);
+
   return (
     <Box paddingTop="15px">
       <Flex justifyContent="space-between">
@@ -104,79 +105,35 @@ const TodoList = ({
       </Flex>
       <Text>Number of todos: {todos?.length}</Text>
       {todos?.map((todo: any) => (
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          marginBottom="10px"
-          border="2px solid white"
-          borderRadius="10"
-          _hover={{ cursor: 'pointer' }}
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            w="100%"
-            onClick={() =>
-              todo.status === TODO_STATUS.COMPLETED ||
-              todo.status === TODO_STATUS.REMOVED
-                ? inprogressTodo(todo?.id)
-                : completeTodo(todo?.id)
-            }
-            padding="5px 10px"
-          >
-            {/* <CheckIcon w={4} h={4} color="black" /> */}
-            <Text
-              fontSize="lg"
-              paddingRight="7px"
-              textDecorationLine={`${
-                todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
-              }`}
-            >
-              {todo.title}
-            </Text>
-            <Tag>{todo.type}</Tag>
-          </Box>
-          <Flex padding="5px 10px">
-            <EditIcon
-              w={4}
-              h={4}
-              marginRight="10px"
-              color="white"
-              onClick={() => {
-                editModalRef?.current?.isOpen
-                  ? editModalRef?.current?.closeModal()
-                  : editModalRef?.current?.openModal();
-                setTodoSelected(todo);
-              }}
-            />
-            <CloseIcon
-              w={4}
-              h={4}
-              color="white"
-              onClick={() => {
-                modalRef?.current?.isOpen
-                  ? modalRef?.current?.closeModal()
-                  : modalRef?.current?.openModal();
-                setTodoSelected(todo);
-              }}
-            />
-          </Flex>
-        </Box>
+        <TodoListItem
+          key={todo.id}
+          todo={todo}
+          completeTodo={completeTodo}
+          inprogressTodo={inprogressTodo}
+          setTodoSelected={setTodoSelected}
+          isOpenEditTodoModal={isOpenEditTodoModal}
+          setIsOpenEditTodoModal={setIsOpenEditTodoModal}
+          isOpenDeleteTodoModal={isOpenDeleteTodoModal}
+          setIsOpenDeleteTodoModal={setIsOpenDeleteTodoModal}
+        />
       ))}
       <CustomConfirmationModal
-        ref={modalRef as any}
         primaryAction={() => {
           removeTodo(todoSelected?.id);
-          modalRef?.current?.closeModal();
+          setIsOpenDeleteTodoModal(false);
         }}
         secondaryAction={() => {}}
         title={`Remove todo`}
         description={`Are you sure you want to remove todo with id ${todoSelected?.id}`}
         primaryActionText="Remove"
         secondaryActionText="Cancel"
+        isOpen={isOpenDeleteTodoModal}
+        closeModal={() => setIsOpenDeleteTodoModal(false)}
       />
-      <CustomModal ref={editModalRef as any}>
+      <CustomModal
+        isOpen={isOpenEditTodoModal}
+        closeModal={() => setIsOpenEditTodoModal(false)}
+      >
         <ModalHeader>Edit Todo</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -184,7 +141,7 @@ const TodoList = ({
             todo={todoSelected}
             editTodo={(data: any) => {
               editTodo(data);
-              editModalRef?.current?.closeModal();
+              setIsOpenEditTodoModal(false);
             }}
           />
         </ModalBody>

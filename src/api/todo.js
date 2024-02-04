@@ -53,8 +53,6 @@ async function createTodo(data) {
 }
 
 async function editTodo(data) {
-  console.log('data: ', data);
-  // Updated function name
   const res = await API.put(`${BACKEND_URL}/todo/${data?.id}`, data, true); // Updated endpoint
   return res;
 }

@@ -84,15 +84,20 @@ const SummaryPage = () => {
         } else {
           // Date doesn't exist, create a new entry
           combinedData.push({
-            date: todoItem.date,
+            date: new Date(todoItem.date),
             todos: todoItem.todos,
           });
         }
       });
+      const combinedDataSortedByDate = combinedData.sort((a: any, b: any) => {
+        const aDate = new Date(a.date) as any;
+        const bDate = new Date(b.date) as any;
 
-      setData(combinedData);
+        return bDate - aDate;
+      });
+
+      setData(combinedDataSortedByDate);
       // Now, combinedData contains the merged data grouped by date
-      console.log(combinedData);
     }
   }, [
     getAllTodosGroupedByDateData,

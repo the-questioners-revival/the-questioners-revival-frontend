@@ -2,7 +2,6 @@ import { Box, Heading } from '@chakra-ui/react';
 import moment from 'moment';
 
 const SummaryList = ({ data }: { data: any }) => {
-  console.log('data: ', data);
   return (
     <Box>
       <Heading as="h1" fontSize="2xl" marginBottom="20px">

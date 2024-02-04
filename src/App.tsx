@@ -7,8 +7,6 @@ import CustomLayout from './components/layout/Layout';
 import CustomRouter from './CustomRouter';
 
 function App() {
-  const { data } = useAbstractProvider(AppApi.getHello);
-  console.log('data: ', data, process.env.REACT_APP_BACKEND_URL);
   return (
     <div className="App">
       <CustomRouter/>

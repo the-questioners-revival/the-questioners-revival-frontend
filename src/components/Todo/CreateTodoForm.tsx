@@ -32,7 +32,6 @@ const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
       initialValues={{ title: '', type: '' }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
-          console.log('values: ', values);
           createTodo(values);
           actions.setSubmitting(false);
           actions.resetForm();

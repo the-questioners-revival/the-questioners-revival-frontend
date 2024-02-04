@@ -17,6 +17,7 @@ import { useRef, useState } from 'react';
 import CustomModal from '../custom/CustomModal';
 import EditQaaForm from './EditQaaForm';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
+import QaaListItem from './QaaListItem';
 
 const showOptions = [
   {
@@ -62,8 +63,8 @@ const QaaList = ({
   editQaa: Function;
 }) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
-  const editModalRef = useRef<any>();
-  const modalRef = useRef<any>();
+  const [isOpenDeleteQaaModal, setIsOpenDeleteQaaModal] = useState(false);
+  const [isOpenEditQaaModal, setIsOpenEditQaaModal] = useState(false);
   const [qaaSelected, setQaaSelected] = useState<any>();
 
   const handleItemClick = (itemId: any) => {
@@ -114,81 +115,24 @@ const QaaList = ({
       </Flex>
       <Text>Number of qaas: {qaas?.length}</Text>
       {qaas?.map((qaa: any) => (
-        <Box
-          marginBottom="10px"
-          border="2px solid white"
-          borderRadius="10"
-          _hover={{ cursor: 'pointer' }}
-          key={qaa.id} // Added key prop
-          padding="5px 10px"
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Box
-              display="flex"
-              alignItems="center"
-              w="100%"
-              onClick={() => handleItemClick(qaa?.id)}
-            >
-              {/* <CheckIcon w={4} h={4} color="black" /> */}
-              <Text
-                fontSize="lg"
-                paddingRight="7px"
-                textDecorationLine={`${qaa?.deleted_at ? 'line-through' : ''}`}
-              >
-                {qaa.question}
-              </Text>
-              <Tag>{qaa.type}</Tag>
-            </Box>
-
-            <Flex>
-              <EditIcon
-                w={4}
-                h={4}
-                marginRight="10px"
-                color="white"
-                onClick={() => {
-                  editModalRef?.current?.isOpen
-                    ? editModalRef?.current?.closeModal()
-                    : editModalRef?.current?.openModal();
-                  setQaaSelected(qaa);
-                }}
-              />
-              <CloseIcon
-                w={4}
-                h={4}
-                color="white"
-                onClick={() => {
-                  modalRef?.current?.isOpen
-                    ? modalRef?.current?.closeModal()
-                    : modalRef?.current?.openModal();
-                  setQaaSelected(qaa);
-                }}
-              />
-            </Flex>
-          </Box>
-          <Box>
-            <Text
-              fontSize="lg"
-              paddingRight="7px"
-              display={selectedItemIds.includes(qaa?.id) ? 'block' : 'none'}
-            >
-              {qaa.answer}
-            </Text>
-            <Link href={qaa.link} isExternal fontSize="lg" paddingRight="7px">
-              {qaa.link}
-            </Link>
-          </Box>
-        </Box>
+        <QaaListItem
+          key={qaa.id}
+          qaa={qaa}
+          setQaaSelected={setQaaSelected}
+          isOpenEditQaaModal={isOpenEditQaaModal}
+          setIsOpenEditQaaModal={setIsOpenEditQaaModal}
+          isOpenDeleteQaaModal={isOpenDeleteQaaModal}
+          setIsOpenDeleteQaaModal={setIsOpenDeleteQaaModal}
+          isOpenAnswer={selectedItemIds.includes(qaa?.id)}
+          openAnswer={handleItemClick}
+        />
       ))}
       <CustomConfirmationModal
-        ref={modalRef as any}
+        isOpen={isOpenDeleteQaaModal}
+        closeModal={() => setIsOpenDeleteQaaModal(false)}
         primaryAction={() => {
           removeQaa(qaaSelected?.id);
-          modalRef?.current?.closeModal();
+          setIsOpenDeleteQaaModal(false);
         }}
         secondaryAction={() => {}}
         title={`Remove qaa`}
@@ -196,7 +140,10 @@ const QaaList = ({
         primaryActionText="Remove"
         secondaryActionText="Cancel"
       />
-      <CustomModal ref={editModalRef as any}>
+      <CustomModal
+        isOpen={isOpenEditQaaModal}
+        closeModal={() => setIsOpenEditQaaModal(false)}
+      >
         <ModalHeader>Edit Qaa</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -204,7 +151,7 @@ const QaaList = ({
             qaa={qaaSelected}
             editQaa={(data: any) => {
               editQaa(data);
-              editModalRef?.current?.closeModal();
+              setIsOpenEditQaaModal(false);
             }}
           />
         </ModalBody>

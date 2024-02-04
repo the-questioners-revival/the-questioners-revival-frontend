@@ -33,7 +33,6 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
       initialValues={{ question: '', answer: '', type: ''}}
       onSubmit={(values, actions) => {
         setTimeout(() => {
-          console.log('values: ', values);
           createQaa(values); // Updated function name
           actions.setSubmitting(false);
           actions.resetForm();
