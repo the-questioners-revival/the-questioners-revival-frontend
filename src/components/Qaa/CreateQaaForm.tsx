@@ -55,8 +55,8 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
             </Box>
             <Box p="1rem 1.5rem" color="black">
               <CustomField name="question" type="input" />
-              <CustomField name="answer" type="input" />
-              <CustomField name="link" type="input" />
+              <CustomField name="answer" type="textArea" />
+              <CustomField name="link" type="input" required={false} />
               <CustomField name="type" type="select" options={options} />
 
               <Button

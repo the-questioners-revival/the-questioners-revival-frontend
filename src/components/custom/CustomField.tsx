@@ -4,6 +4,7 @@ import {
   FormLabel,
   Input,
   Select,
+  Textarea,
 } from '@chakra-ui/react';
 import { Field } from 'formik';
 
@@ -14,16 +15,18 @@ interface SelectOption {
 
 const CustomField = ({
   name,
+  required = true,
   type,
   options,
 }: {
   name: string;
+  required?: boolean;
   type: string;
   options?: SelectOption[];
 }) => {
   function validateField(name: string, value: string) {
     let error;
-    if (!value) {
+    if (required && !value) {
       error = `Field ${name} is required`;
     }
     return error;
@@ -41,6 +44,10 @@ const CustomField = ({
           {type === 'input' ? (
             <Input {...field} placeholder={name} bg="white" />
           ) : null}
+          {type === 'textArea' ? (
+            <Textarea {...field} placeholder={name} bg="white" />
+          ) : null}
+
           {type === 'select' ? (
             <Select {...field} placeholder="Select option" bg="white">
               {options?.map((option) => (

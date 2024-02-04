@@ -47,8 +47,8 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
           <Container p={0} maxW="100%">
             <Box color="black">
               <CustomField name="question" type="input" />
-              <CustomField name="answer" type="input" />
-              <CustomField name="link" type="input" />
+              <CustomField name="answer" type="textArea" />
+              <CustomField name="link" type="input" required={false} />
               <CustomField name="type" type="select" options={options} />
 
               <Button
