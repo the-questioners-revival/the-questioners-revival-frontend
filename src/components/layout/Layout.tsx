@@ -9,7 +9,7 @@ const CustomLayout = ({ children }: { children: any }) => {
       templateAreas={`"header"
                   "main"
                   "footer"`}
-      gridTemplateRows={'50px 1fr 30px'}
+      gridTemplateRows={'50px 1fr 50px'}
       gridTemplateColumns={'1fr'}
       color="white"
       fontWeight="bold"
@@ -38,7 +38,6 @@ const CustomLayout = ({ children }: { children: any }) => {
         display="flex"
         alignItems="center"
         justifyContent="center"
-        h="50px"
         area="footer"
         paddingX={{ base: '10px', md: 150 }}
       >
