@@ -51,7 +51,9 @@ const CustomField = ({
           {type === 'select' ? (
             <Select {...field} placeholder="Select option" bg="white">
               {options?.map((option) => (
-                <option value={option.value}>{option.name}</option>
+                <option key={option.name} value={option.value}>
+                  {option.name}
+                </option>
               ))}
             </Select>
           ) : null}

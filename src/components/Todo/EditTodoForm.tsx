@@ -1,14 +1,5 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-} from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
+import { Box, Button, Container } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 
 const options = [

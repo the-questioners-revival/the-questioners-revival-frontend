@@ -1,6 +1,4 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import Header from './Header';
-import Main from './Main';
 import Footer from './Footer';
 import CustomHeader from '../custom/CustomHeader';
 

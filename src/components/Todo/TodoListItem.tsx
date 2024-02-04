@@ -1,7 +1,7 @@
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Flex, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import moment from 'moment-timezone';
 
 const TodoListItem = ({

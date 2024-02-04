@@ -1,7 +1,7 @@
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Flex, Link, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 const QaaListItem = ({
   qaa,

@@ -1,15 +1,10 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
   Flex,
-  extendTheme,
   Link as ChakraLink,
   Image,
 } from '@chakra-ui/react';
-
-// Define your Chakra UI theme if needed
-const theme = extendTheme(/* your theme here */);
 
 const CustomHeader = () => {
   return (

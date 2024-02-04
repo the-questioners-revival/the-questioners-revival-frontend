@@ -1,4 +1,3 @@
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Flex,
@@ -7,7 +6,6 @@ import {
   ModalCloseButton,
   ModalHeader,
   Select,
-  Tag,
   Text,
 } from '@chakra-ui/react';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
@@ -100,7 +98,9 @@ const TodoList = ({
             marginRight="10px"
           >
             {statusOptions?.map((option) => (
-              <option value={option.value}>{option.name}</option>
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
             ))}
           </Select>
           <Select
@@ -111,7 +111,9 @@ const TodoList = ({
             bg="white"
           >
             {typeOptions?.map((option) => (
-              <option value={option.value}>{option.name}</option>
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
             ))}
           </Select>
         </Flex>

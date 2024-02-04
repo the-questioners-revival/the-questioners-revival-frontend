@@ -1,4 +1,3 @@
-import React, { forwardRef, useRef, useState } from 'react';
 import {
   Button,
   Modal,
@@ -8,7 +7,6 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 const CustomConfirmationModal = (props: any) => {

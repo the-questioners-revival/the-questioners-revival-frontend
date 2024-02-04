@@ -1,19 +1,14 @@
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Button,
   Flex,
   Heading,
-  Link,
   ModalBody,
   ModalCloseButton,
-  ModalFooter,
   ModalHeader,
   Select,
-  Tag,
   Text,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import CustomModal from '../custom/CustomModal';
 import EditQaaForm from './EditQaaForm';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
@@ -97,7 +92,9 @@ const QaaList = ({
             marginRight="10px"
           >
             {showOptions?.map((option) => (
-              <option value={option.value}>{option.name}</option>
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
             ))}
           </Select>
           <Select
@@ -108,7 +105,9 @@ const QaaList = ({
             bg="white"
           >
             {typeOptions?.map((option) => (
-              <option value={option.value}>{option.name}</option>
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
             ))}
           </Select>
         </Flex>

@@ -34,6 +34,7 @@ const SummaryList = ({
       <Box>
         {data?.map((dataByDate: any) => (
           <Box
+            key={dataByDate.date}
             marginBottom="15px"
             border="2px solid white"
             borderRadius="10"
@@ -48,7 +49,7 @@ const SummaryList = ({
               </Heading>
             ) : null}
             {dataByDate?.todos?.map((todo: any) => (
-              <Box>{todo?.title}</Box>
+              <Box key={todo.id}>{todo?.title}</Box>
             ))}
             {dataByDate?.qaas?.length > 0 ? (
               <Heading as="h3" fontSize="lg" marginTop="10px">
@@ -57,7 +58,7 @@ const SummaryList = ({
             ) : null}
 
             {dataByDate?.qaas?.map((qaa: any) => (
-              <Box>{qaa?.question}</Box>
+              <Box key={qaa.id}>{qaa?.question}</Box>
             ))}
             {dataByDate?.blogs?.length > 0 ? (
               <Heading as="h3" fontSize="lg" marginTop="10px">
@@ -66,7 +67,7 @@ const SummaryList = ({
             ) : null}
 
             {dataByDate?.blogs?.map((blog: any) => (
-              <Flex>
+              <Flex key={blog.id}>
                 <Box whiteSpace="break-spaces">{blog?.text}</Box>
 
                 <Button

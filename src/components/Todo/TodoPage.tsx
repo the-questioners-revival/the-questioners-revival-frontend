@@ -1,7 +1,7 @@
 import useAbstractProvider from '../../providers/AbstractProvider';
 import CreateTodoForm from './CreateTodoForm';
 import TodoApi from '../../api/todo';
-import { Box, Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import TodoList from './TodoList';
 import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
