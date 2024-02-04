@@ -22,11 +22,16 @@ const CustomLayout = ({ children }: { children: any }) => {
         display="flex"
         alignItems="center"
         area="header"
-        paddingX={150}
+        paddingX={{ base: '10px', md: 150 }}
       >
         <CustomHeader />
       </GridItem>
-      <GridItem pl="2" bg="#19BC9B" area="main" paddingX={150}>
+      <GridItem
+        pl="2"
+        bg="#19BC9B"
+        area="main"
+        paddingX={{ base: '10px', md: 150 }}
+      >
         {children}
       </GridItem>
       <GridItem
@@ -36,7 +41,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         alignItems="center"
         justifyContent="center"
         area="footer"
-        paddingX={150}
+        paddingX={{ base: '10px', md: 150 }}
       >
         <Footer />
       </GridItem>
