@@ -31,6 +31,8 @@ function getDayOfWeekString(date: any) {
 
 const HabitsPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
+  const [selectedYear, setSelectedYear] = useState(2024);
+  console.log('selectedYear: ', selectedYear);
   const {
     data: habits,
     refetch: getLatestHabits,
@@ -114,8 +116,15 @@ const HabitsPage = () => {
               (habitTracker: any) => {
                 const habitTrackerDate = new Date(habitTracker.created_at);
                 const day = habitTrackerDate.getDate();
+                const month = habitTrackerDate.getMonth();
+                const year = habitTrackerDate.getFullYear();
 
-                if (day === i && habitTracker.habit_id === habit.id)
+                if (
+                  day === i &&
+                  month === selectedMonth &&
+                  year === selectedYear &&
+                  habitTracker.habit_id === habit.id
+                )
                   return habitTracker;
               },
             );
@@ -159,22 +168,29 @@ const HabitsPage = () => {
           colorScheme="teal"
           type="submit"
           onClick={() => {
-            setSelectedMonth(selectedMonth - 1);
-            // setSelectedYear(dataByDate);
+            const newMonth = selectedMonth - 1 === -1 ? 11 : selectedMonth - 1;
+            setSelectedMonth(newMonth);
+            if (newMonth === 11) {
+              setSelectedYear(selectedYear - 1);
+            }
           }}
         >
           Previous
         </Button>
         <Text fontSize="lg" paddingX="10px">
-          {MONTHS[selectedMonth].name}
+          {MONTHS[selectedMonth].name} {selectedYear}
         </Text>
         <Button
           display="flex"
           colorScheme="teal"
           type="submit"
           onClick={() => {
-            setSelectedMonth(selectedMonth + 1);
-            // setSelectedYear(dataByDate);
+            const newMonth = selectedMonth + 1 === 12 ? 0 : selectedMonth + 1;
+
+            setSelectedMonth(newMonth);
+            if (newMonth === 0) {
+              setSelectedYear(selectedYear + 1);
+            }
           }}
         >
           Next
