@@ -96,7 +96,7 @@ const HabitsPage = () => {
     let res = [];
     for (let i = 1; i <= MONTHS[selectedMonth].days; i++) {
       const date = new Date(
-        `2024-${
+        `${selectedYear}-${
           selectedMonth < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
         }-${i < 10 ? `0${i}` : i}T00:00:00`,
       );
@@ -136,7 +136,11 @@ const HabitsPage = () => {
                   onChange={(e) => {
                     if (e.target.checked) {
                       const date = new Date(
-                        `2024-02-${i < 10 ? `0${i}` : i}T00:00:00`,
+                        `${selectedYear}-${
+                          selectedMonth < 10
+                            ? `0${selectedMonth + 1}`
+                            : selectedMonth + 1
+                        }-${i < 10 ? `0${i}` : i}T00:00:00`,
                       );
 
                       createHabitsTracker({
