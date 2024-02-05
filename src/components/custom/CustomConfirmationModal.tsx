@@ -11,7 +11,7 @@ import {
 
 const CustomConfirmationModal = (props: any) => {
   return (
-    <Modal isOpen={props.isOpen} onClose={props.closeModal}>
+    <Modal isOpen={props.isOpen} onClose={props.closeModal} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{props.title}</ModalHeader>
