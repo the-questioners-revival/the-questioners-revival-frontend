@@ -46,7 +46,7 @@ const SummaryList = ({
             padding="10px"
           >
             <Heading as="h2" fontSize="xl">
-              {moment(dataByDate?.date).format('DD.MM.YYYY HH:mm')}
+              {moment(dataByDate?.date).format('DD MMMM YYYY')}
             </Heading>
             {dataByDate?.todos?.length > 0 ? (
               <Heading as="h3" fontSize="lg" marginTop="10px">
