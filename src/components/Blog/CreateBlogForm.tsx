@@ -12,7 +12,9 @@ const CreateBlogForm = ({
   // Updated component name
   return (
     <Formik
-      initialValues={{ text: '' }}
+      initialValues={{
+        text: 'Morning Gratitude\n\n\nAffirmations\n\n\nWhat I did during the day\n\n\nHow did I feel today\n\n\nGoals for tomorrow\n',
+      }}
       onSubmit={(values, actions) => {
         createBlog({ text: values.text, given_at: date }); // Updated function name
         actions.setSubmitting(false);
@@ -23,7 +25,7 @@ const CreateBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-              <CustomField name="text" type="textArea" />
+              <CustomField name="text" type="textArea" rows={15}/>
 
               <Button
                 mt={4}

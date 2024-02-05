@@ -28,7 +28,7 @@ const EditBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-              <CustomField name="text" type="textArea" />
+              <CustomField name="text" type="textArea" rows={15}/>
 
               <Button
                 mt={4}

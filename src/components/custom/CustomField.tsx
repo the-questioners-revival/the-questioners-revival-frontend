@@ -18,11 +18,13 @@ const CustomField = ({
   required = true,
   type,
   options,
+  rows,
 }: {
   name: string;
   required?: boolean;
   type: string;
   options?: SelectOption[];
+  rows?: Number;
 }) => {
   function validateField(name: string, value: string) {
     let error;
@@ -45,7 +47,7 @@ const CustomField = ({
             <Input {...field} placeholder={name} bg="white" />
           ) : null}
           {type === 'textArea' ? (
-            <Textarea {...field} placeholder={name} bg="white" />
+            <Textarea {...field} placeholder={name} bg="white" rows={rows} />
           ) : null}
 
           {type === 'select' ? (
