@@ -39,6 +39,11 @@ const SummaryPage = () => {
     mutate: editBlog,
   }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.editBlog);
 
+  const {
+    data: removeBlogData,
+    mutate: removeBlog,
+  }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.removeBlog);
+
   useEffect(() => {
     if (
       getAllTodosGroupedByDateData &&
@@ -117,15 +122,20 @@ const SummaryPage = () => {
   ]);
 
   useEffect(() => {
-    if (createBlogData || editBlogData) {
+    if (createBlogData || editBlogData || removeBlogData) {
       getAllBlogsGroupedByDate();
     }
-  }, [createBlogData, editBlogData]);
+  }, [createBlogData, editBlogData, removeBlogData]);
 
   return (
     <CustomLayout>
       <Box paddingTop="20px">
-        <SummaryList data={data} createBlog={createBlog} editBlog={editBlog} />
+        <SummaryList
+          data={data}
+          createBlog={createBlog}
+          editBlog={editBlog}
+          removeBlog={removeBlog}
+        />
       </Box>
     </CustomLayout>
   );

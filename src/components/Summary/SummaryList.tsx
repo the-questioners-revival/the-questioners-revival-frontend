@@ -12,18 +12,23 @@ import CustomModal from '../custom/CustomModal';
 import CreateBlogForm from '../Blog/CreateBlogForm';
 import { useState } from 'react';
 import EditBlogForm from '../Blog/EditBlogForm';
+import { CloseIcon, EditIcon } from '@chakra-ui/icons';
+import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 
 const SummaryList = ({
   data,
   createBlog,
   editBlog,
+  removeBlog,
 }: {
   data: any;
   createBlog: Function;
   editBlog: Function;
+  removeBlog: Function;
 }) => {
   const [isOpenCreateBlogModal, setIsOpenCreateBlogModal] = useState(false);
   const [isOpenEditBlogModal, setIsOpenEditBlogModal] = useState(false);
+  const [isOpenDeleteBlogModal, setIsOpenDeleteBlogModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>();
 
   return (
@@ -67,21 +72,33 @@ const SummaryList = ({
             ) : null}
 
             {dataByDate?.blogs?.map((blog: any) => (
-              <Flex key={blog.id}>
+              <Flex justifyContent="space-between" key={blog.id}>
                 <Box whiteSpace="break-spaces">{blog?.text}</Box>
-
-                <Button
-                  mt={4}
-                  display="flex"
-                  colorScheme="teal"
-                  type="submit"
-                  onClick={() => {
-                    setSelectedItem(blog);
-                    setIsOpenEditBlogModal(true);
-                  }}
-                >
-                  Edit Blog
-                </Button>
+                <Flex>
+                  <Flex
+                    w="100%"
+                    h="100%"
+                    cursor="pointer"
+                    onClick={() => {
+                      setSelectedItem(blog);
+                      setIsOpenEditBlogModal(true);
+                    }}
+                    paddingRight="15px"
+                  >
+                    <EditIcon w={4} h={4} color="white" />
+                  </Flex>
+                  <Flex
+                    w="100%"
+                    h="100%"
+                    cursor="pointer"
+                    onClick={() => {
+                      setSelectedItem(blog);
+                      setIsOpenDeleteBlogModal(true);
+                    }}
+                  >
+                    <CloseIcon w={4} h={4} color="white" />
+                  </Flex>
+                </Flex>
               </Flex>
             ))}
 
@@ -132,6 +149,19 @@ const SummaryList = ({
           />
         </ModalBody>
       </CustomModal>
+      <CustomConfirmationModal
+        isOpen={isOpenDeleteBlogModal}
+        closeModal={() => setIsOpenDeleteBlogModal(false)}
+        primaryAction={() => {
+          removeBlog(selectedItem?.id);
+          setIsOpenDeleteBlogModal(false);
+        }}
+        secondaryAction={() => {}}
+        title={`Remove blog`}
+        description={`Are you sure you want to remove blog with id ${selectedItem?.id}`}
+        primaryActionText="Remove"
+        secondaryActionText="Cancel"
+      />
     </Box>
   );
 };
