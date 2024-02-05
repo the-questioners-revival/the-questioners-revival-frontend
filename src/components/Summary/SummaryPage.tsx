@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import CustomLayout from '../layout/Layout';
+import CustomLayout from '../layout/CustomLayout';
 import SummaryList from './SummaryList';
 import useAbstractProvider from '../../providers/AbstractProvider';
 import TodoApi from '../../api/todo';

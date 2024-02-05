@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react';
 import TodoList from './TodoList';
 import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
-import CustomLayout from '../layout/Layout';
+import CustomLayout from '../layout/CustomLayout';
 
 const TodoPage = () => {
   const [status, setStatus] = useState('inprogress');

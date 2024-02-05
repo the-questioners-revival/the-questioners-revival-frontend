@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Box, Grid, GridItem } from '@chakra-ui/react';
 import Footer from './CustomFooter';
 import CustomHeader from './CustomHeader';
 
@@ -6,6 +6,8 @@ const CustomLayout = ({ children }: { children: any }) => {
   return (
     <Grid
       minHeight={'100vh'}
+      maxWidth="100%"
+      width="100%"
       templateAreas={`"header"
                   "main"
                   "footer"`}
@@ -20,17 +22,31 @@ const CustomLayout = ({ children }: { children: any }) => {
         display="flex"
         alignItems="center"
         area="header"
+        maxWidth="100%"
+        width="100%"
+        overflowX='scroll'
+        overflowY="unset"
+
         paddingX={{ base: '10px', md: 150 }}
       >
-        <CustomHeader />
+        <Box>
+          <CustomHeader />
+        </Box>
       </GridItem>
       <GridItem
         pl="2"
         bg="#19BC9B"
         area="main"
+        maxWidth="100%"
+        width="100%"
+        overflowX='scroll'
+        overflowY="unset"
+
         paddingX={{ base: '10px', md: 150 }}
       >
-        {children}
+        <Box>
+          {children}
+        </Box>
       </GridItem>
       <GridItem
         pl="2"
@@ -39,9 +55,16 @@ const CustomLayout = ({ children }: { children: any }) => {
         alignItems="center"
         justifyContent="center"
         area="footer"
+        maxWidth="100%"
+        width="100%"
+        overflowX='scroll'
+        overflowY="unset"
+
         paddingX={{ base: '10px', md: 150 }}
       >
-        <Footer />
+        <Box>
+          <Footer />
+        </Box>
       </GridItem>
     </Grid>
   );

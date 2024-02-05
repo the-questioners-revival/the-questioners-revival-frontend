@@ -1,10 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Flex,
-  Link as ChakraLink,
-  Image,
-} from '@chakra-ui/react';
+import { Box, Flex, Link as ChakraLink, Image } from '@chakra-ui/react';
 
 const CustomHeader = () => {
   return (
@@ -27,8 +22,11 @@ const CustomHeader = () => {
         <ChakraLink as={Link} to="/qaas" marginRight={4} fontSize="lg">
           Qaas
         </ChakraLink>
-        <ChakraLink as={Link} to="/summary" fontSize="lg">
+        <ChakraLink as={Link} to="/summary" marginRight={4} fontSize="lg">
           Summary
+        </ChakraLink>
+        <ChakraLink as={Link} to="/habits" marginRight={4} fontSize="lg">
+          Habits
         </ChakraLink>
       </Box>
     </Flex>

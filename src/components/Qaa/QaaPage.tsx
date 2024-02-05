@@ -2,7 +2,7 @@ import useAbstractProvider from '../../providers/AbstractProvider';
 import QaaList from './QaaList'; // Updated import
 import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
-import CustomLayout from '../layout/Layout';
+import CustomLayout from '../layout/CustomLayout';
 import CreateQaaForm from './CreateQaaForm';
 import QaaApi from '../../api/qaa';
 import { Box } from '@chakra-ui/react';
