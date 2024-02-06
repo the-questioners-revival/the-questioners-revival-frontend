@@ -47,12 +47,17 @@ const SummaryList = ({
             borderRadius="10"
             padding="10px"
           >
-            <Heading as="h2" fontSize="xl">
+            <Heading as="h1" fontSize="xl">
               {moment(dataByDate?.date).format('DD MMMM YYYY')}
             </Heading>
             {dataByDate?.todos?.length > 0 ? (
-              <Heading as="h3" fontSize="lg" marginTop="10px">
-                Todos:
+              <Heading
+                as="h2"
+                fontSize="lg"
+                marginTop="10px"
+                textDecoration="underline"
+              >
+                {dataByDate?.todos?.length} Todos:
               </Heading>
             ) : null}
             {dataByDate?.todos?.map((todo: any) => (
@@ -65,7 +70,7 @@ const SummaryList = ({
                   position: 'relative',
                 }}
               >
-                <Text fontSize="lg" paddingRight="7px">
+                <Text fontSize="md" paddingRight="7px">
                   {todo.title}
                 </Text>
                 <Box>
@@ -74,8 +79,13 @@ const SummaryList = ({
               </Box>
             ))}
             {dataByDate?.qaas?.length > 0 ? (
-              <Heading as="h3" fontSize="lg" marginTop="10px">
-                QaAs:
+              <Heading
+                as="h2"
+                fontSize="lg"
+                marginTop="10px"
+                textDecoration="underline"
+              >
+                {dataByDate?.qaas?.length} QaAs:
               </Heading>
             ) : null}
 
@@ -89,7 +99,7 @@ const SummaryList = ({
                   position: 'relative',
                 }}
               >
-                <Text fontSize="lg" paddingRight="7px">
+                <Text fontSize="md" paddingRight="7px">
                   {qaa.question}
                 </Text>
                 <Box>
@@ -98,14 +108,23 @@ const SummaryList = ({
               </Box>
             ))}
             {dataByDate?.blogs?.length > 0 ? (
-              <Heading as="h3" fontSize="lg" marginTop="10px">
-                Blogs:
+              <Heading
+                as="h2"
+                fontSize="lg"
+                marginTop="10px"
+                textDecoration="underline"
+              >
+                {dataByDate?.blogs?.length} Blogs:
               </Heading>
             ) : null}
 
             {dataByDate?.blogs?.map((blog: any) => (
               <Flex justifyContent="space-between" key={blog.id}>
-                <Box whiteSpace="break-spaces">{blog?.text}</Box>
+                <Box>
+                  <Text fontSize="md" whiteSpace="break-spaces">
+                    {blog?.text}
+                  </Text>
+                </Box>
                 <Flex>
                   <Flex
                     w="100%"
