@@ -176,7 +176,9 @@ const TodoListItem = ({
         >
           {todo.title}
         </Text>
-        <Tag>{todo.type}</Tag>
+        <Box>
+          <Tag>{todo.type}</Tag>
+        </Box>
       </Box>
       <Box
         style={{

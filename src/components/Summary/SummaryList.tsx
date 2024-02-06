@@ -6,6 +6,8 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalHeader,
+  Tag,
+  Text,
 } from '@chakra-ui/react';
 import moment from 'moment';
 import CustomModal from '../custom/CustomModal';
@@ -54,7 +56,22 @@ const SummaryList = ({
               </Heading>
             ) : null}
             {dataByDate?.todos?.map((todo: any) => (
-              <Box key={todo.id}>{todo?.title}</Box>
+              <Box
+                key={todo.id}
+                display="flex"
+                alignItems="center"
+                w="100%"
+                style={{
+                  position: 'relative',
+                }}
+              >
+                <Text fontSize="lg" paddingRight="7px">
+                  {todo.title}
+                </Text>
+                <Box>
+                  <Tag>{todo.type}</Tag>
+                </Box>
+              </Box>
             ))}
             {dataByDate?.qaas?.length > 0 ? (
               <Heading as="h3" fontSize="lg" marginTop="10px">
@@ -63,7 +80,22 @@ const SummaryList = ({
             ) : null}
 
             {dataByDate?.qaas?.map((qaa: any) => (
-              <Box key={qaa.id}>{qaa?.question}</Box>
+              <Box
+                key={qaa.id}
+                display="flex"
+                alignItems="center"
+                w="100%"
+                style={{
+                  position: 'relative',
+                }}
+              >
+                <Text fontSize="lg" paddingRight="7px">
+                  {qaa.question}
+                </Text>
+                <Box>
+                  <Tag>{qaa.type}</Tag>
+                </Box>
+              </Box>
             ))}
             {dataByDate?.blogs?.length > 0 ? (
               <Heading as="h3" fontSize="lg" marginTop="10px">
