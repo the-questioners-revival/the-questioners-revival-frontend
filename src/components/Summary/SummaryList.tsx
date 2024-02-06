@@ -183,7 +183,7 @@ const SummaryList = ({
               </Flex>
             ))}
             <Box>
-              {dailyHabits.map((habit: any) => {
+              {dailyHabits?.map((habit: any) => {
                 const checked = isChecked(habit, dataByDate);
 
                 return (
