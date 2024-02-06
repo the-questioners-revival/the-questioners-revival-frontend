@@ -152,7 +152,7 @@ const SummaryPage = () => {
 
         if (existingDateIndex !== -1) {
           // Date already exists, add the blog to the existing array
-          combinedData[existingDateIndex].blogs.push(blogItem.blogs);
+          combinedData[existingDateIndex].blogs = blogItem.blogs;
         } else {
           // Date doesn't exist, create a new entry
           combinedData.push({
@@ -214,8 +214,19 @@ const SummaryPage = () => {
   ]);
 
   useEffect(() => {
+    const from = new Date(
+      `${selectedYear}-${
+        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+      }-01T00:00:00`,
+    ).toISOString();
+
+    const to = new Date(
+      `${selectedYear}-${
+        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+      }-${MONTHS[selectedMonth].days}T23:59:00`,
+    ).toISOString();
     if (createBlogData || editBlogData || removeBlogData) {
-      getAllBlogsGroupedByDate();
+      getAllBlogsGroupedByDate({ from, to });
     }
   }, [createBlogData, editBlogData, removeBlogData]);
 
