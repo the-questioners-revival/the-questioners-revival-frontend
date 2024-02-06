@@ -8,8 +8,11 @@ async function getLatestBlogs() {
   return res;
 }
 
-async function getAllBlogsGroupedByDate() {
-  const res = await API.get(`${BACKEND_URL}/blog/groupedByDate`, true);
+async function getAllBlogsGroupedByDate(data) {
+  const res = await API.get(
+    `${BACKEND_URL}/blog/groupedByDate?from=${data?.from}&to=${data?.to}`,
+    true,
+  );
   return res;
 }
 
@@ -33,5 +36,5 @@ export default {
   getAllBlogsGroupedByDate,
   removeBlog,
   createBlog,
-  editBlog
+  editBlog,
 };

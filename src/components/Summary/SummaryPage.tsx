@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import SummaryList from './SummaryList';
 import useAbstractProvider from '../../providers/AbstractProvider';
@@ -7,19 +7,44 @@ import QaaApi from '../../api/qaa';
 import BlogApi from '../../api/blog';
 import { useEffect, useState } from 'react';
 import useAbstractMutator from '../../providers/AbstractMutator';
+import { MONTHS } from '../../helpers/months';
 
 const SummaryPage = () => {
+  const [selectedMonth, setSelectedMonth] = useState(1);
+  const [selectedYear, setSelectedYear] = useState(2024);
   const [data, setData] = useState();
+  const date = new Date();
+  const month = date.getMonth();
+
+  useEffect(() => {
+    // const from = new Date(
+    //   `${selectedYear}-${
+    //     selectedMonth < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+    //   }-01T00:00:00`,
+    // );
+    // const to = new Date(
+    //   `${selectedYear}-${
+    //     selectedMonth < 9 ? `0${selectedMonth + 1}` : selectedMonth + 1
+    //   }-01T00:00:00`,
+    // );
+  }, [selectedMonth, selectedYear]);
+
   const {
     data: getAllTodosGroupedByDateData,
+    refetch: getAllTodosGroupedByDate,
   }: { data: any; refetch: Function } = useAbstractProvider(
     TodoApi.getAllTodosGroupedByDate,
+    null,
+    false,
   );
 
   const {
     data: getAllQaasGroupedByDateData,
+    refetch: getAllQaasGroupedByDate,
   }: { data: any; refetch: Function } = useAbstractProvider(
     QaaApi.getAllQaasGroupedByDate,
+    null,
+    false,
   );
 
   const {
@@ -27,6 +52,8 @@ const SummaryPage = () => {
     refetch: getAllBlogsGroupedByDate,
   }: { data: any; refetch: Function } = useAbstractProvider(
     BlogApi.getAllBlogsGroupedByDate,
+    null,
+    false,
   );
 
   const {
@@ -43,6 +70,35 @@ const SummaryPage = () => {
     data: removeBlogData,
     mutate: removeBlog,
   }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.removeBlog);
+
+  useEffect(() => {
+    const date = new Date();
+    setSelectedMonth(date.getMonth());
+  }, []);
+
+  useEffect(() => {
+    const from = new Date(
+      `${selectedYear}-${
+        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+      }-01T00:00:00`,
+    ).toISOString();
+
+    const to = new Date(
+      `${selectedYear}-${
+        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+      }-${MONTHS[selectedMonth].days}T23:59:00`,
+    ).toISOString();
+
+    getAllTodosGroupedByDate({
+      from: from,
+      to: to,
+    });
+    getAllQaasGroupedByDate({ from: from, to: to });
+    getAllBlogsGroupedByDate({
+      from: from,
+      to: to,
+    });
+  }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
     if (
@@ -130,6 +186,41 @@ const SummaryPage = () => {
   return (
     <CustomLayout>
       <Box paddingTop="20px">
+        <Flex alignItems="center" marginBottom="20px">
+          <Button
+            display="flex"
+            colorScheme="teal"
+            type="submit"
+            onClick={() => {
+              const newMonth =
+                selectedMonth - 1 === -1 ? 11 : selectedMonth - 1;
+              setSelectedMonth(newMonth);
+              if (newMonth === 11) {
+                setSelectedYear(selectedYear - 1);
+              }
+            }}
+          >
+            Previous
+          </Button>
+          <Text fontSize="lg" paddingX="10px">
+            {MONTHS[selectedMonth].name} {selectedYear}
+          </Text>
+          <Button
+            display="flex"
+            colorScheme="teal"
+            type="submit"
+            onClick={() => {
+              const newMonth = selectedMonth + 1 === 12 ? 0 : selectedMonth + 1;
+
+              setSelectedMonth(newMonth);
+              if (newMonth === 0) {
+                setSelectedYear(selectedYear + 1);
+              }
+            }}
+          >
+            Next
+          </Button>
+        </Flex>
         <SummaryList
           data={data}
           createBlog={createBlog}

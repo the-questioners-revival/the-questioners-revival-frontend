@@ -29,8 +29,11 @@ async function getLatestQaas(params) {
   return res;
 }
 
-async function getAllQaasGroupedByDate() {
-  const res = await API.get(`${BACKEND_URL}/qaa/groupedByDate`, true);
+async function getAllQaasGroupedByDate(data) {
+  const res = await API.get(
+    `${BACKEND_URL}/qaa/groupedByDate?from=${data?.from}&to=${data?.to}`,
+    true,
+  );
   return res;
 }
 

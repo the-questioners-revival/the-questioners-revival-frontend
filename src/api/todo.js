@@ -23,8 +23,11 @@ async function getLatestTodos(params) {
   return res;
 }
 
-async function getAllTodosGroupedByDate() {
-  const res = await API.get(`${BACKEND_URL}/todo/groupedByDate`, true);
+async function getAllTodosGroupedByDate(data) {
+  const res = await API.get(
+    `${BACKEND_URL}/todo/groupedByDate?from=${data?.from}&to=${data?.to}`,
+    true,
+  );
   return res;
 }
 
