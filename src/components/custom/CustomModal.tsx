@@ -8,7 +8,7 @@ import {
 const CustomModal = (props: any) => {
 
   return (
-    <Modal isOpen={props.isOpen} onClose={props.closeModal} isCentered>
+    <Modal isOpen={props.isOpen} onClose={props.closeModal} isCentered size='xl'>
       <ModalOverlay />
       <ModalContent>
         {props.children}
