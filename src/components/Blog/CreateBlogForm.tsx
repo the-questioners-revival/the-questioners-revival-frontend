@@ -13,7 +13,7 @@ const CreateBlogForm = ({
   return (
     <Formik
       initialValues={{
-        text: 'Morning Gratitude\n\n\nAffirmations\n\n\nWhat I did during the day\n\n\nHow did I feel today\n\n\nGoals for tomorrow\n',
+        text: 'Morning Gratitude\n\n\nHow I feel today\n\n\nWhat I did during the day\n\n\nGoals for tomorrow\n',
       }}
       onSubmit={(values, actions) => {
         createBlog({ text: values.text, given_at: date }); // Updated function name
