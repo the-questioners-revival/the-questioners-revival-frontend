@@ -13,21 +13,6 @@ const SummaryPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
   const [data, setData] = useState();
-  const date = new Date();
-  const month = date.getMonth();
-
-  useEffect(() => {
-    // const from = new Date(
-    //   `${selectedYear}-${
-    //     selectedMonth < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
-    //   }-01T00:00:00`,
-    // );
-    // const to = new Date(
-    //   `${selectedYear}-${
-    //     selectedMonth < 9 ? `0${selectedMonth + 1}` : selectedMonth + 1
-    //   }-01T00:00:00`,
-    // );
-  }, [selectedMonth, selectedYear]);
 
   const {
     data: getAllTodosGroupedByDateData,
@@ -107,6 +92,24 @@ const SummaryPage = () => {
       getAllBlogsGroupedByDateData
     ) {
       const combinedData: any = [];
+      const now = new Date();
+      const isCurrentMonth =
+        selectedMonth === now.getMonth() && selectedYear === now.getFullYear();
+
+      for (let i = 1; i <= MONTHS[selectedMonth].days; i++) {
+        console.log(' now.getDate(): ',  now.getDate());
+        if (isCurrentMonth && i > now.getDate()) break;
+        combinedData.push({
+          date: new Date(
+            `${selectedYear}-${
+              selectedMonth < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+            }-${i < 10 ? `0${i}` : i}T08:00:00`,
+          ).toISOString(),
+          blogs: [],
+          todos: [],
+          qaas: [],
+        });
+      }
 
       // Add blogs to the combinedData array
       getAllBlogsGroupedByDateData.forEach((blogItem: any) => {
@@ -168,6 +171,7 @@ const SummaryPage = () => {
         return bDate - aDate;
       });
 
+      console.log('combinedDataSortedByDate: ', combinedDataSortedByDate);
       setData(combinedDataSortedByDate);
       // Now, combinedData contains the merged data grouped by date
     }
