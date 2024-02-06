@@ -8,11 +8,27 @@ import BlogApi from '../../api/blog';
 import { useEffect, useState } from 'react';
 import useAbstractMutator from '../../providers/AbstractMutator';
 import { MONTHS } from '../../helpers/months';
+import HabitsApi from '../../api/habit';
+import HabitsTrackerApi from '../../api/habitsTracker';
 
 const SummaryPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
   const [data, setData] = useState();
+
+  const {
+    data: getDailyHabitsData,
+    refetch: getDailyHabits,
+  }: { data: any; refetch: Function } = useAbstractProvider(
+    HabitsApi.getDailyHabits,
+  );
+
+  const {
+    data: getDailyHabitsTrackersData,
+    refetch: getDailyHabitsTrackers,
+  }: { data: any; refetch: Function } = useAbstractProvider(
+    HabitsTrackerApi.getDailyHabitsTrackers,
+  );
 
   const {
     data: getAllTodosGroupedByDateData,
@@ -56,6 +72,20 @@ const SummaryPage = () => {
     mutate: removeBlog,
   }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.removeBlog);
 
+  const {
+    data: createHabitsTrackerData,
+    mutate: createHabitsTracker,
+  }: { data: any; mutate: Function } = useAbstractMutator(
+    HabitsTrackerApi.createHabitsTracker,
+  );
+
+  const {
+    data: deleteHabitsTrackerData,
+    mutate: deleteHabitsTracker,
+  }: { data: any; mutate: Function } = useAbstractMutator(
+    HabitsTrackerApi.deleteHabitsTracker,
+  );
+
   useEffect(() => {
     const date = new Date();
     setSelectedMonth(date.getMonth());
@@ -86,6 +116,10 @@ const SummaryPage = () => {
   }, [selectedMonth, selectedYear]);
 
   useEffect(() => {
+    getDailyHabitsTrackers();
+  }, [createHabitsTrackerData, deleteHabitsTrackerData]);
+
+  useEffect(() => {
     if (
       getAllTodosGroupedByDateData &&
       getAllQaasGroupedByDateData &&
@@ -97,7 +131,6 @@ const SummaryPage = () => {
         selectedMonth === now.getMonth() && selectedYear === now.getFullYear();
 
       for (let i = 1; i <= MONTHS[selectedMonth].days; i++) {
-        console.log(' now.getDate(): ',  now.getDate());
         if (isCurrentMonth && i > now.getDate()) break;
         combinedData.push({
           date: new Date(
@@ -171,7 +204,6 @@ const SummaryPage = () => {
         return bDate - aDate;
       });
 
-      console.log('combinedDataSortedByDate: ', combinedDataSortedByDate);
       setData(combinedDataSortedByDate);
       // Now, combinedData contains the merged data grouped by date
     }
@@ -230,6 +262,10 @@ const SummaryPage = () => {
           createBlog={createBlog}
           editBlog={editBlog}
           removeBlog={removeBlog}
+          dailyHabits={getDailyHabitsData}
+          dailyHabitsTrackers={getDailyHabitsTrackersData}
+          createHabitsTracker={createHabitsTracker}
+          deleteHabitsTracker={deleteHabitsTracker}
         />
       </Box>
     </CustomLayout>

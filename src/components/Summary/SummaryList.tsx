@@ -6,6 +6,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalHeader,
+  Switch,
   Tag,
   Text,
 } from '@chakra-ui/react';
@@ -23,17 +24,39 @@ const SummaryList = ({
   createBlog,
   editBlog,
   removeBlog,
+  dailyHabits,
+  dailyHabitsTrackers,
+  createHabitsTracker,
+  deleteHabitsTracker,
 }: {
   data: any;
   createBlog: Function;
   editBlog: Function;
   removeBlog: Function;
+  dailyHabits: any;
+  dailyHabitsTrackers: any;
+  createHabitsTracker: Function;
+  deleteHabitsTracker: Function;
 }) => {
   const [showBlogText, setShowBlogText] = useState(false);
   const [isOpenCreateBlogModal, setIsOpenCreateBlogModal] = useState(false);
   const [isOpenEditBlogModal, setIsOpenEditBlogModal] = useState(false);
   const [isOpenDeleteBlogModal, setIsOpenDeleteBlogModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>();
+
+  function isChecked(habit: any, dataByDate: any) {
+    const habitsTrackerFound = dailyHabitsTrackers?.find(
+      (habitTracker: any) =>
+        habitTracker.habit_id === habit.id &&
+        habitTracker?.created_at.slice(0, 10) === dataByDate?.date.slice(0, 10),
+    );
+
+    if (habitsTrackerFound) {
+      return habitsTrackerFound;
+    } else {
+      return null;
+    }
+  }
 
   return (
     <Box>
@@ -159,6 +182,29 @@ const SummaryList = ({
                 </Flex>
               </Flex>
             ))}
+            <Box>
+              {dailyHabits.map((habit: any) => {
+                const checked = isChecked(habit, dataByDate);
+
+                return (
+                  <Flex>
+                    <Text>{habit.title}</Text>
+                    <Switch
+                      id="email-alerts"
+                      isChecked={checked ? true : false}
+                      onChange={(e) =>
+                        e.target.checked === true
+                          ? createHabitsTracker({
+                              habit_id: habit.id,
+                              created_at: dataByDate?.date,
+                            })
+                          : deleteHabitsTracker(checked ? checked.id : null)
+                      }
+                    />
+                  </Flex>
+                );
+              })}
+            </Box>
 
             <Button
               mt={4}

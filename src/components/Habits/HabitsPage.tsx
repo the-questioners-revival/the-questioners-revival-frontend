@@ -32,7 +32,7 @@ function getDayOfWeekString(date: any) {
 const HabitsPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
-  console.log('selectedYear: ', selectedYear);
+
   const {
     data: habits,
     refetch: getLatestHabits,
@@ -97,7 +97,7 @@ const HabitsPage = () => {
     for (let i = 1; i <= MONTHS[selectedMonth].days; i++) {
       const date = new Date(
         `${selectedYear}-${
-          selectedMonth < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+          selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
         }-${i < 10 ? `0${i}` : i}T00:00:00`,
       );
 
@@ -143,11 +143,11 @@ const HabitsPage = () => {
                     if (e.target.checked) {
                       const date = new Date(
                         `${selectedYear}-${
-                          selectedMonth < 10
+                          selectedMonth + 1 < 10
                             ? `0${selectedMonth + 1}`
                             : selectedMonth + 1
-                        }-${i < 10 ? `0${i}` : i}T00:00:00`,
-                      );
+                        }-${i < 10 ? `0${i}` : i}T08:00:00`,
+                      ).toISOString();
 
                       createHabitsTracker({
                         habit_id: habit.id,

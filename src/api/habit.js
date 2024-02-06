@@ -28,6 +28,11 @@ async function getAllHabitsGroupedByDate() {
   return res;
 }
 
+async function getDailyHabits() {
+  const res = await API.get(`${BACKEND_URL}/habit/daily`, true);
+  return res;
+}
+
 async function completeHabit(id) {
   const res = await API.post(`${BACKEND_URL}/habit/complete/${id}`, null, true);
   return res;
@@ -65,4 +70,5 @@ export default {
   createHabit,
   getAllHabitsGroupedByDate,
   editHabit,
+  getDailyHabits
 };

@@ -2,7 +2,7 @@ import { Box, Button, Container, Heading } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 
-const options = [
+const typeOptions = [
   {
     name: 'Good',
     value: 'good',
@@ -10,6 +10,13 @@ const options = [
   {
     name: 'Bad',
     value: 'bad',
+  },
+];
+
+const repeatOptions = [
+  {
+    name: 'Daily',
+    value: 'daily',
   },
 ];
 
@@ -40,7 +47,8 @@ const CreateHabitForm = ({ createHabit }: { createHabit: Function }) => {
             </Box>
             <Box p="1rem 1.5rem" color="black">
               <CustomField name="title" type="input" />
-              <CustomField name="type" type="select" options={options} />
+              <CustomField name="type" type="select" options={typeOptions} />
+              <CustomField name="repeat" type="select" options={repeatOptions} />
 
 
               <Button

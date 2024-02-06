@@ -8,6 +8,12 @@ async function getAllHabitsTrackers() {
   return res;
 }
 
+async function getDailyHabitsTrackers() {
+  const res = await API.get(`${BACKEND_URL}/habits-tracker/dailyHabitsTrackers`, true);
+  return res;
+}
+
+
 async function getHabitsTrackersGroupedByDate() {
   const res = await API.get(
     `${BACKEND_URL}/habits-tracker/groupedByDate`,
@@ -35,4 +41,5 @@ export default {
   getHabitsTrackersGroupedByDate,
   deleteHabitsTracker,
   createHabitsTracker,
+  getDailyHabitsTrackers
 };
