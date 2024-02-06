@@ -24,7 +24,7 @@ import CreateHabitForm from '../Qaa/CreateHabitForm';
 import { CloseIcon } from '@chakra-ui/icons';
 
 function getDayOfWeekString(date: any) {
-  const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT'];
+  const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   const dayIndex = date.getDay();
   return weekdays[dayIndex];
 }
@@ -108,6 +108,12 @@ const HabitsPage = () => {
             border="1px solid"
             borderColor="gray.200"
             width="50px"
+            position="sticky"
+            left="0"
+            background="white"
+            zIndex="docked"
+            color="black"
+            p="0px 5px"
           >
             {i} - {getDayOfWeekString(date)}
           </Td>
