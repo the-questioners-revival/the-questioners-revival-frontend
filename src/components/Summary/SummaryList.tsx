@@ -16,6 +16,7 @@ import { useState } from 'react';
 import EditBlogForm from '../Blog/EditBlogForm';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
+import './SummaryList.css';
 
 const SummaryList = ({
   data,
@@ -28,6 +29,7 @@ const SummaryList = ({
   editBlog: Function;
   removeBlog: Function;
 }) => {
+  const [showBlogText, setShowBlogText] = useState(false);
   const [isOpenCreateBlogModal, setIsOpenCreateBlogModal] = useState(false);
   const [isOpenEditBlogModal, setIsOpenEditBlogModal] = useState(false);
   const [isOpenDeleteBlogModal, setIsOpenDeleteBlogModal] = useState(false);
@@ -121,7 +123,12 @@ const SummaryList = ({
             {dataByDate?.blogs?.map((blog: any) => (
               <Flex justifyContent="space-between" key={blog.id}>
                 <Box>
-                  <Text fontSize="md" whiteSpace="break-spaces">
+                  <Text
+                    fontSize="md"
+                    whiteSpace="break-spaces"
+                    className={showBlogText ? '' : 'blogText'}
+                    onClick={() => setShowBlogText(!showBlogText)}
+                  >
                     {blog?.text}
                   </Text>
                 </Box>
