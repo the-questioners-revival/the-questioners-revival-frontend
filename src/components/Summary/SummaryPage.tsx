@@ -141,7 +141,7 @@ const SummaryPage = () => {
       // Add blogs to the combinedData array
       getAllBlogsGroupedByDateData.forEach((blogItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item.date.slice(0, 10) === blogItem.date.slice(0, 10),
+          (item: any) => item?.date?.slice(0, 10) === blogItem?.date?.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -159,7 +159,7 @@ const SummaryPage = () => {
       // Add qaas to the combinedData array
       getAllQaasGroupedByDateData.forEach((qaaItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item.date.slice(0, 10) === qaaItem.date.slice(0, 10),
+          (item: any) => item?.date?.slice(0, 10) === qaaItem?.date?.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -177,7 +177,7 @@ const SummaryPage = () => {
       // Add todos to the combinedData array
       getAllTodosGroupedByDateData.forEach((todoItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item.date.slice(0, 10) === todoItem.date.slice(0, 10),
+          (item: any) => item?.date?.slice(0, 10) === todoItem?.date?.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
