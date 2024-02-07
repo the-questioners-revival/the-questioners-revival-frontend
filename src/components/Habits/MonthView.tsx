@@ -8,6 +8,7 @@ const MonthView = ({ onChange }: { onChange: Function }) => {
   const [selectedMonthDate, setSelectedMonthDate] = useState<any>();
   const [selectedYear, setSelectedYear] = useState<any>(2024);
   const [months, setMonths] = useState<any>();
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const handlePreviousMonth = () => {
     setSelectedMonthNumber(selectedMonthNumber - 1);
@@ -40,7 +41,13 @@ const MonthView = ({ onChange }: { onChange: Function }) => {
       currentMonthStart = monthEnd.clone().add(1, 'day');
     }
     setMonths(newMonths);
-    setSelectedMonthNumber(minus ? newMonths.length : 1);
+    if (firstLoad) {
+      const now = moment();
+      setSelectedMonthNumber(now.month() + 1);
+      setFirstLoad(false);
+    } else {
+      setSelectedMonthNumber(minus ? newMonths.length : 1);
+    }
   }
 
   useEffect(() => {
@@ -48,10 +55,6 @@ const MonthView = ({ onChange }: { onChange: Function }) => {
 
     setSelectedYear(currentDate.year());
     generateMonths(currentDate.year());
-    setTimeout(() => {
-      const now = moment();
-      setSelectedMonthNumber(now.month() + 1);
-    }, 500);
   }, []);
 
   useEffect(() => {

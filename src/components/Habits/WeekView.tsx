@@ -7,6 +7,7 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
   const [selectedWeekDate, setSelectedWeekDate] = useState<any>();
   const [selectedYear, setSelectedYear] = useState<any>(2024);
   const [weeks, setWeeks] = useState<any>();
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const handlePreviousWeek = () => {
     setSelectedWeekNumber(selectedWeekNumber - 1);
@@ -38,7 +39,13 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
       weekStart = weekEnd.clone().add(1, 'day');
     }
     setWeeks(newWeeks);
-    setSelectedWeekNumber(minus ? newWeeks.length : 1);
+    if (firstLoad) {
+      const now = moment();
+      setSelectedWeekNumber(now.week() + 1);
+      setFirstLoad(false);
+    } else {
+      setSelectedWeekNumber(minus ? newWeeks.length : 1);
+    }
   }
 
   useEffect(() => {
@@ -46,10 +53,6 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
 
     setSelectedYear(currentYear);
     generateWeeks(currentYear);
-    setTimeout(() => {
-      const now = moment();
-      setSelectedWeekNumber(now.week() + 1);
-    }, 500);
   }, []);
 
   useEffect(() => {
