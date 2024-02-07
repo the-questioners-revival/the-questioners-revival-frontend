@@ -135,9 +135,11 @@ const SummaryPage = () => {
         combinedData.push({
           date: new Date(
             `${selectedYear}-${
-              selectedMonth < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
+              selectedMonth + 1 < 10
+                ? `0${selectedMonth + 1}`
+                : selectedMonth + 1
             }-${i < 10 ? `0${i}` : i}T08:00:00`,
-          ).toISOString(),
+          )?.toISOString(),
           blogs: [],
           todos: [],
           qaas: [],
