@@ -68,10 +68,9 @@ const SummaryList = ({
       <Box>
         {data?.map((dataByDate: any) => {
           const now = new Date();
-
           const isItToday =
-            now.toISOString().slice(0, 10) ===
-            new Date(dataByDate.date).toISOString().slice(0, 10);
+            moment.tz(now, 'Asia/Manila').format('DD.MM.YYYY') ===
+            moment.tz(dataByDate.date, 'Asia/Manila').format('DD.MM.YYYY');
 
           return (
             <Box
