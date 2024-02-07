@@ -66,163 +66,172 @@ const SummaryList = ({
         Summary List
       </Heading>
       <Box>
-        {data?.map((dataByDate: any) => (
-          <Box
-            key={dataByDate.date}
-            marginBottom="15px"
-            border="2px solid white"
-            borderRadius="10"
-            padding="10px"
-          >
-            <Heading as="h1" fontSize="xl">
-              {getDayOfWeekString(new Date(dataByDate?.date))} -{' '}
-              {moment(dataByDate?.date).format('DD MMMM YYYY')}
-            </Heading>
-            {dataByDate?.todos?.length > 0 ? (
-              <Heading
-                as="h2"
-                fontSize="lg"
-                marginTop="10px"
-                textDecoration="underline"
-              >
-                {dataByDate?.todos?.length} Todos:
-              </Heading>
-            ) : null}
-            {dataByDate?.todos?.map((todo: any) => (
-              <Box
-                key={todo.id}
-                display="flex"
-                alignItems="center"
-                w="100%"
-                style={{
-                  position: 'relative',
-                }}
-              >
-                <Text fontSize="md" paddingRight="7px">
-                  {todo.title}
-                </Text>
-                <Box>
-                  <Tag>{todo.type}</Tag>
-                </Box>
-              </Box>
-            ))}
-            {dataByDate?.qaas?.length > 0 ? (
-              <Heading
-                as="h2"
-                fontSize="lg"
-                marginTop="10px"
-                textDecoration="underline"
-              >
-                {dataByDate?.qaas?.length} QaAs:
-              </Heading>
-            ) : null}
+        {data?.map((dataByDate: any) => {
+          const now = new Date();
 
-            {dataByDate?.qaas?.map((qaa: any) => (
-              <Box
-                key={qaa.id}
-                display="flex"
-                alignItems="center"
-                w="100%"
-                style={{
-                  position: 'relative',
-                }}
-              >
-                <Text fontSize="md" paddingRight="7px">
-                  {qaa.question}
-                </Text>
-                <Box>
-                  <Tag>{qaa.type}</Tag>
-                </Box>
-              </Box>
-            ))}
-            {dataByDate?.blogs?.length > 0 ? (
-              <Heading
-                as="h2"
-                fontSize="lg"
-                marginTop="10px"
-                textDecoration="underline"
-              >
-                {dataByDate?.blogs?.length} Blogs:
-              </Heading>
-            ) : null}
+          const isItToday =
+            now.toISOString().slice(0, 10) ===
+            new Date(dataByDate.date).toISOString().slice(0, 10);
 
-            {dataByDate?.blogs?.map((blog: any) => (
-              <Flex justifyContent="space-between" key={blog.id}>
-                <Box>
-                  <Text
-                    fontSize="md"
-                    whiteSpace="break-spaces"
-                    className={showBlogText ? '' : 'blogText'}
-                    onClick={() => setShowBlogText(!showBlogText)}
-                  >
-                    {blog?.text}
+          return (
+            <Box
+              key={dataByDate.date}
+              marginBottom="15px"
+              border={`${isItToday ? '2px solid #FFDF00' : '2px solid white'}`}
+              borderRadius="10"
+              padding="10px"
+            >
+              <Heading as="h1" fontSize="xl">
+                {getDayOfWeekString(new Date(dataByDate?.date))} -{' '}
+                {moment(dataByDate?.date).format('DD MMMM YYYY')}{' '}
+                {isItToday ? '(TODAY)' : null}
+              </Heading>
+              {dataByDate?.todos?.length > 0 ? (
+                <Heading
+                  as="h2"
+                  fontSize="lg"
+                  marginTop="10px"
+                  textDecoration="underline"
+                >
+                  {dataByDate?.todos?.length} Todos:
+                </Heading>
+              ) : null}
+              {dataByDate?.todos?.map((todo: any) => (
+                <Box
+                  key={todo.id}
+                  display="flex"
+                  alignItems="center"
+                  w="100%"
+                  style={{
+                    position: 'relative',
+                  }}
+                >
+                  <Text fontSize="md" paddingRight="7px">
+                    {todo.title}
                   </Text>
+                  <Box>
+                    <Tag>{todo.type}</Tag>
+                  </Box>
                 </Box>
-                <Flex>
-                  <Flex
-                    w="100%"
-                    h="100%"
-                    cursor="pointer"
-                    onClick={() => {
-                      setSelectedItem(blog);
-                      setIsOpenEditBlogModal(true);
-                    }}
-                    paddingRight="15px"
-                  >
-                    <EditIcon w={4} h={4} color="white" />
-                  </Flex>
-                  <Flex
-                    w="100%"
-                    h="100%"
-                    cursor="pointer"
-                    onClick={() => {
-                      setSelectedItem(blog);
-                      setIsOpenDeleteBlogModal(true);
-                    }}
-                  >
-                    <CloseIcon w={4} h={4} color="white" />
+              ))}
+              {dataByDate?.qaas?.length > 0 ? (
+                <Heading
+                  as="h2"
+                  fontSize="lg"
+                  marginTop="10px"
+                  textDecoration="underline"
+                >
+                  {dataByDate?.qaas?.length} QaAs:
+                </Heading>
+              ) : null}
+
+              {dataByDate?.qaas?.map((qaa: any) => (
+                <Box
+                  key={qaa.id}
+                  display="flex"
+                  alignItems="center"
+                  w="100%"
+                  style={{
+                    position: 'relative',
+                  }}
+                >
+                  <Text fontSize="md" paddingRight="7px">
+                    {qaa.question}
+                  </Text>
+                  <Box>
+                    <Tag>{qaa.type}</Tag>
+                  </Box>
+                </Box>
+              ))}
+              {dataByDate?.blogs?.length > 0 ? (
+                <Heading
+                  as="h2"
+                  fontSize="lg"
+                  marginTop="10px"
+                  textDecoration="underline"
+                >
+                  {dataByDate?.blogs?.length} Blogs:
+                </Heading>
+              ) : null}
+
+              {dataByDate?.blogs?.map((blog: any) => (
+                <Flex justifyContent="space-between" key={blog.id}>
+                  <Box>
+                    <Text
+                      fontSize="md"
+                      whiteSpace="break-spaces"
+                      className={showBlogText ? '' : 'blogText'}
+                      onClick={() => setShowBlogText(!showBlogText)}
+                    >
+                      {blog?.text}
+                    </Text>
+                  </Box>
+                  <Flex>
+                    <Flex
+                      w="100%"
+                      h="100%"
+                      cursor="pointer"
+                      onClick={() => {
+                        setSelectedItem(blog);
+                        setIsOpenEditBlogModal(true);
+                      }}
+                      paddingRight="15px"
+                    >
+                      <EditIcon w={4} h={4} color="white" />
+                    </Flex>
+                    <Flex
+                      w="100%"
+                      h="100%"
+                      cursor="pointer"
+                      onClick={() => {
+                        setSelectedItem(blog);
+                        setIsOpenDeleteBlogModal(true);
+                      }}
+                    >
+                      <CloseIcon w={4} h={4} color="white" />
+                    </Flex>
                   </Flex>
                 </Flex>
-              </Flex>
-            ))}
-            <Box>
-              {dailyHabits?.map((habit: any) => {
-                const checked = isChecked(habit, dataByDate);
+              ))}
+              <Box>
+                {dailyHabits?.map((habit: any) => {
+                  const checked = isChecked(habit, dataByDate);
 
-                return (
-                  <Flex>
-                    <Text>{habit.title}</Text>
-                    <Switch
-                      id="email-alerts"
-                      isChecked={checked ? true : false}
-                      onChange={(e) =>
-                        e.target.checked === true
-                          ? createHabitsTracker({
-                              habit_id: habit.id,
-                              created_at: dataByDate?.date,
-                            })
-                          : deleteHabitsTracker(checked ? checked.id : null)
-                      }
-                    />
-                  </Flex>
-                );
-              })}
+                  return (
+                    <Flex>
+                      <Text>{habit.title}</Text>
+                      <Switch
+                        id="email-alerts"
+                        isChecked={checked ? true : false}
+                        onChange={(e) =>
+                          e.target.checked === true
+                            ? createHabitsTracker({
+                                habit_id: habit.id,
+                                created_at: dataByDate?.date,
+                              })
+                            : deleteHabitsTracker(checked ? checked.id : null)
+                        }
+                      />
+                    </Flex>
+                  );
+                })}
+              </Box>
+
+              <Button
+                mt={4}
+                display="flex"
+                colorScheme="teal"
+                type="submit"
+                onClick={() => {
+                  setSelectedItem(dataByDate);
+                  setIsOpenCreateBlogModal(true);
+                }}
+              >
+                Add Blog
+              </Button>
             </Box>
-
-            <Button
-              mt={4}
-              display="flex"
-              colorScheme="teal"
-              type="submit"
-              onClick={() => {
-                setSelectedItem(dataByDate);
-                setIsOpenCreateBlogModal(true);
-              }}
-            >
-              Add Blog
-            </Button>
-          </Box>
-        ))}
+          );
+        })}
       </Box>
       <CustomModal
         isOpen={isOpenCreateBlogModal}
