@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Select, Text } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import SummaryList from './SummaryList';
 import useAbstractProvider from '../../providers/AbstractProvider';
@@ -10,10 +10,17 @@ import useAbstractMutator from '../../providers/AbstractMutator';
 import { MONTHS } from '../../helpers/months';
 import HabitsApi from '../../api/habit';
 import HabitsTrackerApi from '../../api/habitsTracker';
+import WeekView from '../Habits/WeekView';
+import MonthView from '../Habits/MonthView';
+import { viewTypeOptions } from '../Habits/HabitsPage';
 
 const SummaryPage = () => {
-  const [selectedMonth, setSelectedMonth] = useState(1);
-  const [selectedYear, setSelectedYear] = useState(2024);
+  const [startDate, setStartDate] = useState<any>(null);
+
+  const [endDate, setEndDate] = useState<any>(null);
+
+  const [viewType, setViewType] = useState(viewTypeOptions[0].value);
+
   const [data, setData] = useState();
 
   const {
@@ -87,33 +94,21 @@ const SummaryPage = () => {
   );
 
   useEffect(() => {
-    const date = new Date();
-    setSelectedMonth(date.getMonth());
-  }, []);
-
-  useEffect(() => {
-    const from = new Date(
-      `${selectedYear}-${
-        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
-      }-01T00:00:00`,
-    ).toISOString();
-
-    const to = new Date(
-      `${selectedYear}-${
-        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
-      }-${MONTHS[selectedMonth].days}T23:59:00`,
-    ).toISOString();
-
-    getAllTodosGroupedByDate({
-      from: from,
-      to: to,
-    });
-    getAllQaasGroupedByDate({ from: from, to: to });
-    getAllBlogsGroupedByDate({
-      from: from,
-      to: to,
-    });
-  }, [selectedMonth, selectedYear]);
+    if (startDate && endDate) {
+      getAllTodosGroupedByDate({
+        from: new Date(startDate).toISOString(),
+        to: new Date(endDate).toISOString(),
+      });
+      getAllQaasGroupedByDate({
+        from: new Date(startDate).toISOString(),
+        to: new Date(endDate).toISOString(),
+      });
+      getAllBlogsGroupedByDate({
+        from: new Date(startDate).toISOString(),
+        to: new Date(endDate).toISOString(),
+      });
+    }
+  }, [startDate, endDate]);
 
   useEffect(() => {
     getDailyHabitsTrackers();
@@ -126,30 +121,27 @@ const SummaryPage = () => {
       getAllBlogsGroupedByDateData
     ) {
       const combinedData: any = [];
-      const now = new Date();
-      const isCurrentMonth =
-        selectedMonth === now.getMonth() && selectedYear === now.getFullYear();
 
-      for (let i = 1; i <= MONTHS[selectedMonth].days; i++) {
-        if (isCurrentMonth && i > now.getDate()) break;
+      let weekStart = startDate.clone();
+
+      let weekEnd = endDate.clone();
+
+      while (weekStart.isBefore(weekEnd.clone().add(1, 'day'))) {
+        const myDate = new Date(weekStart).toISOString();
+
         combinedData.push({
-          date: new Date(
-            `${selectedYear}-${
-              selectedMonth + 1 < 10
-                ? `0${selectedMonth + 1}`
-                : selectedMonth + 1
-            }-${i < 10 ? `0${i}` : i}T08:00:00`,
-          )?.toISOString(),
+          date: myDate,
           blogs: [],
           todos: [],
           qaas: [],
         });
+        weekStart = weekStart.clone().add(1, 'day');
       }
 
       // Add blogs to the combinedData array
       getAllBlogsGroupedByDateData.forEach((blogItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item.date === blogItem.date,
+          (item: any) => item.date.slice(0, 10) === blogItem.date.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -167,7 +159,7 @@ const SummaryPage = () => {
       // Add qaas to the combinedData array
       getAllQaasGroupedByDateData.forEach((qaaItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item.date === qaaItem.date,
+          (item: any) => item.date.slice(0, 10) === qaaItem.date.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -185,7 +177,7 @@ const SummaryPage = () => {
       // Add todos to the combinedData array
       getAllTodosGroupedByDateData.forEach((todoItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item.date === todoItem.date,
+          (item: any) => item.date.slice(0, 10) === todoItem.date.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -203,7 +195,7 @@ const SummaryPage = () => {
         const aDate = new Date(a.date) as any;
         const bDate = new Date(b.date) as any;
 
-        return bDate - aDate;
+        return bDate + aDate;
       });
 
       setData(combinedDataSortedByDate);
@@ -216,60 +208,48 @@ const SummaryPage = () => {
   ]);
 
   useEffect(() => {
-    const from = new Date(
-      `${selectedYear}-${
-        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
-      }-01T00:00:00`,
-    ).toISOString();
-
-    const to = new Date(
-      `${selectedYear}-${
-        selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
-      }-${MONTHS[selectedMonth].days}T23:59:00`,
-    ).toISOString();
     if (createBlogData || editBlogData || removeBlogData) {
-      getAllBlogsGroupedByDate({ from, to });
+      getAllBlogsGroupedByDate({
+        from: new Date(startDate).toISOString(),
+        to: new Date(endDate).toISOString(),
+      });
     }
   }, [createBlogData, editBlogData, removeBlogData]);
 
   return (
     <CustomLayout>
       <Box paddingTop="20px">
-        <Flex alignItems="center" marginBottom="20px">
-          <Button
-            display="flex"
-            colorScheme="teal"
-            type="submit"
-            onClick={() => {
-              const newMonth =
-                selectedMonth - 1 === -1 ? 11 : selectedMonth - 1;
-              setSelectedMonth(newMonth);
-              if (newMonth === 11) {
-                setSelectedYear(selectedYear - 1);
-              }
+        <Text>View Option</Text>
+        <Select
+          value={viewType}
+          onChange={(evt) => setViewType(evt.target.value)}
+          placeholder="Type"
+          color="black"
+          bg="white"
+          marginBottom="10px"
+          width="fit-content"
+        >
+          {viewTypeOptions?.map((option) => (
+            <option key={option.name} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </Select>
+        {viewType === viewTypeOptions[0].value ? (
+          <WeekView
+            onChange={(val: any) => {
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
             }}
-          >
-            Previous
-          </Button>
-          <Text fontSize="lg" paddingX="10px">
-            {MONTHS[selectedMonth].name} {selectedYear}
-          </Text>
-          <Button
-            display="flex"
-            colorScheme="teal"
-            type="submit"
-            onClick={() => {
-              const newMonth = selectedMonth + 1 === 12 ? 0 : selectedMonth + 1;
-
-              setSelectedMonth(newMonth);
-              if (newMonth === 0) {
-                setSelectedYear(selectedYear + 1);
-              }
+          ></WeekView>
+        ) : (
+          <MonthView
+            onChange={(val: any) => {
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
             }}
-          >
-            Next
-          </Button>
-        </Flex>
+          ></MonthView>
+        )}
         <SummaryList
           data={data}
           createBlog={createBlog}

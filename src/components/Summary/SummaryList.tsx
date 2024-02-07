@@ -18,6 +18,7 @@ import EditBlogForm from '../Blog/EditBlogForm';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import './SummaryList.css';
+import { getDayOfWeekString } from '../Habits/HabitsPage';
 
 const SummaryList = ({
   data,
@@ -48,7 +49,8 @@ const SummaryList = ({
     const habitsTrackerFound = dailyHabitsTrackers?.find(
       (habitTracker: any) =>
         habitTracker.habit_id === habit.id &&
-        habitTracker?.created_at?.slice(0, 10) === dataByDate?.date?.slice(0, 10),
+        habitTracker?.created_at?.slice(0, 10) ===
+          dataByDate?.date?.slice(0, 10),
     );
 
     if (habitsTrackerFound) {
@@ -73,6 +75,7 @@ const SummaryList = ({
             padding="10px"
           >
             <Heading as="h1" fontSize="xl">
+              {getDayOfWeekString(new Date(dataByDate?.date))} -{' '}
               {moment(dataByDate?.date).format('DD MMMM YYYY')}
             </Heading>
             {dataByDate?.todos?.length > 0 ? (

@@ -27,7 +27,7 @@ import WeekView from './WeekView';
 import moment from 'moment';
 import MonthView from './MonthView';
 
-const viewTypeOptions = [
+export const viewTypeOptions = [
   {
     value: 'weekly',
     name: 'Weekly',
@@ -38,7 +38,7 @@ const viewTypeOptions = [
   },
 ];
 
-function getDayOfWeekString(date: any) {
+export function getDayOfWeekString(date: any) {
   const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   const dayIndex = date.getDay();
   return weekdays[dayIndex];
