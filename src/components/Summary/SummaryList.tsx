@@ -48,7 +48,7 @@ const SummaryList = ({
     const habitsTrackerFound = dailyHabitsTrackers?.find(
       (habitTracker: any) =>
         habitTracker.habit_id === habit.id &&
-        habitTracker?.created_at.slice(0, 10) === dataByDate?.date.slice(0, 10),
+        habitTracker?.created_at?.slice(0, 10) === dataByDate?.date?.slice(0, 10),
     );
 
     if (habitsTrackerFound) {
