@@ -1,4 +1,5 @@
 const MONTHS = [
+  {name: 'placeholder', days:1},
   {
     name: 'January',
     short: 'Jan',

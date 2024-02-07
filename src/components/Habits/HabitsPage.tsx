@@ -12,6 +12,7 @@ import {
   Text,
   Heading,
   Flex,
+  Select,
 } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import { MONTHS } from '../../helpers/months';
@@ -22,6 +23,20 @@ import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
 import CreateHabitForm from '../Qaa/CreateHabitForm';
 import { CloseIcon } from '@chakra-ui/icons';
+import WeekView from './WeekView';
+import moment from 'moment';
+import MonthView from './MonthView';
+
+const viewTypeOptions = [
+  {
+    value: 'weekly',
+    name: 'Weekly',
+  },
+  {
+    value: 'monthly',
+    name: 'Monthly',
+  },
+];
 
 function getDayOfWeekString(date: any) {
   const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -30,8 +45,9 @@ function getDayOfWeekString(date: any) {
 }
 
 const HabitsPage = () => {
-  const [selectedMonth, setSelectedMonth] = useState(1);
-  const [selectedYear, setSelectedYear] = useState(2024);
+  const [startDate, setStartDate] = useState<any>(null);
+  const [endDate, setEndDate] = useState<any>(null);
+  const [viewType, setViewType] = useState(viewTypeOptions[0].value);
 
   const {
     data: habits,
@@ -56,9 +72,11 @@ const HabitsPage = () => {
 
   const {
     data: habitsTrackers,
-    refetch: getAllHabitsTrackers,
+    refetch: getHabitsTrackersFromTo,
   }: { data: any; refetch: Function } = useAbstractProvider(
-    HabitsTrackerApi.getAllHabitsTrackers,
+    HabitsTrackerApi.getHabitsTrackersFromTo,
+    null,
+    false,
   );
 
   const {
@@ -76,15 +94,24 @@ const HabitsPage = () => {
   );
 
   useEffect(() => {
-    const date = new Date();
-    setSelectedMonth(date.getMonth());
-  }, []);
+    if (createHabitsTrackerData || deleteHabitsTrackerData) {
+      if (startDate && endDate) {
+        getHabitsTrackersFromTo({
+          from: new Date(startDate).toISOString(),
+          to: new Date(endDate).toISOString(),
+        });
+      }
+    }
+  }, [createHabitsTrackerData, deleteHabitsTrackerData, startDate, endDate]);
 
   useEffect(() => {
-    if (createHabitsTrackerData || deleteHabitsTrackerData) {
-      getAllHabitsTrackers();
+    if (startDate && endDate) {
+      getHabitsTrackersFromTo({
+        from: new Date(startDate).toISOString(),
+        to: new Date(endDate).toISOString(),
+      });
     }
-  }, [createHabitsTrackerData, deleteHabitsTrackerData]);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     if (createHabitData || deleteHabitData) {
@@ -93,14 +120,12 @@ const HabitsPage = () => {
   }, [createHabitData, deleteHabitData]);
 
   function renderBody() {
+    
     let res = [];
-    for (let i = 1; i <= MONTHS[selectedMonth].days; i++) {
-      const date = new Date(
-        `${selectedYear}-${
-          selectedMonth + 1 < 10 ? `0${selectedMonth + 1}` : selectedMonth + 1
-        }-${i < 10 ? `0${i}` : i}T00:00:00`,
-      );
 
+    let weekStart = startDate.clone();
+    let weekEnd = endDate.clone()
+    while (weekStart.isBefore(weekEnd.clone().add(1, 'day'))) {
       res.push(
         <Tr>
           <Td
@@ -115,20 +140,18 @@ const HabitsPage = () => {
             color="black"
             p="0px 5px"
           >
-            {i} - {getDayOfWeekString(date)}
+            {moment(weekStart).date()} -{' '}
+            {getDayOfWeekString(new Date(weekStart))}
           </Td>
           {habits?.map((habit: any) => {
+            const myDate = new Date(weekStart).toISOString();
+
             const foundHabitTracker = habitsTrackers?.find(
               (habitTracker: any) => {
-                const habitTrackerDate = new Date(habitTracker.created_at);
-                const day = habitTrackerDate.getDate();
-                const month = habitTrackerDate.getMonth();
-                const year = habitTrackerDate.getFullYear();
+                const habitTrackerDate = habitTracker.created_at;
 
                 if (
-                  day === i &&
-                  month === selectedMonth &&
-                  year === selectedYear &&
+                  habitTrackerDate?.slice(0, 10) === myDate?.slice(0, 10) &&
                   habitTracker.habit_id === habit.id
                 )
                   return habitTracker;
@@ -138,20 +161,13 @@ const HabitsPage = () => {
             return (
               <Td textAlign="center" border="1px solid" borderColor="gray.200">
                 <Checkbox
+                  colorScheme="green"
                   isChecked={foundHabitTracker ? true : false}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      const date = new Date(
-                        `${selectedYear}-${
-                          selectedMonth + 1 < 10
-                            ? `0${selectedMonth + 1}`
-                            : selectedMonth + 1
-                        }-${i < 10 ? `0${i}` : i}T08:00:00`,
-                      ).toISOString();
-
                       createHabitsTracker({
                         habit_id: habit.id,
-                        created_at: date,
+                        created_at: myDate,
                       });
                     } else {
                       deleteHabitsTracker(foundHabitTracker?.id);
@@ -163,6 +179,7 @@ const HabitsPage = () => {
           })}
         </Tr>,
       );
+      weekStart = weekStart.clone().add(1, 'day');
     }
     return res;
   }
@@ -172,40 +189,37 @@ const HabitsPage = () => {
       <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
         Habits
       </Heading>
-      <Flex alignItems="center" marginBottom="20px">
-        <Button
-          display="flex"
-          colorScheme="teal"
-          type="submit"
-          onClick={() => {
-            const newMonth = selectedMonth - 1 === -1 ? 11 : selectedMonth - 1;
-            setSelectedMonth(newMonth);
-            if (newMonth === 11) {
-              setSelectedYear(selectedYear - 1);
-            }
+      <Text>View Option</Text>
+      <Select
+        value={viewType}
+        onChange={(evt) => setViewType(evt.target.value)}
+        placeholder="Type"
+        color="black"
+        bg="white"
+        marginBottom="10px"
+        width="fit-content"
+      >
+        {viewTypeOptions?.map((option) => (
+          <option key={option.name} value={option.value}>
+            {option.name}
+          </option>
+        ))}
+      </Select>
+      {viewType === viewTypeOptions[0].value ? (
+        <WeekView
+          onChange={(val: any) => {
+            setStartDate(val?.startDate);
+            setEndDate(val?.endDate);
           }}
-        >
-          Previous
-        </Button>
-        <Text fontSize="lg" paddingX="10px">
-          {MONTHS[selectedMonth].name} {selectedYear}
-        </Text>
-        <Button
-          display="flex"
-          colorScheme="teal"
-          type="submit"
-          onClick={() => {
-            const newMonth = selectedMonth + 1 === 12 ? 0 : selectedMonth + 1;
-
-            setSelectedMonth(newMonth);
-            if (newMonth === 0) {
-              setSelectedYear(selectedYear + 1);
-            }
+        ></WeekView>
+      ) : (
+        <MonthView
+          onChange={(val: any) => {
+            setStartDate(val?.startDate);
+            setEndDate(val?.endDate);
           }}
-        >
-          Next
-        </Button>
-      </Flex>
+        ></MonthView>
+      )}
       <CreateHabitForm createHabit={createHabit} />
       <TableContainer
         overflowX="scroll"
@@ -252,7 +266,7 @@ const HabitsPage = () => {
               ))}
             </Tr>
           </Thead>
-          <Tbody>{renderBody()}</Tbody>
+          {startDate ? <Tbody>{renderBody()}</Tbody> : null}
         </Table>
       </TableContainer>
     </CustomLayout>
