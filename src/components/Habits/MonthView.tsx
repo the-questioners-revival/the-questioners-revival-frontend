@@ -48,6 +48,10 @@ const MonthView = ({ onChange }: { onChange: Function }) => {
 
     setSelectedYear(currentDate.year());
     generateMonths(currentDate.year());
+    setTimeout(() => {
+      const now = moment();
+      setSelectedMonthNumber(now.month() + 1);
+    }, 500);
   }, []);
 
   useEffect(() => {

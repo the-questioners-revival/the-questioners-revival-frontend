@@ -46,6 +46,10 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
 
     setSelectedYear(currentYear);
     generateWeeks(currentYear);
+    setTimeout(() => {
+      const now = moment();
+      setSelectedWeekNumber(now.week() + 1);
+    }, 500);
   }, []);
 
   useEffect(() => {
