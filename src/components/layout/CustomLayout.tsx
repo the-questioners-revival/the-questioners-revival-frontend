@@ -27,7 +27,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         overflowX='scroll'
         overflowY="unset"
 
-        paddingX={{ base: '10px', md: 150 }}
+        paddingX={{ base: '10px', md: '150px' }}
       >
         <Box>
           <CustomHeader />
@@ -42,7 +42,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         overflowX='scroll'
         overflowY="unset"
 
-        paddingX={{ base: '10px', md: 150 }}
+        paddingX={{ base: '10px', md: '150px' }}
       >
         <Box>
           {children}
@@ -60,7 +60,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         overflowX='scroll'
         overflowY="unset"
 
-        paddingX={{ base: '10px', md: 150 }}
+        paddingX={{ base: '10px', md: '150px' }}
       >
         <Box>
           <Footer />

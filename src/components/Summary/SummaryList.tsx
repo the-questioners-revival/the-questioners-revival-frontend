@@ -61,7 +61,7 @@ const SummaryList = ({
 
   return (
     <Box>
-      <Heading as="h1" fontSize="2xl" marginBottom="20px">
+      <Heading as="h1" fontSize="2xl" marginBottom="10px">
         Summary List
       </Heading>
       <Box>

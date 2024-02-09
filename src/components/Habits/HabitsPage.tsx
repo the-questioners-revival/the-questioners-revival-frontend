@@ -36,6 +36,10 @@ export const viewTypeOptions = [
     value: 'monthly',
     name: 'Monthly',
   },
+    {
+    value: 'yearly',
+    name: 'Yearly',
+  },
 ];
 
 export function getDayOfWeekString(date: any) {

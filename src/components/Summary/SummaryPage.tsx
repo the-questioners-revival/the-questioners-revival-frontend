@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Select, Text } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Select, Text } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import SummaryList from './SummaryList';
 import useAbstractProvider from '../../providers/AbstractProvider';
@@ -7,12 +7,13 @@ import QaaApi from '../../api/qaa';
 import BlogApi from '../../api/blog';
 import { useEffect, useState } from 'react';
 import useAbstractMutator from '../../providers/AbstractMutator';
-import { MONTHS } from '../../helpers/months';
 import HabitsApi from '../../api/habit';
 import HabitsTrackerApi from '../../api/habitsTracker';
 import WeekView from '../Habits/WeekView';
 import MonthView from '../Habits/MonthView';
 import { viewTypeOptions } from '../Habits/HabitsPage';
+import GoalsListSimple from './GoalsListSimple';
+import YearView from '../Habits/YearView';
 
 const SummaryPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
@@ -141,7 +142,8 @@ const SummaryPage = () => {
       // Add blogs to the combinedData array
       getAllBlogsGroupedByDateData.forEach((blogItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item?.date?.slice(0, 10) === blogItem?.date?.slice(0, 10),
+          (item: any) =>
+            item?.date?.slice(0, 10) === blogItem?.date?.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -159,7 +161,8 @@ const SummaryPage = () => {
       // Add qaas to the combinedData array
       getAllQaasGroupedByDateData.forEach((qaaItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item?.date?.slice(0, 10) === qaaItem?.date?.slice(0, 10),
+          (item: any) =>
+            item?.date?.slice(0, 10) === qaaItem?.date?.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -177,7 +180,8 @@ const SummaryPage = () => {
       // Add todos to the combinedData array
       getAllTodosGroupedByDateData.forEach((todoItem: any) => {
         const existingDateIndex = combinedData.findIndex(
-          (item: any) => item?.date?.slice(0, 10) === todoItem?.date?.slice(0, 10),
+          (item: any) =>
+            item?.date?.slice(0, 10) === todoItem?.date?.slice(0, 10),
         );
 
         if (existingDateIndex !== -1) {
@@ -242,14 +246,36 @@ const SummaryPage = () => {
               setEndDate(val?.endDate);
             }}
           ></WeekView>
-        ) : (
+        ) : null}
+        {viewType === viewTypeOptions[1].value ? (
           <MonthView
             onChange={(val: any) => {
               setStartDate(val?.startDate);
               setEndDate(val?.endDate);
             }}
           ></MonthView>
-        )}
+        ) : null}
+        {viewType === viewTypeOptions[2].value ? (
+          <YearView
+            onChange={(val: any) => {
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
+            }}
+          ></YearView>
+        ) : null}
+        <Grid
+          templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+          gap={6}
+        >
+          <GridItem>
+            <GoalsListSimple
+              startDate={startDate}
+              endDate={endDate}
+              type={viewType}
+            />
+          </GridItem>
+          <GridItem></GridItem>
+        </Grid>
         <SummaryList
           data={data}
           createBlog={createBlog}

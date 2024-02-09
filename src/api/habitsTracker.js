@@ -9,7 +9,7 @@ async function getAllHabitsTrackers() {
 }
 
 async function getHabitsTrackersFromTo(data) {
-  const res = await API.get(`${BACKEND_URL}/habits-tracker/fromTo?from=${data.from}&to=${data.to}`, true);
+  const res = await API.get(`${BACKEND_URL}/habits-tracker/fromTo?from=${data?.from}&to=${data?.to}`, true);
   return res;
 }
 
