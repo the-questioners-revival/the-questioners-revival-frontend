@@ -130,12 +130,18 @@ const HabitsPage = () => {
     let weekStart = startDate.clone();
     let weekEnd = endDate.clone();
     while (weekStart.isBefore(weekEnd.clone().add(1, 'day'))) {
+      const myDate = new Date(weekStart).toISOString();
+
+      const now = new Date();
+      const isItToday =
+        moment.tz(now, 'Asia/Manila').format('DD.MM.YYYY') ===
+        moment.tz(myDate, 'Asia/Manila').format('DD.MM.YYYY');
+
       res.push(
         <Tr>
           <Td
             textAlign="center"
-            border="1px solid"
-            borderColor="gray.200"
+            border={`${isItToday ? '2px solid #FFDF00' : '1px solid white'}`}
             width="50px"
             position="sticky"
             left="0"
@@ -148,8 +154,6 @@ const HabitsPage = () => {
             {getDayOfWeekString(new Date(weekStart))}
           </Td>
           {habits?.map((habit: any) => {
-            const myDate = new Date(weekStart).toISOString();
-
             const foundHabitTracker = habitsTrackers?.find(
               (habitTracker: any) => {
                 const habitTrackerDate = habitTracker.created_at;
@@ -166,8 +170,9 @@ const HabitsPage = () => {
               <Td
                 key={habit.id}
                 textAlign="center"
-                border="1px solid"
-                borderColor="gray.200"
+                border={`${
+                  isItToday ? '2px solid #FFDF00' : '1px solid white'
+                }`}
               >
                 <Checkbox
                   colorScheme="green"
