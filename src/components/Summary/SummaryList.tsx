@@ -168,8 +168,8 @@ const SummaryList = ({
                   const checked = isChecked(habit, dataByDate);
 
                   return (
-                    <Flex key={habit.key}>
-                      <Text>{habit.title}</Text>
+                    <Flex key={habit.key} alignItems='center'>
+                      <Text marginRight='7px'>{habit.title}</Text>
                       <Switch
                         id="email-alerts"
                         isChecked={checked ? true : false}
