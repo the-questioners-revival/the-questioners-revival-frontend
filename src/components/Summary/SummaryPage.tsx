@@ -290,16 +290,18 @@ const SummaryPage = () => {
             />
           </GridItem>
         </Grid>
-        <SummaryList
-          data={data}
-          createBlog={createBlog}
-          editBlog={editBlog}
-          removeBlog={removeBlog}
-          dailyHabits={getDailyHabitsData}
-          dailyHabitsTrackers={getDailyHabitsTrackersData}
-          createHabitsTracker={createHabitsTracker}
-          deleteHabitsTracker={deleteHabitsTracker}
-        />
+        {data && getDailyHabitsData && getDailyHabitsTrackersData ? (
+          <SummaryList
+            data={data}
+            createBlog={createBlog}
+            editBlog={editBlog}
+            removeBlog={removeBlog}
+            dailyHabits={getDailyHabitsData}
+            dailyHabitsTrackers={getDailyHabitsTrackersData}
+            createHabitsTracker={createHabitsTracker}
+            deleteHabitsTracker={deleteHabitsTracker}
+          />
+        ) : null}
       </Box>
     </CustomLayout>
   );
