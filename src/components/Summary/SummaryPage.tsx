@@ -14,6 +14,7 @@ import MonthView from '../Habits/MonthView';
 import { viewTypeOptions } from '../Habits/HabitsPage';
 import GoalsListSimple from './GoalsListSimple';
 import YearView from '../Habits/YearView';
+import ReviewsListSimple from './ReviewsListSimple';
 
 const SummaryPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
@@ -258,6 +259,7 @@ const SummaryPage = () => {
         {viewType === viewTypeOptions[2].value ? (
           <YearView
             onChange={(val: any) => {
+              console.log('val: ', val);
               setStartDate(val?.startDate);
               setEndDate(val?.endDate);
             }}
@@ -274,7 +276,13 @@ const SummaryPage = () => {
               type={viewType}
             />
           </GridItem>
-          <GridItem></GridItem>
+          <GridItem>
+            <ReviewsListSimple
+              startDate={startDate}
+              endDate={endDate}
+              type={viewType}
+            />
+          </GridItem>
         </Grid>
         <SummaryList
           data={data}

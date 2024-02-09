@@ -31,6 +31,9 @@ const CustomHeader = () => {
         <ChakraLink as={Link} to="/goals" marginRight={4} fontSize="lg">
           Goals
         </ChakraLink>
+        <ChakraLink as={Link} to="/reviews" marginRight={4} fontSize="lg">
+          Reviews
+        </ChakraLink>
       </Box>
     </Flex>
   );

@@ -3,7 +3,7 @@ import CustomLayout from '../layout/CustomLayout';
 import { useState } from 'react';
 import WeekView from '../Habits/WeekView';
 import MonthView from '../Habits/MonthView';
-import GoalsList from '../Summary/GoalsList';
+import ReviewsList from '../Summary/ReviewsList';
 import YearView from '../Habits/YearView';
 
 export const viewTypeOptions = [
@@ -27,7 +27,7 @@ export function getDayOfWeekString(date: any) {
   return weekdays[dayIndex];
 }
 
-const GoalsPage = () => {
+const ReviewssPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
   const [endDate, setEndDate] = useState<any>(null);
   const [viewType, setViewType] = useState(viewTypeOptions[0].value);
@@ -35,7 +35,7 @@ const GoalsPage = () => {
   return (
     <CustomLayout>
       <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
-        Goals
+        Reviews
       </Heading>
       <Text>View Option</Text>
       <Select
@@ -78,9 +78,9 @@ const GoalsPage = () => {
           }}
         ></YearView>
       ) : null}
-      <GoalsList startDate={startDate} endDate={endDate} type={viewType} />
+      <ReviewsList startDate={startDate} endDate={endDate} type={viewType} />
     </CustomLayout>
   );
 };
 
-export default GoalsPage;
+export default ReviewssPage;

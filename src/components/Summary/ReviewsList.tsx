@@ -13,15 +13,15 @@ import {
 import CustomModal from '../custom/CustomModal';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import { useEffect, useState } from 'react';
-import CreateGoalForm from '../Goals/CreateGoalForm';
-import EditGoalForm from '../Goals/EditGoalForm';
-import GoalsApi from '../../api/goal';
+import CreateReviewForm from '../Reviews/CreateReviewForm';
+import EditReviewForm from '../Reviews/EditReviewForm';
+import ReviewsApi from '../../api/review';
 import useAbstractMutator from '../../providers/AbstractMutator';
 import useAbstractProvider from '../../providers/AbstractProvider';
 import moment from 'moment';
-import GoalListItem from '../Goals/GoalListItem';
+import ReviewListItem from '../Reviews/ReviewListItem';
 
-const GoalsList = ({
+const ReviewsList = ({
   startDate,
   endDate,
   type,
@@ -31,36 +31,36 @@ const GoalsList = ({
   type: string;
 }) => {
   const [selectedItem, setSelectedItem] = useState<any>();
-  const [isOpenCreateGoalModal, setIsOpenCreateGoalModal] = useState(false);
-  const [isOpenEditGoalModal, setIsOpenEditGoalModal] = useState(false);
-  const [isOpenDeleteGoalModal, setIsOpenDeleteGoalModal] = useState(false);
+  const [isOpenCreateReviewModal, setIsOpenCreateReviewModal] = useState(false);
+  const [isOpenEditReviewModal, setIsOpenEditReviewModal] = useState(false);
+  const [isOpenDeleteReviewModal, setIsOpenDeleteReviewModal] = useState(false);
 
   const {
-    data: getGoalsFromToData,
-    refetch: getGoalsFromTo,
+    data: getReviewsFromToData,
+    refetch: getReviewsFromTo,
   }: { data: any; refetch: Function } = useAbstractProvider(
-    GoalsApi.getGoalsFromTo,
+    ReviewsApi.getReviewsFromTo,
     null,
     false,
   );
 
   const {
-    data: createGoalData,
-    mutate: createGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.createGoal);
+    data: createReviewData,
+    mutate: createReview,
+  }: { data: any; mutate: Function } = useAbstractMutator(ReviewsApi.createReview);
 
   const {
-    data: editGoalData,
-    mutate: editGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.editGoal);
+    data: editReviewData,
+    mutate: editReview,
+  }: { data: any; mutate: Function } = useAbstractMutator(ReviewsApi.editReview);
 
   const {
-    data: removeGoalData,
-    mutate: removeGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.removeGoal);
+    data: removeReviewData,
+    mutate: removeReview,
+  }: { data: any; mutate: Function } = useAbstractMutator(ReviewsApi.removeReview);
 
   useEffect(() => {
-    if (createGoalData || editGoalData || removeGoalData) {
+    if (createReviewData || editReviewData || removeReviewData) {
       let start, end;
       if (type === 'weekly') {
         start = moment(startDate).startOf('week');
@@ -75,13 +75,13 @@ const GoalsList = ({
         end = moment(startDate).endOf('year');
       }
 
-      getGoalsFromTo({
+      getReviewsFromTo({
         from: start?.toISOString(),
         to: end?.toISOString(),
         type,
       });
     }
-  }, [createGoalData, editGoalData, removeGoalData]);
+  }, [createReviewData, editReviewData, removeReviewData]);
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -98,7 +98,7 @@ const GoalsList = ({
         start = moment(startDate).startOf('year');
         end = moment(startDate).endOf('year');
       }
-      getGoalsFromTo({
+      getReviewsFromTo({
         from: start?.toISOString(),
         to: end?.toISOString(),
         type,
@@ -109,15 +109,14 @@ const GoalsList = ({
   return (
     <Box marginBottom="20px">
       <Heading as="h1" fontSize="2xl" marginBottom="5px">
-        Goals List
+        Reviews List
       </Heading>
-      {getGoalsFromToData?.map((goal: any) => (
-        <GoalListItem
-          goal={goal}
+      {getReviewsFromToData?.map((review: any) => (
+        <ReviewListItem
+          review={review}
           setSelectedItem={setSelectedItem}
-          setIsOpenEditGoalModal={setIsOpenEditGoalModal}
-          setIsOpenDeleteGoalModal={setIsOpenDeleteGoalModal}
-          editGoal={editGoal}
+          setIsOpenEditReviewModal={setIsOpenEditReviewModal}
+          setIsOpenDeleteReviewModal={setIsOpenDeleteReviewModal}
         />
       ))}
       <Button
@@ -126,53 +125,53 @@ const GoalsList = ({
         colorScheme="teal"
         type="submit"
         onClick={() => {
-          setIsOpenCreateGoalModal(true);
+          setIsOpenCreateReviewModal(true);
         }}
       >
-        Add Goal
+        Add Review
       </Button>
       <CustomModal
-        isOpen={isOpenCreateGoalModal}
-        closeModal={() => setIsOpenCreateGoalModal(false)}
+        isOpen={isOpenCreateReviewModal}
+        closeModal={() => setIsOpenCreateReviewModal(false)}
       >
-        <ModalHeader>New Goal</ModalHeader>
+        <ModalHeader>New Review</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <CreateGoalForm
-            createGoal={(data: any) => {
-              createGoal(data);
-              setIsOpenCreateGoalModal(false);
+          <CreateReviewForm
+            createReview={(data: any) => {
+              createReview(data);
+              setIsOpenCreateReviewModal(false);
             }}
             date={startDate}
           />
         </ModalBody>
       </CustomModal>
       <CustomModal
-        isOpen={isOpenEditGoalModal}
-        closeModal={() => setIsOpenEditGoalModal(false)}
+        isOpen={isOpenEditReviewModal}
+        closeModal={() => setIsOpenEditReviewModal(false)}
       >
-        <ModalHeader>Edit Goal</ModalHeader>
+        <ModalHeader>Edit Review</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <EditGoalForm
-            editGoal={(data: any) => {
-              editGoal(data);
-              setIsOpenEditGoalModal(false);
+          <EditReviewForm
+            editReview={(data: any) => {
+              editReview(data);
+              setIsOpenEditReviewModal(false);
             }}
-            goal={selectedItem}
+            review={selectedItem}
           />
         </ModalBody>
       </CustomModal>
       <CustomConfirmationModal
-        isOpen={isOpenDeleteGoalModal}
-        closeModal={() => setIsOpenDeleteGoalModal(false)}
+        isOpen={isOpenDeleteReviewModal}
+        closeModal={() => setIsOpenDeleteReviewModal(false)}
         primaryAction={() => {
-          removeGoal(selectedItem?.id);
-          setIsOpenDeleteGoalModal(false);
+          removeReview(selectedItem?.id);
+          setIsOpenDeleteReviewModal(false);
         }}
         secondaryAction={() => {}}
-        title={`Remove goal`}
-        description={`Are you sure you want to remove goal with id ${selectedItem?.id}`}
+        title={`Remove review`}
+        description={`Are you sure you want to remove review with id ${selectedItem?.id}`}
         primaryActionText="Remove"
         secondaryActionText="Cancel"
       />
@@ -180,4 +179,4 @@ const GoalsList = ({
   );
 };
 
-export default GoalsList;
+export default ReviewsList;

@@ -1,12 +1,12 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import GoalsApi from '../../api/goal';
+import ReviewsApi from '../../api/review';
 import useAbstractProvider from '../../providers/AbstractProvider';
 import moment from 'moment';
-import GoalListItemSimple from '../Goals/GoalListItemSimple';
+import ReviewListItemSimple from '../Reviews/ReviewListItemSimple';
 import useAbstractMutator from '../../providers/AbstractMutator';
 
-const GoalsListSimple = ({
+const ReviewsListSimple = ({
   startDate,
   endDate,
   type,
@@ -16,21 +16,23 @@ const GoalsListSimple = ({
   type: string;
 }) => {
   const {
-    data: getGoalsFromToData,
-    refetch: getGoalsFromTo,
+    data: getReviewsFromToData,
+    refetch: getReviewsFromTo,
   }: { data: any; refetch: Function } = useAbstractProvider(
-    GoalsApi.getGoalsFromTo,
+    ReviewsApi.getReviewsFromTo,
     null,
     false,
   );
 
   const {
-    data: editGoalData,
-    mutate: editGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.editGoal);
+    data: editReviewData,
+    mutate: editReview,
+  }: { data: any; mutate: Function } = useAbstractMutator(
+    ReviewsApi.editReview,
+  );
 
   useEffect(() => {
-    if (editGoalData) {
+    if (editReviewData) {
       let start, end;
       if (type === 'weekly') {
         start = moment(startDate).startOf('week');
@@ -44,13 +46,13 @@ const GoalsListSimple = ({
         start = moment(startDate).startOf('year');
         end = moment(startDate).endOf('year');
       }
-      getGoalsFromTo({
+      getReviewsFromTo({
         from: start?.toISOString(),
         to: end?.toISOString(),
         type,
       });
     }
-  }, [editGoalData]);
+  }, [editReviewData]);
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -67,7 +69,7 @@ const GoalsListSimple = ({
         start = moment(startDate).startOf('year');
         end = moment(startDate).endOf('year');
       }
-      getGoalsFromTo({
+      getReviewsFromTo({
         from: start?.toISOString(),
         to: end?.toISOString(),
         type,
@@ -78,11 +80,11 @@ const GoalsListSimple = ({
   return (
     <Box marginBottom="20px">
       <Heading as="h1" fontSize="2xl" marginBottom="5px">
-        Goals List
+        Reviews List
       </Heading>
-      {getGoalsFromToData?.length > 0 ? (
-        getGoalsFromToData?.map((goal: any) => (
-          <GoalListItemSimple goal={goal} editGoal={editGoal} />
+      {getReviewsFromToData?.length > 0 ? (
+        getReviewsFromToData?.map((review: any) => (
+          <ReviewListItemSimple review={review} editReview={editReview} />
         ))
       ) : (
         <Text>No {type} goals</Text>
@@ -91,4 +93,4 @@ const GoalsListSimple = ({
   );
 };
 
-export default GoalsListSimple;
+export default ReviewsListSimple;

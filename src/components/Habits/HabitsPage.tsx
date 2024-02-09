@@ -26,6 +26,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import WeekView from './WeekView';
 import moment from 'moment';
 import MonthView from './MonthView';
+import YearView from './YearView';
 
 export const viewTypeOptions = [
   {
@@ -36,7 +37,7 @@ export const viewTypeOptions = [
     value: 'monthly',
     name: 'Monthly',
   },
-    {
+  {
     value: 'yearly',
     name: 'Yearly',
   },
@@ -220,14 +221,24 @@ const HabitsPage = () => {
             setEndDate(val?.endDate);
           }}
         ></WeekView>
-      ) : (
+      ) : null}
+      {viewType === viewTypeOptions[1].value ? (
         <MonthView
           onChange={(val: any) => {
             setStartDate(val?.startDate);
             setEndDate(val?.endDate);
           }}
         ></MonthView>
-      )}
+      ) : null}
+      {viewType === viewTypeOptions[2].value ? (
+        <YearView
+          onChange={(val: any) => {
+            console.log('val: ', val);
+            setStartDate(val?.startDate);
+            setEndDate(val?.endDate);
+          }}
+        ></YearView>
+      ) : null}
       <CreateHabitForm createHabit={createHabit} />
       <TableContainer
         overflowX="scroll"

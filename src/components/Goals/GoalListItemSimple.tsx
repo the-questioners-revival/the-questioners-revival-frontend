@@ -1,4 +1,4 @@
-import { Flex, Switch, Tag, Text } from '@chakra-ui/react';
+import { Box, Flex, Switch, Tag, Text } from '@chakra-ui/react';
 
 const GoalListItemSimple = ({
   goal,
@@ -17,7 +17,9 @@ const GoalListItemSimple = ({
     >
       <Flex>
         <Text marginRight="10px">{goal.title}</Text>
-        <Tag>{goal.type}</Tag>
+        <Box>
+          <Tag>{goal.type}</Tag>
+        </Box>
       </Flex>
       <Flex>
         <Switch
