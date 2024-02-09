@@ -120,11 +120,10 @@ const HabitsPage = () => {
   }, [createHabitData, deleteHabitData]);
 
   function renderBody() {
-    
     let res = [];
 
     let weekStart = startDate.clone();
-    let weekEnd = endDate.clone()
+    let weekEnd = endDate.clone();
     while (weekStart.isBefore(weekEnd.clone().add(1, 'day'))) {
       res.push(
         <Tr>
@@ -159,7 +158,12 @@ const HabitsPage = () => {
             );
 
             return (
-              <Td textAlign="center" border="1px solid" borderColor="gray.200">
+              <Td
+                key={habit.id}
+                textAlign="center"
+                border="1px solid"
+                borderColor="gray.200"
+              >
                 <Checkbox
                   colorScheme="green"
                   isChecked={foundHabitTracker ? true : false}
@@ -240,6 +244,7 @@ const HabitsPage = () => {
               </Th>
               {habits?.map((habit: any) => (
                 <Th
+                  key={habit.id}
                   style={{ writingMode: 'vertical-rl' }}
                   border="1px solid"
                   borderColor="gray.200"
