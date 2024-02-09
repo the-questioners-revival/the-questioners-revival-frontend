@@ -28,7 +28,7 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
         type: qaa.type,
       }}
       onSubmit={(values, actions) => {
-        editQaa({ id: qaa.id, ...values }); // Updated function name
+        editQaa({ ...qaa, ...values }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
       }}

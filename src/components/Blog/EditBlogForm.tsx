@@ -15,10 +15,8 @@ const EditBlogForm = ({
       initialValues={{ text: blog.text }}
       onSubmit={(values, actions) => {
         editBlog({
-          id: blog.id,
-          given_at: blog.given_at,
-          deleted_at: blog.deleted_at,
-          text: values.text,
+          ...blog,
+          ...values,
         }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
@@ -28,7 +26,7 @@ const EditBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-              <CustomField name="text" type="textArea" rows={15}/>
+              <CustomField name="text" type="textArea" rows={15} />
 
               <Button
                 mt={4}

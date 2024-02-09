@@ -2,6 +2,7 @@ import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Flex, Link, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
 import { useState } from 'react';
+import moment from 'moment-timezone';
 
 const QaaListItem = ({
   qaa,
@@ -173,6 +174,26 @@ const QaaListItem = ({
               {qaa.link}
             </Link>
           </Flex>
+        ) : null}
+        <Text fontSize="sm" paddingRight="7px">
+          created:{' '}
+          {moment.tz(qaa.created_at, 'Asia/Manila').format('DD.MM.YYYY HH:mm')}
+        </Text>
+        {qaa.updated_at ? (
+          <Text fontSize="sm" paddingRight="7px">
+            updated:{' '}
+            {moment
+              .tz(qaa.updated_at, 'Asia/Manila')
+              .format('DD.MM.YYYY HH:mm')}
+          </Text>
+        ) : null}
+        {qaa.deleted_at ? (
+          <Text fontSize="sm" paddingRight="7px">
+            removed:{' '}
+            {moment
+              .tz(qaa.removed_at, 'Asia/Manila')
+              .format('DD.MM.YYYY HH:mm')}
+          </Text>
         ) : null}
       </Box>
     </Box>

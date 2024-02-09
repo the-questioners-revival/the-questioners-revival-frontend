@@ -28,7 +28,7 @@ const EditTodoForm = ({
     <Formik
       initialValues={{ title: todo.title, type: todo.type }}
       onSubmit={(values, actions) => {
-        editTodo({ id: todo.id, status: todo.status, ...values });
+        editTodo({ ...todo, ...values });
         actions.setSubmitting(false);
         actions.resetForm();
       }}
