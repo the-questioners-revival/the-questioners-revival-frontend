@@ -144,6 +144,8 @@ const SummaryPage = () => {
       getAllBlogsGroupedByDateData.forEach((blogItem: any) => {
         const existingDateIndex = combinedData.findIndex(
           (item: any) =>
+            item?.date?.length > 0 &&
+            blogItem?.date?.length > 0 &&
             item?.date?.slice(0, 10) === blogItem?.date?.slice(0, 10),
         );
 
@@ -163,6 +165,8 @@ const SummaryPage = () => {
       getAllQaasGroupedByDateData.forEach((qaaItem: any) => {
         const existingDateIndex = combinedData.findIndex(
           (item: any) =>
+            item?.date?.length > 0 &&
+            qaaItem?.date?.length > 0 &&
             item?.date?.slice(0, 10) === qaaItem?.date?.slice(0, 10),
         );
 
@@ -182,6 +186,8 @@ const SummaryPage = () => {
       getAllTodosGroupedByDateData.forEach((todoItem: any) => {
         const existingDateIndex = combinedData.findIndex(
           (item: any) =>
+            item?.date?.length > 0 &&
+            todoItem?.date?.length > 0 &&
             item?.date?.slice(0, 10) === todoItem?.date?.slice(0, 10),
         );
 
