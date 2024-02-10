@@ -1,51 +1,36 @@
-import { Box, Button, Container, Heading } from '@chakra-ui/react';
+import { Box, Button, Container } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
+import { habitRepeatOptions, habitTypeOptions } from '../Qaa/CreateHabitForm';
 
-export const habitTypeOptions = [
-  {
-    name: 'Good',
-    value: 'good',
-  },
-  {
-    name: 'Bad',
-    value: 'bad',
-  },
-];
-
-export const habitRepeatOptions = [
-  {
-    name: 'Daily',
-    value: 'daily',
-  },
-];
-
-const CreateHabitForm = ({ createHabit }: { createHabit: Function }) => {
+const EditHabitForm = ({
+  editHabit,
+  habit,
+}: {
+  editHabit: Function;
+  habit: any;
+}) => {
   // Updated component name
   return (
     <Formik
-      initialValues={{ title: '', type: '' }}
+      initialValues={{
+        title: habit.title,
+        type: habit.type,
+        repeat: habit.repeat,
+      }}
       onSubmit={(values, actions) => {
-        createHabit(values); // Updated function name
+        editHabit({
+          ...habit,
+          ...values,
+        }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
       }}
     >
       {(props) => (
         <Form>
-          <Container bg="#F1F0EA" p={0} maxW="100%">
-            <Box
-              bg="#4CAF4F"
-              display={'flex'}
-              p="0 1.5rem"
-              h="50px"
-              alignItems="center"
-            >
-              <Heading as="h2" size="lg">
-                New Habit {/* Updated text */}
-              </Heading>
-            </Box>
-            <Box p="1rem 1.5rem" color="black">
+          <Container p={0} maxW="100%">
+            <Box color="black">
               <CustomField name="title" type="input" />
               <CustomField
                 name="type"
@@ -76,4 +61,4 @@ const CreateHabitForm = ({ createHabit }: { createHabit: Function }) => {
   );
 };
 
-export default CreateHabitForm; // Updated component name
+export default EditHabitForm; // Updated component name

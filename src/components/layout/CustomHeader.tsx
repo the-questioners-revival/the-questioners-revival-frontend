@@ -8,9 +8,10 @@ const CustomHeader = () => {
       <Box marginRight="10px">
         <Link to="/">
           <Image
-            src="https://via.placeholder.com/50"
+            src="../../favicon.ico"
             alt="Logo"
             boxSize="50px"
+            padding={'8px 10px'}
           />
         </Link>
       </Box>

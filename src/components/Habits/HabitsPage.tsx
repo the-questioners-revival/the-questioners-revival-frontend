@@ -13,6 +13,9 @@ import {
   Heading,
   Flex,
   Select,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import { MONTHS } from '../../helpers/months';
@@ -22,11 +25,14 @@ import HabitsTrackerApi from '../../api/habitsTracker';
 import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
 import CreateHabitForm from '../Qaa/CreateHabitForm';
-import { CloseIcon } from '@chakra-ui/icons';
+import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import WeekView from './WeekView';
 import moment from 'moment';
 import MonthView from './MonthView';
 import YearView from './YearView';
+import CustomModal from '../custom/CustomModal';
+import EditHabitForm from './EditHabitForm';
+import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 
 export const viewTypeOptions = [
   {
@@ -50,6 +56,9 @@ export function getDayOfWeekString(date: any) {
 }
 
 const HabitsPage = () => {
+  const [isOpenEditHabitModal, setIsOpenEditHabitModal] = useState(false);
+  const [isOpenDeleteHabitModal, setIsOpenDeleteHabitModal] = useState(false);
+  const [habitSelected, setHabitSelected] = useState<any>();
   const [startDate, setStartDate] = useState<any>(null);
   const [endDate, setEndDate] = useState<any>(null);
   const [viewType, setViewType] = useState(viewTypeOptions[0].value);
@@ -67,6 +76,11 @@ const HabitsPage = () => {
   }: { data: any; mutate: Function } = useAbstractMutator(
     HabitsApi.createHabit,
   );
+
+  const {
+    data: editHabitData,
+    mutate: editHabit,
+  }: { data: any; mutate: Function } = useAbstractMutator(HabitsApi.editHabit);
 
   const {
     data: deleteHabitData,
@@ -119,10 +133,10 @@ const HabitsPage = () => {
   }, [startDate, endDate]);
 
   useEffect(() => {
-    if (createHabitData || deleteHabitData) {
+    if (createHabitData || editHabitData || deleteHabitData) {
       getLatestHabits();
     }
-  }, [createHabitData, deleteHabitData]);
+  }, [createHabitData, deleteHabitData, editHabitData]);
 
   function renderBody() {
     let res = [];
@@ -271,21 +285,41 @@ const HabitsPage = () => {
                 >
                   <Flex
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent="space-between"
                     w="100%"
                     h="100%"
                   >
                     {habit.title}
-                    <CloseIcon
-                      cursor="pointer"
-                      w={4}
-                      h={4}
-                      marginTop="7px"
-                      color="black"
-                      onClick={() => {
-                        deleteHabit(habit.id);
-                      }}
-                    />
+                    <Flex>
+                      <Flex
+                        w="100%"
+                        h="100%"
+                        cursor="pointer"
+                        onClick={() => {
+                          setIsOpenEditHabitModal(true);
+                          setHabitSelected(habit);
+                        }}
+                      >
+                        <EditIcon w={4} h={4} marginTop="7px" marginBottom='7px' color="black" />
+                      </Flex>
+                      <Flex
+                        w="100%"
+                        h="100%"
+                        cursor="pointer"
+                        onClick={() => {
+                          setIsOpenDeleteHabitModal(true);
+                          setHabitSelected(habit);
+                        }}
+                      >
+                        <CloseIcon
+                          cursor="pointer"
+                          w={4}
+                          h={4}
+                          marginTop="7px"
+                          color="black"
+                        />
+                      </Flex>
+                    </Flex>
                   </Flex>
                 </Th>
               ))}
@@ -294,6 +328,35 @@ const HabitsPage = () => {
           {startDate ? <Tbody>{renderBody()}</Tbody> : null}
         </Table>
       </TableContainer>
+      <CustomConfirmationModal
+        primaryAction={() => {
+          deleteHabit(habitSelected?.id);
+          setIsOpenDeleteHabitModal(false);
+        }}
+        secondaryAction={() => {}}
+        title={`Remove habit`}
+        description={`Are you sure you want to remove habit with id ${habitSelected?.id}`}
+        primaryActionText="Remove"
+        secondaryActionText="Cancel"
+        isOpen={isOpenDeleteHabitModal}
+        closeModal={() => setIsOpenDeleteHabitModal(false)}
+      />
+      <CustomModal
+        isOpen={isOpenEditHabitModal}
+        closeModal={() => setIsOpenEditHabitModal(false)}
+      >
+        <ModalHeader>Edit Habit</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <EditHabitForm
+            habit={habitSelected}
+            editHabit={(data: any) => {
+              editHabit(data);
+              setIsOpenEditHabitModal(false);
+            }}
+          />
+        </ModalBody>
+      </CustomModal>
     </CustomLayout>
   );
 };
