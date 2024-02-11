@@ -9,9 +9,10 @@ import CustomLayout from '../layout/CustomLayout';
 
 const TodoPage = () => {
   const [status, setStatus] = useState('inprogress');
+  const [priority, setPriority] = useState();
   const [type, setType] = useState();
   const { data, refetch }: { data: any; refetch: Function } =
-    useAbstractProvider(TodoApi.getLatestTodos, { type, status });
+    useAbstractProvider(TodoApi.getLatestTodos, { type, status, priority });
   const {
     data: completeTodoData,
     mutate: completeTodo,
@@ -40,8 +41,8 @@ const TodoPage = () => {
   }: { data: any; mutate: Function } = useAbstractMutator(TodoApi.editTodo);
 
   useEffect(() => {
-    refetch({ type, status });
-  }, [type, status]);
+    refetch({ type, status, priority });
+  }, [type, status, priority]);
 
   useEffect(() => {
     if (
@@ -75,6 +76,8 @@ const TodoPage = () => {
           type={type}
           setType={setType}
           editTodo={editTodo}
+          priority={priority}
+          setPriority={setPriority}
         ></TodoList>
       </Box>
     </CustomLayout>

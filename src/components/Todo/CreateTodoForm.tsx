@@ -2,7 +2,7 @@ import { Box, Button, Container, Heading } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 
-const options = [
+export const todoTypeOptions = [
   {
     name: 'Personal',
     value: 'personal',
@@ -17,10 +17,25 @@ const options = [
   },
 ];
 
+export const todoPriorityOptions = [
+  {
+    name: 'High',
+    value: 'high',
+  },
+  {
+    name: 'Medium',
+    value: 'medium',
+  },
+  {
+    name: 'Low',
+    value: 'low',
+  },
+];
+
 const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
   return (
     <Formik
-      initialValues={{ title: '', type: '' }}
+      initialValues={{ title: '', type: '', priority: '' }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
           createTodo(values);
@@ -45,7 +60,16 @@ const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
             </Box>
             <Box p="1rem 1.5rem" color="black">
               <CustomField name="title" type="input" />
-              <CustomField name="type" type="select" options={options} />
+              <CustomField
+                name="type"
+                type="select"
+                options={todoTypeOptions}
+              />
+              <CustomField
+                name="priority"
+                type="select"
+                options={todoPriorityOptions}
+              />
 
               <Button
                 mt={4}

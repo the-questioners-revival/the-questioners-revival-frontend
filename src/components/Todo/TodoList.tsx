@@ -13,6 +13,7 @@ import { useState } from 'react';
 import CustomModal from '../custom/CustomModal';
 import EditTodoForm from './EditTodoForm';
 import TodoListItem from './TodoListItem';
+import { todoPriorityOptions, todoTypeOptions } from './CreateTodoForm';
 
 const statusOptions = [
   {
@@ -29,21 +30,6 @@ const statusOptions = [
   },
 ];
 
-const typeOptions = [
-  {
-    name: 'Personal',
-    value: 'personal',
-  },
-  {
-    name: 'Project',
-    value: 'project',
-  },
-  {
-    name: 'Work',
-    value: 'work',
-  },
-];
-
 const TodoList = ({
   todos,
   completeTodo,
@@ -54,6 +40,8 @@ const TodoList = ({
   type,
   setType,
   editTodo,
+  priority,
+  setPriority,
 }: {
   todos: any;
   completeTodo: Function;
@@ -64,6 +52,8 @@ const TodoList = ({
   type?: string;
   setType?: Function;
   editTodo: Function;
+  priority?: string;
+  setPriority: Function;
 }) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
   const [todoSelected, setTodoSelected] = useState<any>();
@@ -90,6 +80,20 @@ const TodoList = ({
         </Heading>
         <Flex>
           <Select
+            value={priority}
+            onChange={(evt) => setPriority && setPriority(evt.target.value)}
+            placeholder="Priority"
+            color="black"
+            bg="white"
+            marginRight="10px"
+          >
+            {todoPriorityOptions?.map((option) => (
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </Select>
+          <Select
             value={status}
             onChange={(evt) => setStatus && setStatus(evt.target.value)}
             placeholder="Status"
@@ -110,7 +114,7 @@ const TodoList = ({
             color="black"
             bg="white"
           >
-            {typeOptions?.map((option) => (
+            {todoTypeOptions?.map((option) => (
               <option key={option.name} value={option.value}>
                 {option.name}
               </option>

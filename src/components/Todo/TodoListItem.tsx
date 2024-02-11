@@ -176,9 +176,14 @@ const TodoListItem = ({
         >
           {todo.title}
         </Text>
-        <Box>
+        <Box paddingRight="7px">
           <Tag>{todo.type}</Tag>
         </Box>
+        {todo.priority ? (
+          <Box>
+            <Tag>{todo.priority}</Tag>
+          </Box>
+        ) : null}
       </Box>
       <Box
         style={{

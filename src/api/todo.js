@@ -19,6 +19,17 @@ async function getLatestTodos(params) {
         ? `&status=${params.status}`
         : `?status=${params.status}`;
   }
+
+  // Add priority parameter if not null
+  if (params && params.priority !== null && params.priority !== undefined) {
+    // If type or status is already present, use "&" to add the priority parameter
+    url +=
+      (params.type !== null && params.type !== undefined) ||
+      (params.status !== null && params.status !== undefined)
+        ? `&priority=${params.priority}`
+        : `?priority=${params.priority}`;
+  }
+
   const res = await API.get(url, true);
   return res;
 }
