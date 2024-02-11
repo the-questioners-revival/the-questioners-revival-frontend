@@ -39,9 +39,13 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
       weekStart = weekEnd.clone().add(1, 'day');
     }
     setWeeks(newWeeks);
+    
     if (firstLoad) {
       const now = moment();
-      setSelectedWeekNumber(now.week() + 1);
+      const day = now.day();
+      const week = now.week()
+      
+      setSelectedWeekNumber(day === 0 ? week : week + 1);
       setFirstLoad(false);
     } else {
       setSelectedWeekNumber(minus ? newWeeks.length : 1);
