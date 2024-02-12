@@ -6,6 +6,7 @@ import TodoList from './TodoList';
 import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
 import CustomLayout from '../layout/CustomLayout';
+import ProtectedPage from '../ProtectedPage';
 
 const TodoPage = () => {
   const [status, setStatus] = useState('inprogress');
@@ -63,24 +64,26 @@ const TodoPage = () => {
   ]);
 
   return (
-    <CustomLayout>
-      <Box paddingTop="20px">
-        <CreateTodoForm createTodo={createTodo} />
-        <TodoList
-          todos={data}
-          completeTodo={completeTodo}
-          inprogressTodo={inprogressTodo}
-          removeTodo={removeTodo}
-          status={status}
-          setStatus={setStatus}
-          type={type}
-          setType={setType}
-          editTodo={editTodo}
-          priority={priority}
-          setPriority={setPriority}
-        ></TodoList>
-      </Box>
-    </CustomLayout>
+    <ProtectedPage>
+      <CustomLayout>
+        <Box paddingTop="20px">
+          <CreateTodoForm createTodo={createTodo} />
+          <TodoList
+            todos={data}
+            completeTodo={completeTodo}
+            inprogressTodo={inprogressTodo}
+            removeTodo={removeTodo}
+            status={status}
+            setStatus={setStatus}
+            type={type}
+            setType={setType}
+            editTodo={editTodo}
+            priority={priority}
+            setPriority={setPriority}
+          ></TodoList>
+        </Box>
+      </CustomLayout>
+    </ProtectedPage>
   );
 };
 

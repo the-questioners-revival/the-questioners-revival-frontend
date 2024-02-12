@@ -6,6 +6,7 @@ import SummaryPage from './components/Summary/SummaryPage';
 import HabitsPage from './components/Habits/HabitsPage';
 import GoalsPage from './components/Goals/GoalsPage';
 import ReviewsPage from './components/Reviews/ReviewsPage';
+import LoginPage from './components/Login/LoginPage';
 
 const CustomRouter: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const CustomRouter: React.FC = () => {
         <Route path="/habits" element={<HabitsPage />} />
         <Route path="/goals" element={<GoalsPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
