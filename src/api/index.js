@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getCookies } from '../utils';
 
-export const getToken = () => getCookies('token');
+export const getToken = () => getCookies('access_token');
 
 function API() {
   function handleOffline(error) {
@@ -24,7 +24,6 @@ function API() {
       .get(url, {
         headers,
         params,
-        withCredentials: true,
       })
       .catch((error) => {
         handleOffline(error);
@@ -49,7 +48,6 @@ function API() {
     const res = await axios
       .post(url, data, {
         headers,
-        withCredentials: true,
       })
       .catch((error) => {
         handleOffline(error);
@@ -76,7 +74,6 @@ function API() {
         { ...data },
         {
           headers,
-          withCredentials: true,
         },
       )
       .catch((error) => {
@@ -101,7 +98,6 @@ function API() {
     const res = await axios
       .delete(url, {
         headers,
-        withCredentials: true,
       })
       .catch((error) => {
         handleOffline(error);

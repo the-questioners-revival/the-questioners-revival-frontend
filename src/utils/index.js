@@ -26,6 +26,7 @@ export function showDate(date) {
 
 export function getCookies(name) {
   const cookie = Cookies.get(name)
+  console.log('cookie: ', cookie);
   return cookie
 }
 

@@ -5,6 +5,7 @@ import LoginForm from './LoginForm';
 import UserApi from '../../api/user';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setCookies } from '../../utils';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (loginData?.token) {
+      setCookies('access_token', loginData?.token);
       navigate('/');
     }
   }, [loginData]);
