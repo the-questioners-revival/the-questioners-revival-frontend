@@ -24,14 +24,11 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="header"
         maxWidth="100%"
         width="100%"
-        overflowX='scroll'
+        overflowX="scroll"
         overflowY="unset"
-
         paddingX={{ base: '10px', md: '150px' }}
       >
-        <Box>
-          <CustomHeader />
-        </Box>
+        <CustomHeader />
       </GridItem>
       <GridItem
         pl="2"
@@ -39,14 +36,11 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="main"
         maxWidth="100%"
         width="100%"
-        overflowX='scroll'
+        overflowX="scroll"
         overflowY="unset"
-
         paddingX={{ base: '10px', md: '150px' }}
       >
-        <Box>
-          {children}
-        </Box>
+        <Box>{children}</Box>
       </GridItem>
       <GridItem
         pl="2"
@@ -57,9 +51,8 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="footer"
         maxWidth="100%"
         width="100%"
-        overflowX='scroll'
+        overflowX="scroll"
         overflowY="unset"
-
         paddingX={{ base: '10px', md: '150px' }}
       >
         <Box>

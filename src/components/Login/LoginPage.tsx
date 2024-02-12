@@ -6,6 +6,7 @@ import UserApi from '../../api/user';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setCookies } from '../../utils';
+import { Box } from '@chakra-ui/react';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -22,7 +23,9 @@ const LoginPage = () => {
   return (
     <UnprotectedPage>
       <CustomLayout>
-        <LoginForm login={login} />
+        <Box paddingTop="20px">
+          <LoginForm login={login} />
+        </Box>
       </CustomLayout>
     </UnprotectedPage>
   );

@@ -1,9 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Box, Flex, Link as ChakraLink, Image } from '@chakra-ui/react';
+import { removeCookies } from '../../utils';
+import useAbstractProvider from '../../providers/AbstractProvider';
+import UserApi from '../../api/user';
 
 const CustomHeader = () => {
+  const { data: currentlyLoggedInUser } = useAbstractProvider(
+    UserApi.getCurrentlyLoggedInUser,
+  );
+
+ 
   return (
-    <Flex alignItems="center">
+    <Flex alignItems="center" w="100%">
       {/* Logo */}
       <Box marginRight="10px">
         <Link to="/">
@@ -16,26 +24,39 @@ const CustomHeader = () => {
         </Link>
       </Box>
       {/* Navigation Links */}
-      <Box>
-        <ChakraLink as={Link} to="/todos" marginRight={4} fontSize="lg">
-          Todos
+      <Flex justifyContent="space-between" w="100%">
+        <Box>
+          <ChakraLink as={Link} to="/todos" marginRight={4} fontSize="lg">
+            Todos
+          </ChakraLink>
+          <ChakraLink as={Link} to="/qaas" marginRight={4} fontSize="lg">
+            Qaas
+          </ChakraLink>
+          <ChakraLink as={Link} to="/summary" marginRight={4} fontSize="lg">
+            Summary
+          </ChakraLink>
+          <ChakraLink as={Link} to="/habits" marginRight={4} fontSize="lg">
+            Habits
+          </ChakraLink>
+          <ChakraLink as={Link} to="/goals" marginRight={4} fontSize="lg">
+            Goals
+          </ChakraLink>
+          <ChakraLink as={Link} to="/reviews" marginRight={4} fontSize="lg">
+            Reviews
+          </ChakraLink>
+        </Box>
+        <ChakraLink
+          as={Link}
+          to="/login"
+          marginRight={4}
+          fontSize="lg"
+          onClick={() => {
+            removeCookies('access_token');
+          }}
+        >
+          {currentlyLoggedInUser ? 'Log out' : 'Login'}
         </ChakraLink>
-        <ChakraLink as={Link} to="/qaas" marginRight={4} fontSize="lg">
-          Qaas
-        </ChakraLink>
-        <ChakraLink as={Link} to="/summary" marginRight={4} fontSize="lg">
-          Summary
-        </ChakraLink>
-        <ChakraLink as={Link} to="/habits" marginRight={4} fontSize="lg">
-          Habits
-        </ChakraLink>
-        <ChakraLink as={Link} to="/goals" marginRight={4} fontSize="lg">
-          Goals
-        </ChakraLink>
-        <ChakraLink as={Link} to="/reviews" marginRight={4} fontSize="lg">
-          Reviews
-        </ChakraLink>
-      </Box>
+      </Flex>
     </Flex>
   );
 };
