@@ -1,15 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Box, Flex, Link as ChakraLink, Image } from '@chakra-ui/react';
 import { removeCookies } from '../../utils';
-import useAbstractProvider from '../../providers/AbstractProvider';
-import UserApi from '../../api/user';
+import { useUser } from '../../providers/UserProvider';
 
 const CustomHeader = () => {
-  const { data: currentlyLoggedInUser } = useAbstractProvider(
-    UserApi.getCurrentlyLoggedInUser,
-  );
+  const { user, logout } = useUser();
 
- 
   return (
     <Flex alignItems="center" w="100%">
       {/* Logo */}
@@ -51,10 +47,10 @@ const CustomHeader = () => {
           marginRight={4}
           fontSize="lg"
           onClick={() => {
-            removeCookies('access_token');
+            logout();
           }}
         >
-          {currentlyLoggedInUser ? 'Log out' : 'Login'}
+          {user ? 'Log out' : 'Login'}
         </ChakraLink>
       </Flex>
     </Flex>
