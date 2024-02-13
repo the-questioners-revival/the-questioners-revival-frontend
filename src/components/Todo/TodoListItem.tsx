@@ -162,6 +162,7 @@ const TodoListItem = ({
         alignItems="center"
         w="100%"
         padding="5px 10px"
+        justifyContent="space-between"
         style={{
           position: 'relative',
         }}
@@ -176,14 +177,16 @@ const TodoListItem = ({
         >
           {todo.title}
         </Text>
-        <Box paddingRight="7px">
-          <Tag>{todo.type}</Tag>
-        </Box>
-        {todo.priority ? (
-          <Box>
-            <Tag>{todo.priority}</Tag>
+        <Flex>
+          <Box paddingRight="7px">
+            <Tag>{todo.type}</Tag>
           </Box>
-        ) : null}
+          {todo.priority ? (
+            <Box>
+              <Tag>{todo.priority}</Tag>
+            </Box>
+          ) : null}
+        </Flex>
       </Box>
       <Box
         style={{

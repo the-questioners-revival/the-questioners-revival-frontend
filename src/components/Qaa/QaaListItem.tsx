@@ -106,6 +106,7 @@ const QaaListItem = ({
         padding="5px 10px"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
         w="100%"
         style={{
           position: 'relative',
@@ -162,7 +163,7 @@ const QaaListItem = ({
         </Flex>
       </Box>
       <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
-        <Text fontSize="lg" paddingRight="7px" whiteSpace='break-spaces'>
+        <Text fontSize="lg" paddingRight="7px" whiteSpace="break-spaces">
           {qaa.answer}
         </Text>
         {qaa.link ? (
