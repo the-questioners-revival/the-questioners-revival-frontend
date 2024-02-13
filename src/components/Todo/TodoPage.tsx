@@ -53,7 +53,7 @@ const TodoPage = () => {
       removeTodoData ||
       editTodoData
     ) {
-      refetch({ type, status });
+      refetch({ type, status, priority });
     }
   }, [
     completeTodoData,
