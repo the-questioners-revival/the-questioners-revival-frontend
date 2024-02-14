@@ -19,12 +19,14 @@ const CustomField = ({
   type,
   options,
   rows,
+  inputType
 }: {
   name: string;
   required?: boolean;
   type: string;
   options?: SelectOption[];
   rows?: Number;
+  inputType?: string
 }) => {
   function validateField(name: string, value: string) {
     let error;
@@ -44,7 +46,7 @@ const CustomField = ({
         <FormControl isInvalid={form.errors[name] && form.touched[name]}>
           <FormLabel>{capitalizeFirstLetter(name)}</FormLabel>
           {type === 'input' ? (
-            <Input {...field} placeholder={name} bg="white" />
+            <Input {...field} placeholder={name} bg="white" type={inputType}/>
           ) : null}
           {type === 'textArea' ? (
             <Textarea {...field} placeholder={name} bg="white" rows={rows} />

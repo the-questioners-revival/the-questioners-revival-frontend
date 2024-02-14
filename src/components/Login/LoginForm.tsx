@@ -29,7 +29,7 @@ const LoginForm = ({ login }: { login: Function }) => {
             </Box>
             <Box p="1rem 1.5rem" color="black">
               <CustomField name="username" type="input" />
-              <CustomField name="password" type="input" />
+              <CustomField name="password" type="input" inputType="password" />
 
               <Button
                 mt={4}
