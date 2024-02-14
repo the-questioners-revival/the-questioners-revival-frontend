@@ -122,7 +122,9 @@ const QaaListItem = ({
         >
           {qaa.question}
         </Text>
-        <Tag>{qaa.type}</Tag>
+        <Box>
+          <Tag>{qaa.type}</Tag>
+        </Box>
       </Box>
       <Box
         style={{
