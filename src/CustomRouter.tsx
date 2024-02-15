@@ -7,12 +7,13 @@ import HabitsPage from './components/Habits/HabitsPage';
 import GoalsPage from './components/Goals/GoalsPage';
 import ReviewsPage from './components/Reviews/ReviewsPage';
 import LoginPage from './components/Login/LoginPage';
+import WelcomePage from './components/Todo/WelcomePage';
 
 const CustomRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TodoPage />} />
+        <Route path="/" element={<WelcomePage />} />
         <Route path="/todos" element={<TodoPage />} />
         <Route path="/qaas" element={<QaaPage />} />
         <Route path="/summary" element={<SummaryPage />} />

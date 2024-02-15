@@ -6,6 +6,7 @@ import CustomLayout from '../layout/CustomLayout';
 import CreateQaaForm from './CreateQaaForm';
 import QaaApi from '../../api/qaa';
 import { Box } from '@chakra-ui/react';
+import ProtectedPage from '../ProtectedPage';
 
 const QaaPage = () => {
   const [showRemoved, setShowRemoved] = useState<string>('false');
@@ -40,20 +41,22 @@ const QaaPage = () => {
   }, [createQaaData, removeQaaData, editQaaData]);
 
   return (
-    <CustomLayout>
-      <Box paddingTop="20px">
-        <CreateQaaForm createQaa={createQaa} /> {/* Updated component name */}
-        <QaaList // Updated component name
-          qaas={data} // Updated variable name
-          removeQaa={removeQaa} // Updated function name
-          type={type}
-          setType={setType}
-          showRemoved={showRemoved}
-          setShowRemoved={setShowRemoved}
-          editQaa={editQaa}
-        ></QaaList>
-      </Box>
-    </CustomLayout>
+    <ProtectedPage>
+      <CustomLayout>
+        <Box paddingTop="20px">
+          <CreateQaaForm createQaa={createQaa} /> {/* Updated component name */}
+          <QaaList // Updated component name
+            qaas={data} // Updated variable name
+            removeQaa={removeQaa} // Updated function name
+            type={type}
+            setType={setType}
+            showRemoved={showRemoved}
+            setShowRemoved={setShowRemoved}
+            editQaa={editQaa}
+          ></QaaList>
+        </Box>
+      </CustomLayout>
+    </ProtectedPage>
   );
 };
 

@@ -33,6 +33,7 @@ import YearView from './YearView';
 import CustomModal from '../custom/CustomModal';
 import EditHabitForm from './EditHabitForm';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
+import ProtectedPage from '../ProtectedPage';
 
 export const viewTypeOptions = [
   {
@@ -213,151 +214,159 @@ const HabitsPage = () => {
   }
 
   return (
-    <CustomLayout>
-      <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
-        Habits
-      </Heading>
-      <Text>View Option</Text>
-      <Select
-        value={viewType}
-        onChange={(evt) => setViewType(evt.target.value)}
-        placeholder="Type"
-        color="black"
-        bg="white"
-        marginBottom="10px"
-        width="fit-content"
-      >
-        {viewTypeOptions?.map((option) => (
-          <option key={option.name} value={option.value}>
-            {option.name}
-          </option>
-        ))}
-      </Select>
-      {viewType === viewTypeOptions[0].value ? (
-        <WeekView
-          onChange={(val: any) => {
-            setStartDate(val?.startDate);
-            setEndDate(val?.endDate);
-          }}
-        ></WeekView>
-      ) : null}
-      {viewType === viewTypeOptions[1].value ? (
-        <MonthView
-          onChange={(val: any) => {
-            setStartDate(val?.startDate);
-            setEndDate(val?.endDate);
-          }}
-        ></MonthView>
-      ) : null}
-      {viewType === viewTypeOptions[2].value ? (
-        <YearView
-          onChange={(val: any) => {
-            console.log('val: ', val);
-            setStartDate(val?.startDate);
-            setEndDate(val?.endDate);
-          }}
-        ></YearView>
-      ) : null}
-      <CreateHabitForm createHabit={createHabit} />
-      <TableContainer
-        overflowX="scroll"
-        overflowY="unset"
-        width="100%"
-        mt="20px"
-      >
-        <Table variant="simple" position="relative">
-          <Thead position="sticky" top="0" background="white" zIndex="docked">
-            <Tr>
-              <Th
-                style={{ writingMode: 'vertical-rl' }}
-                border="1px solid"
-                borderColor="gray.200"
-                width="50px"
-              >
-                Days
-              </Th>
-              {habits?.map((habit: any) => (
+    <ProtectedPage>
+      <CustomLayout>
+        <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
+          Habits
+        </Heading>
+        <Text>View Option</Text>
+        <Select
+          value={viewType}
+          onChange={(evt) => setViewType(evt.target.value)}
+          placeholder="Type"
+          color="black"
+          bg="white"
+          marginBottom="10px"
+          width="fit-content"
+        >
+          {viewTypeOptions?.map((option) => (
+            <option key={option.name} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </Select>
+        {viewType === viewTypeOptions[0].value ? (
+          <WeekView
+            onChange={(val: any) => {
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
+            }}
+          ></WeekView>
+        ) : null}
+        {viewType === viewTypeOptions[1].value ? (
+          <MonthView
+            onChange={(val: any) => {
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
+            }}
+          ></MonthView>
+        ) : null}
+        {viewType === viewTypeOptions[2].value ? (
+          <YearView
+            onChange={(val: any) => {
+              console.log('val: ', val);
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
+            }}
+          ></YearView>
+        ) : null}
+        <CreateHabitForm createHabit={createHabit} />
+        <TableContainer
+          overflowX="scroll"
+          overflowY="unset"
+          width="100%"
+          mt="20px"
+        >
+          <Table variant="simple" position="relative">
+            <Thead position="sticky" top="0" background="white" zIndex="docked">
+              <Tr>
                 <Th
-                  key={habit.id}
                   style={{ writingMode: 'vertical-rl' }}
                   border="1px solid"
                   borderColor="gray.200"
+                  width="50px"
                 >
-                  <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    w="100%"
-                    h="100%"
+                  Days
+                </Th>
+                {habits?.map((habit: any) => (
+                  <Th
+                    key={habit.id}
+                    style={{ writingMode: 'vertical-rl' }}
+                    border="1px solid"
+                    borderColor="gray.200"
                   >
-                    {habit.title}
-                    <Flex>
-                      <Flex
-                        w="100%"
-                        h="100%"
-                        cursor="pointer"
-                        onClick={() => {
-                          setIsOpenEditHabitModal(true);
-                          setHabitSelected(habit);
-                        }}
-                      >
-                        <EditIcon w={4} h={4} marginTop="7px" marginBottom='7px' color="black" />
-                      </Flex>
-                      <Flex
-                        w="100%"
-                        h="100%"
-                        cursor="pointer"
-                        onClick={() => {
-                          setIsOpenDeleteHabitModal(true);
-                          setHabitSelected(habit);
-                        }}
-                      >
-                        <CloseIcon
+                    <Flex
+                      alignItems="center"
+                      justifyContent="space-between"
+                      w="100%"
+                      h="100%"
+                    >
+                      {habit.title}
+                      <Flex>
+                        <Flex
+                          w="100%"
+                          h="100%"
                           cursor="pointer"
-                          w={4}
-                          h={4}
-                          marginTop="7px"
-                          color="black"
-                        />
+                          onClick={() => {
+                            setIsOpenEditHabitModal(true);
+                            setHabitSelected(habit);
+                          }}
+                        >
+                          <EditIcon
+                            w={4}
+                            h={4}
+                            marginTop="7px"
+                            marginBottom="7px"
+                            color="black"
+                          />
+                        </Flex>
+                        <Flex
+                          w="100%"
+                          h="100%"
+                          cursor="pointer"
+                          onClick={() => {
+                            setIsOpenDeleteHabitModal(true);
+                            setHabitSelected(habit);
+                          }}
+                        >
+                          <CloseIcon
+                            cursor="pointer"
+                            w={4}
+                            h={4}
+                            marginTop="7px"
+                            color="black"
+                          />
+                        </Flex>
                       </Flex>
                     </Flex>
-                  </Flex>
-                </Th>
-              ))}
-            </Tr>
-          </Thead>
-          {startDate ? <Tbody>{renderBody()}</Tbody> : null}
-        </Table>
-      </TableContainer>
-      <CustomConfirmationModal
-        primaryAction={() => {
-          deleteHabit(habitSelected?.id);
-          setIsOpenDeleteHabitModal(false);
-        }}
-        secondaryAction={() => {}}
-        title={`Remove habit`}
-        description={`Are you sure you want to remove habit with id ${habitSelected?.id}`}
-        primaryActionText="Remove"
-        secondaryActionText="Cancel"
-        isOpen={isOpenDeleteHabitModal}
-        closeModal={() => setIsOpenDeleteHabitModal(false)}
-      />
-      <CustomModal
-        isOpen={isOpenEditHabitModal}
-        closeModal={() => setIsOpenEditHabitModal(false)}
-      >
-        <ModalHeader>Edit Habit</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <EditHabitForm
-            habit={habitSelected}
-            editHabit={(data: any) => {
-              editHabit(data);
-              setIsOpenEditHabitModal(false);
-            }}
-          />
-        </ModalBody>
-      </CustomModal>
-    </CustomLayout>
+                  </Th>
+                ))}
+              </Tr>
+            </Thead>
+            {startDate ? <Tbody>{renderBody()}</Tbody> : null}
+          </Table>
+        </TableContainer>
+        <CustomConfirmationModal
+          primaryAction={() => {
+            deleteHabit(habitSelected?.id);
+            setIsOpenDeleteHabitModal(false);
+          }}
+          secondaryAction={() => {}}
+          title={`Remove habit`}
+          description={`Are you sure you want to remove habit with id ${habitSelected?.id}`}
+          primaryActionText="Remove"
+          secondaryActionText="Cancel"
+          isOpen={isOpenDeleteHabitModal}
+          closeModal={() => setIsOpenDeleteHabitModal(false)}
+        />
+        <CustomModal
+          isOpen={isOpenEditHabitModal}
+          closeModal={() => setIsOpenEditHabitModal(false)}
+        >
+          <ModalHeader>Edit Habit</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <EditHabitForm
+              habit={habitSelected}
+              editHabit={(data: any) => {
+                editHabit(data);
+                setIsOpenEditHabitModal(false);
+              }}
+            />
+          </ModalBody>
+        </CustomModal>
+      </CustomLayout>
+    </ProtectedPage>
   );
 };
 

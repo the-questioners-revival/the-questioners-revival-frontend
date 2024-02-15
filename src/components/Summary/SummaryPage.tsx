@@ -15,6 +15,7 @@ import { viewTypeOptions } from '../Habits/HabitsPage';
 import GoalsListSimple from './GoalsListSimple';
 import YearView from '../Habits/YearView';
 import ReviewsListSimple from './ReviewsListSimple';
+import ProtectedPage from '../ProtectedPage';
 
 const SummaryPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
@@ -228,82 +229,84 @@ const SummaryPage = () => {
   }, [createBlogData, editBlogData, removeBlogData]);
 
   return (
-    <CustomLayout>
-      <Box paddingTop="20px">
-        <Text>View Option</Text>
-        <Select
-          value={viewType}
-          onChange={(evt) => setViewType(evt.target.value)}
-          placeholder="Type"
-          color="black"
-          bg="white"
-          marginBottom="10px"
-          width="fit-content"
-        >
-          {viewTypeOptions?.map((option) => (
-            <option key={option.name} value={option.value}>
-              {option.name}
-            </option>
-          ))}
-        </Select>
-        {viewType === viewTypeOptions[0].value ? (
-          <WeekView
-            onChange={(val: any) => {
-              setStartDate(val?.startDate);
-              setEndDate(val?.endDate);
-            }}
-          ></WeekView>
-        ) : null}
-        {viewType === viewTypeOptions[1].value ? (
-          <MonthView
-            onChange={(val: any) => {
-              setStartDate(val?.startDate);
-              setEndDate(val?.endDate);
-            }}
-          ></MonthView>
-        ) : null}
-        {viewType === viewTypeOptions[2].value ? (
-          <YearView
-            onChange={(val: any) => {
-              console.log('val: ', val);
-              setStartDate(val?.startDate);
-              setEndDate(val?.endDate);
-            }}
-          ></YearView>
-        ) : null}
-        <Grid
-          templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
-          gap={6}
-        >
-          <GridItem>
-            <GoalsListSimple
-              startDate={startDate}
-              endDate={endDate}
-              type={viewType}
+    <ProtectedPage>
+      <CustomLayout>
+        <Box paddingTop="20px">
+          <Text>View Option</Text>
+          <Select
+            value={viewType}
+            onChange={(evt) => setViewType(evt.target.value)}
+            placeholder="Type"
+            color="black"
+            bg="white"
+            marginBottom="10px"
+            width="fit-content"
+          >
+            {viewTypeOptions?.map((option) => (
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </Select>
+          {viewType === viewTypeOptions[0].value ? (
+            <WeekView
+              onChange={(val: any) => {
+                setStartDate(val?.startDate);
+                setEndDate(val?.endDate);
+              }}
+            ></WeekView>
+          ) : null}
+          {viewType === viewTypeOptions[1].value ? (
+            <MonthView
+              onChange={(val: any) => {
+                setStartDate(val?.startDate);
+                setEndDate(val?.endDate);
+              }}
+            ></MonthView>
+          ) : null}
+          {viewType === viewTypeOptions[2].value ? (
+            <YearView
+              onChange={(val: any) => {
+                console.log('val: ', val);
+                setStartDate(val?.startDate);
+                setEndDate(val?.endDate);
+              }}
+            ></YearView>
+          ) : null}
+          <Grid
+            templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+            gap={6}
+          >
+            <GridItem>
+              <GoalsListSimple
+                startDate={startDate}
+                endDate={endDate}
+                type={viewType}
+              />
+            </GridItem>
+            <GridItem>
+              <ReviewsListSimple
+                startDate={startDate}
+                endDate={endDate}
+                type={viewType}
+              />
+            </GridItem>
+          </Grid>
+          {data && getDailyHabitsData && getDailyHabitsTrackersData ? (
+            <SummaryList
+              data={data}
+              createBlog={createBlog}
+              editBlog={editBlog}
+              removeBlog={removeBlog}
+              dailyHabits={getDailyHabitsData}
+              dailyHabitsTrackers={getDailyHabitsTrackersData}
+              createHabitsTracker={createHabitsTracker}
+              deleteHabitsTracker={deleteHabitsTracker}
             />
-          </GridItem>
-          <GridItem>
-            <ReviewsListSimple
-              startDate={startDate}
-              endDate={endDate}
-              type={viewType}
-            />
-          </GridItem>
-        </Grid>
-        {data && getDailyHabitsData && getDailyHabitsTrackersData ? (
-          <SummaryList
-            data={data}
-            createBlog={createBlog}
-            editBlog={editBlog}
-            removeBlog={removeBlog}
-            dailyHabits={getDailyHabitsData}
-            dailyHabitsTrackers={getDailyHabitsTrackersData}
-            createHabitsTracker={createHabitsTracker}
-            deleteHabitsTracker={deleteHabitsTracker}
-          />
-        ) : null}
-      </Box>
-    </CustomLayout>
+          ) : null}
+        </Box>
+      </CustomLayout>
+    </ProtectedPage>
   );
 };
 

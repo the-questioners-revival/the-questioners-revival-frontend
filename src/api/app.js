@@ -8,6 +8,15 @@ async function getHello() {
   return res;
 }
 
+async function getRandomQuote(type) {
+  const res = await API.get(
+    `${BACKEND_URL}/quote${type ? '/' + type : ''}`,
+    true,
+  );
+  return res;
+}
+
 export default {
   getHello,
+  getRandomQuote,
 };

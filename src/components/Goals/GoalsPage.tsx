@@ -5,6 +5,7 @@ import WeekView from '../Habits/WeekView';
 import MonthView from '../Habits/MonthView';
 import GoalsList from '../Summary/GoalsList';
 import YearView from '../Habits/YearView';
+import ProtectedPage from '../ProtectedPage';
 
 export const viewTypeOptions = [
   {
@@ -33,53 +34,55 @@ const GoalsPage = () => {
   const [viewType, setViewType] = useState(viewTypeOptions[0].value);
 
   return (
-    <CustomLayout>
-      <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
-        Goals
-      </Heading>
-      <Text>View Option</Text>
-      <Select
-        value={viewType}
-        onChange={(evt) => setViewType(evt.target.value)}
-        placeholder="Type"
-        color="black"
-        bg="white"
-        marginBottom="10px"
-        width="fit-content"
-      >
-        {viewTypeOptions?.map((option) => (
-          <option key={option.name} value={option.value}>
-            {option.name}
-          </option>
-        ))}
-      </Select>
-      {viewType === viewTypeOptions[0].value ? (
-        <WeekView
-          onChange={(val: any) => {
-            setStartDate(val?.startDate);
-            setEndDate(val?.endDate);
-          }}
-        ></WeekView>
-      ) : null}
-      {viewType === viewTypeOptions[1].value ? (
-        <MonthView
-          onChange={(val: any) => {
-            setStartDate(val?.startDate);
-            setEndDate(val?.endDate);
-          }}
-        ></MonthView>
-      ) : null}
-      {viewType === viewTypeOptions[2].value ? (
-        <YearView
-          onChange={(val: any) => {
-            console.log('val: ', val);
-            setStartDate(val?.startDate);
-            setEndDate(val?.endDate);
-          }}
-        ></YearView>
-      ) : null}
-      <GoalsList startDate={startDate} endDate={endDate} type={viewType} />
-    </CustomLayout>
+    <ProtectedPage>
+      <CustomLayout>
+        <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
+          Goals
+        </Heading>
+        <Text>View Option</Text>
+        <Select
+          value={viewType}
+          onChange={(evt) => setViewType(evt.target.value)}
+          placeholder="Type"
+          color="black"
+          bg="white"
+          marginBottom="10px"
+          width="fit-content"
+        >
+          {viewTypeOptions?.map((option) => (
+            <option key={option.name} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </Select>
+        {viewType === viewTypeOptions[0].value ? (
+          <WeekView
+            onChange={(val: any) => {
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
+            }}
+          ></WeekView>
+        ) : null}
+        {viewType === viewTypeOptions[1].value ? (
+          <MonthView
+            onChange={(val: any) => {
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
+            }}
+          ></MonthView>
+        ) : null}
+        {viewType === viewTypeOptions[2].value ? (
+          <YearView
+            onChange={(val: any) => {
+              console.log('val: ', val);
+              setStartDate(val?.startDate);
+              setEndDate(val?.endDate);
+            }}
+          ></YearView>
+        ) : null}
+        <GoalsList startDate={startDate} endDate={endDate} type={viewType} />
+      </CustomLayout>
+    </ProtectedPage>
   );
 };
 

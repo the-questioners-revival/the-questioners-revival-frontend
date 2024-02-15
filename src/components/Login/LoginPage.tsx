@@ -4,18 +4,11 @@ import LoginForm from './LoginForm';
 import { Box } from '@chakra-ui/react';
 import { useUser } from '../../providers/UserProvider';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
+  const { login } = useUser();
 
-  const { user, login } = useUser();
-
-  useEffect(() => {
-    if (user) {
-      navigate('/');
-    }
-  }, [user]);
 
   return (
     <UnprotectedPage>

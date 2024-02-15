@@ -15,7 +15,9 @@ const CustomHeader = () => {
             src="../../favicon.ico"
             alt="Logo"
             boxSize="50px"
-            padding={'8px 10px'}
+            padding={'8px 0px'}
+            minWidth='30px'
+            width='30px'
           />
         </Link>
       </Box>

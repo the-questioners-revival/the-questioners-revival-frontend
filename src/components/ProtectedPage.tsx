@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import { useUser } from '../providers/UserProvider';
 
 function ProtectedPage(props: any) {
   const navigate = useNavigate();
   const { user } = useUser();
+  const match = useMatch('*');
 
   useEffect(() => {
-    if (user) {
-      navigate('/');
-    } else {
+    if (!user) {
       navigate('/login');
     }
   }, [user]);
