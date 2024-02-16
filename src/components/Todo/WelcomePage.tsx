@@ -1,6 +1,14 @@
 import useAbstractProvider from '../../providers/AbstractProvider';
 import AppApi from '../../api/app';
-import { Box, Button, Flex, Select, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Select,
+  Skeleton,
+  SkeletonText,
+  Text,
+} from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import ProtectedPage from '../ProtectedPage';
 import { useEffect, useState } from 'react';
@@ -49,6 +57,8 @@ const TodoPage = () => {
     loading: getRandomQuoteLoading,
   }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     AppApi.getRandomQuote,
+    null,
+    false,
   );
 
   useEffect(() => {
@@ -58,50 +68,65 @@ const TodoPage = () => {
   }, [getRandomQuoteData]);
 
   useEffect(() => {
+    console.log('type changed');
+
     getRandomQuote(type);
   }, [type]);
 
+  useEffect(() => {
+    console.log('on load');
+  }, []);
+
   return (
-    <ProtectedPage>
-      <CustomLayout>
-        <Flex alignItems="center" height="100%" justifyContent="space-between">
-          <Box>
-            <Text fontSize="2xl">Welcome back, {user?.username}!</Text>
-            {quote ? (
-              <Box>
-                <Text fontSize="3xl">{quote.quote}</Text>
-                <Text fontSize="xl">-{quote.author}</Text>
-              </Box>
-            ) : null}
+    // <ProtectedPage>
+    <CustomLayout>
+      <Flex alignItems="center" height="100%" justifyContent="space-between">
+        <Box width="100%">
+          <Text fontSize="2xl">Welcome back, {user?.username}!</Text>
+          {quote ? (
             <Box>
-              <Select
-                value={type}
-                onChange={(evt) => setType(evt.target.value)}
-                placeholder="Type"
-                color="black"
-                bg="white"
-                marginBottom="10px"
-                width="fit-content"
-              >
-                {typeOptions?.map((option) => (
-                  <option key={option.name} value={option.value}>
-                    {option.name}
-                  </option>
-                ))}
-              </Select>
-              <Button
-                mt={4}
-                colorScheme="teal"
-                isLoading={getRandomQuoteLoading}
-                onClick={() => getRandomQuote(type)}
-              >
-                New Quote
-              </Button>
+              <Text fontSize="3xl">{quote.quote}</Text>
+              <Text fontSize="xl">-{quote.author}</Text>
             </Box>
+          ) : (
+            <SkeletonText
+              mt="4"
+              mb="2"
+              noOfLines={4}
+              spacing="2"
+              skeletonHeight="5"
+              width="100%"
+            />
+          )}
+          <Box>
+            <Select
+              value={type}
+              onChange={(evt) => setType(evt.target.value)}
+              placeholder="Type"
+              color="black"
+              bg="white"
+              marginBottom="10px"
+              width="fit-content"
+            >
+              {typeOptions?.map((option) => (
+                <option key={option.name} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </Select>
+            <Button
+              mt={4}
+              colorScheme="teal"
+              isLoading={getRandomQuoteLoading}
+              onClick={() => getRandomQuote(type)}
+            >
+              New Quote
+            </Button>
           </Box>
-        </Flex>
-      </CustomLayout>
-    </ProtectedPage>
+        </Box>
+      </Flex>
+    </CustomLayout>
+    // </ProtectedPage>
   );
 };
 
