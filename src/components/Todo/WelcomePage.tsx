@@ -83,7 +83,7 @@ const TodoPage = () => {
       <Flex alignItems="center" height="100%" justifyContent="space-between">
         <Box width="100%">
           <Text fontSize="2xl">Welcome back, {user?.username}!</Text>
-          {quote ? (
+          {!getRandomQuoteLoading && quote ? (
             <Box>
               <Text fontSize="3xl">{quote.quote}</Text>
               <Text fontSize="xl">-{quote.author}</Text>
