@@ -21,6 +21,7 @@ const Blog = ({
         <Text
           fontSize="md"
           whiteSpace="break-spaces"
+          wordBreak="break-word"
           className={showBlogText ? '' : 'blogText'}
           onClick={() => setShowBlogText(!showBlogText)}
         >
