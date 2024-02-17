@@ -3,6 +3,7 @@ import { Box, Flex, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
 import { useState } from 'react';
 import moment from 'moment-timezone';
+import DOMPurify from 'dompurify';
 
 const TodoListItem = ({
   todo,
@@ -121,6 +122,21 @@ const TodoListItem = ({
     // }
   }
 
+  function makeUrlsClickable(text: string) {
+    // Regular expression to find URLs starting with https:// or http://
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    // Replace URLs with clickable links
+    return text.replace(urlRegex, '<a href="$1" target="_blank" rel="noreferrer" style="text-decoration: underline">$1</a>');
+  }
+
+  function renderTodoTitle(title: string) {
+    const clickableTitle = makeUrlsClickable(title);
+    const sanitizedTitle = DOMPurify.sanitize(clickableTitle, {
+      ADD_ATTR: ['target'],
+    });
+    return sanitizedTitle;
+  }
+
   return (
     <Box
       key={todo.id}
@@ -174,9 +190,8 @@ const TodoListItem = ({
           textDecorationLine={`${
             todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
           }`}
-        >
-          {todo.title}
-        </Text>
+          dangerouslySetInnerHTML={{ __html: renderTodoTitle(todo.title) }}
+        ></Text>
         <Flex>
           <Box paddingRight="7px">
             <Tag>{todo.type}</Tag>

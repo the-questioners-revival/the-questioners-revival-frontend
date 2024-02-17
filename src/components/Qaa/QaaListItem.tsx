@@ -173,7 +173,7 @@ const QaaListItem = ({
             <Text fontSize="lg" paddingRight="7px">
               source:{' '}
             </Text>
-            <Link href={qaa.link} isExternal fontSize="lg" paddingRight="7px">
+            <Link href={qaa.link} isExternal fontSize="lg" paddingRight="7px" textDecor="underline">
               {qaa.link}
             </Link>
           </Flex>
