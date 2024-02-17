@@ -1,0 +1,35 @@
+.quote {
+    display:inline-block;
+    margin: 1rem 0rem 0.5rem 0rem;
+    overflow:hidden;
+    blockquote {
+      background-color:#19BC9B;
+      border: solid 2px #fff;
+      display: inline-block;
+      margin: 0;
+      padding: 1em;
+      position: relative;
+      &:before {
+        background-color: #19BC9B;
+        bottom: -10%;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: -10%;
+        transform: rotate(-15deg) skew(5deg);
+      }
+      cite {
+        display: block;
+        font-style: italic;
+        text-align: right;
+        &:before {
+          content: "- ";
+        }
+      }
+      > * {
+        position: relative;
+        z-index: 1;
+      }
+    }
+  }

@@ -7,7 +7,7 @@ import HabitsPage from './components/Habits/HabitsPage';
 import GoalsPage from './components/Goals/GoalsPage';
 import ReviewsPage from './components/Reviews/ReviewsPage';
 import LoginPage from './components/Login/LoginPage';
-import WelcomePage from './components/Todo/WelcomePage';
+import WelcomePage from './components/Welcome/WelcomePage';
 
 const CustomRouter: React.FC = () => {
   return (

@@ -13,6 +13,7 @@ import CustomLayout from '../layout/CustomLayout';
 import ProtectedPage from '../ProtectedPage';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../providers/UserProvider';
+import './WelcomePage.css';
 
 interface Quote {
   quote: string;
@@ -84,9 +85,13 @@ const TodoPage = () => {
         <Box width="100%">
           <Text fontSize="2xl">Welcome back, {user?.username}!</Text>
           {!getRandomQuoteLoading && quote ? (
-            <Box>
-              <Text fontSize="3xl">{quote.quote}</Text>
-              <Text fontSize="xl">-{quote.author}</Text>
+            <Box maxWidth="600px">
+              <div className="quote">
+                <blockquote>
+                  <Text fontSize="3xl">"{quote.quote}"</Text>
+                  <cite>{quote.author}</cite>
+                </blockquote>
+              </div>
             </Box>
           ) : (
             <SkeletonText
@@ -95,6 +100,7 @@ const TodoPage = () => {
               noOfLines={4}
               spacing="2"
               skeletonHeight="5"
+              maxWidth="600px"
               width="100%"
             />
           )}
@@ -105,7 +111,6 @@ const TodoPage = () => {
               placeholder="Type"
               color="black"
               bg="white"
-              marginBottom="10px"
               width="fit-content"
             >
               {typeOptions?.map((option) => (
