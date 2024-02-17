@@ -22,6 +22,10 @@ interface Quote {
 
 export const typeOptions = [
   {
+    value: 'default',
+    name: 'Default',
+  },
+  {
     value: 'stoic',
     name: 'Stoic',
   },
@@ -108,7 +112,6 @@ const TodoPage = () => {
             <Select
               value={type}
               onChange={(evt) => setType(evt.target.value)}
-              placeholder="Type"
               color="black"
               bg="white"
               width="fit-content"
