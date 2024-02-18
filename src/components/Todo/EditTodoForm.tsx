@@ -51,6 +51,7 @@ const EditTodoForm = ({
               <CustomField
                 name="priority"
                 type="select"
+                required={false}
                 options={todoPriorityOptions}
               />
 

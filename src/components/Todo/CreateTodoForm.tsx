@@ -68,6 +68,7 @@ const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
               <CustomField
                 name="priority"
                 type="select"
+                required={false}
                 options={todoPriorityOptions}
               />
 
