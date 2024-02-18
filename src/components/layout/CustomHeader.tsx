@@ -1,13 +1,40 @@
 import { Link } from 'react-router-dom';
 import { Box, Flex, Link as ChakraLink, Image } from '@chakra-ui/react';
-import { removeCookies } from '../../utils';
 import { useUser } from '../../providers/UserProvider';
+import Hamburger from './Hamburger';
+
+export const HEADER = [
+  {
+    name: 'Todos',
+    link: '/todos',
+  },
+  {
+    name: 'Qaas',
+    link: '/qaas',
+  },
+  {
+    name: 'Summary',
+    link: '/summary',
+  },
+  {
+    name: 'Habits',
+    link: '/habits',
+  },
+  {
+    name: 'Goals',
+    link: '/goals',
+  },
+  {
+    name: 'Reviews',
+    link: '/reviews',
+  },
+];
 
 const CustomHeader = () => {
   const { user, logout } = useUser();
 
   return (
-    <Flex alignItems="center" w="100%">
+    <Flex alignItems="center" w="100%" justifyContent="space-between">
       {/* Logo */}
       <Box marginRight="10px">
         <Link to="/">
@@ -16,32 +43,34 @@ const CustomHeader = () => {
             alt="Logo"
             boxSize="50px"
             padding={'8px 0px'}
-            minWidth='30px'
-            width='30px'
+            minWidth="30px"
+            width="30px"
           />
         </Link>
       </Box>
       {/* Navigation Links */}
-      <Flex justifyContent="space-between" w="100%">
+      <Flex
+        justifyContent="space-between"
+        w="100%"
+        display={{ base: 'none', md: 'flex' }}
+      >
         <Box>
-          <ChakraLink as={Link} to="/todos" marginRight={4} fontSize="lg">
-            Todos
-          </ChakraLink>
-          <ChakraLink as={Link} to="/qaas" marginRight={4} fontSize="lg">
-            Qaas
-          </ChakraLink>
-          <ChakraLink as={Link} to="/summary" marginRight={4} fontSize="lg">
-            Summary
-          </ChakraLink>
-          <ChakraLink as={Link} to="/habits" marginRight={4} fontSize="lg">
-            Habits
-          </ChakraLink>
-          <ChakraLink as={Link} to="/goals" marginRight={4} fontSize="lg">
-            Goals
-          </ChakraLink>
-          <ChakraLink as={Link} to="/reviews" marginRight={4} fontSize="lg">
-            Reviews
-          </ChakraLink>
+          <ChakraLink
+            as={Link}
+            to="/todos"
+            marginRight={4}
+            fontSize="lg"
+          ></ChakraLink>
+          {HEADER.map((header) => (
+            <ChakraLink
+              as={Link}
+              to={header.link}
+              marginRight={4}
+              fontSize="lg"
+            >
+              {header.name}
+            </ChakraLink>
+          ))}
         </Box>
         <ChakraLink
           as={Link}
@@ -54,6 +83,9 @@ const CustomHeader = () => {
         >
           {user ? 'Log out' : 'Login'}
         </ChakraLink>
+      </Flex>
+      <Flex display={{ base: 'flex', md: 'none' }}>
+        <Hamburger />
       </Flex>
     </Flex>
   );
