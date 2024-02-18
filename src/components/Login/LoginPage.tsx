@@ -7,14 +7,13 @@ import { useEffect } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const { login } = useUser();
-
+  const { login, loginLoading } = useUser();
 
   return (
     <UnprotectedPage>
       <CustomLayout>
         <Box paddingTop="20px">
-          <LoginForm login={login} />
+          <LoginForm login={login} loginLoading={loginLoading} />
         </Box>
       </CustomLayout>
     </UnprotectedPage>

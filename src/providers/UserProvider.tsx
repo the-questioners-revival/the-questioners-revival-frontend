@@ -7,7 +7,11 @@ import useAbstractProvider from './AbstractProvider';
 const UserContext = createContext<any>(null);
 
 export const UserProvider = (props: any) => {
-  const { data: loginData, mutate: login } = useAbstractMutator(UserApi.login);
+  const {
+    data: loginData,
+    mutate: login,
+    loading: loginLoading,
+  } = useAbstractMutator(UserApi.login);
   const {
     data: getCurrentlyLoggedInUserData,
     refetch: getCurrentlyLoggedInUser,
@@ -33,7 +37,7 @@ export const UserProvider = (props: any) => {
   }, [getCurrentlyLoggedInUserData]);
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, loginLoading }}>
       {props.children}
     </UserContext.Provider>
   );

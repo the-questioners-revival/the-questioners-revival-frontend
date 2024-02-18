@@ -2,7 +2,13 @@ import { Box, Button, Container, Heading } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 
-const LoginForm = ({ login }: { login: Function }) => {
+const LoginForm = ({
+  login,
+  loginLoading,
+}: {
+  login: Function;
+  loginLoading: boolean;
+}) => {
   // Updated component name
   return (
     <Formik
@@ -35,8 +41,8 @@ const LoginForm = ({ login }: { login: Function }) => {
                 mt={4}
                 display="flex"
                 colorScheme="teal"
-                isLoading={props.isSubmitting}
                 type="submit"
+                isLoading={loginLoading}
               >
                 Submit
               </Button>
