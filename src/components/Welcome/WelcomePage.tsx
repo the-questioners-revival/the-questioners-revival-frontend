@@ -83,58 +83,58 @@ const TodoPage = () => {
   }, []);
 
   return (
-    // <ProtectedPage>
-    <CustomLayout>
-      <Flex alignItems="center" height="100%" justifyContent="space-between">
-        <Box width="100%">
-          <Text fontSize="2xl">Welcome back, {user?.username}!</Text>
-          {!getRandomQuoteLoading && quote ? (
-            <Box maxWidth="600px">
-              <div className="quote">
-                <blockquote>
-                  <Text fontSize="3xl">"{quote.quote}"</Text>
-                  <cite>{quote.author}</cite>
-                </blockquote>
-              </div>
+    <ProtectedPage>
+      <CustomLayout>
+        <Flex alignItems="center" height="100%" justifyContent="space-between">
+          <Box width="100%">
+            <Text fontSize="2xl">Welcome back, {user?.username}!</Text>
+            {!getRandomQuoteLoading && quote ? (
+              <Box maxWidth="600px">
+                <div className="quote">
+                  <blockquote>
+                    <Text fontSize="3xl">"{quote.quote}"</Text>
+                    <cite>{quote.author}</cite>
+                  </blockquote>
+                </div>
+              </Box>
+            ) : (
+              <SkeletonText
+                mt="4"
+                mb="2"
+                noOfLines={4}
+                spacing="2"
+                skeletonHeight="5"
+                maxWidth="600px"
+                width="100%"
+              />
+            )}
+            <Box>
+              <Select
+                value={type}
+                onChange={(evt) => setType(evt.target.value)}
+                color="black"
+                bg="white"
+                width="fit-content"
+              >
+                {typeOptions?.map((option) => (
+                  <option key={option.name} value={option.value}>
+                    {option.name}
+                  </option>
+                ))}
+              </Select>
+              <Button
+                mt={4}
+                colorScheme="teal"
+                isLoading={getRandomQuoteLoading}
+                onClick={() => getRandomQuote(type)}
+              >
+                New Quote
+              </Button>
             </Box>
-          ) : (
-            <SkeletonText
-              mt="4"
-              mb="2"
-              noOfLines={4}
-              spacing="2"
-              skeletonHeight="5"
-              maxWidth="600px"
-              width="100%"
-            />
-          )}
-          <Box>
-            <Select
-              value={type}
-              onChange={(evt) => setType(evt.target.value)}
-              color="black"
-              bg="white"
-              width="fit-content"
-            >
-              {typeOptions?.map((option) => (
-                <option key={option.name} value={option.value}>
-                  {option.name}
-                </option>
-              ))}
-            </Select>
-            <Button
-              mt={4}
-              colorScheme="teal"
-              isLoading={getRandomQuoteLoading}
-              onClick={() => getRandomQuote(type)}
-            >
-              New Quote
-            </Button>
           </Box>
-        </Box>
-      </Flex>
-    </CustomLayout>
-    // </ProtectedPage>
+        </Flex>
+      </CustomLayout>
+    </ProtectedPage>
   );
 };
 
