@@ -9,6 +9,7 @@ import {
   DrawerCloseButton,
   useDisclosure,
   Flex,
+  Image,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { HEADER } from './CustomHeader';
@@ -41,6 +42,17 @@ function Hamburger() {
           </DrawerHeader>
           <DrawerBody>
             <Flex flexDirection="column" alignItems="center">
+              <Button variant="ghost" onClick={() => handleClose('/')}>
+                <Image
+                  src="../../favicon.ico"
+                  alt="Logo"
+                  boxSize="50px"
+                  padding={'8px 0px'}
+                  minWidth="30px"
+                  width="30px"
+                />
+              </Button>
+
               {HEADER.map((header) => {
                 return (
                   <Button
