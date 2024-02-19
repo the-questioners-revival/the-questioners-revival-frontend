@@ -13,6 +13,7 @@ import CustomModal from '../custom/CustomModal';
 import EditQaaForm from './EditQaaForm';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import QaaListItem from './QaaListItem';
+import { qaaTypeOptions } from './CreateQaaForm';
 
 const showOptions = [
   {
@@ -25,20 +26,6 @@ const showOptions = [
   },
 ];
 
-const typeOptions = [
-  {
-    name: 'Personal',
-    value: 'personal',
-  },
-  {
-    name: 'Project',
-    value: 'project',
-  },
-  {
-    name: 'Work',
-    value: 'work',
-  },
-];
 
 const QaaList = ({
   qaas,
@@ -104,7 +91,7 @@ const QaaList = ({
             color="black"
             bg="white"
           >
-            {typeOptions?.map((option) => (
+            {qaaTypeOptions?.map((option) => (
               <option key={option.name} value={option.value}>
                 {option.name}
               </option>

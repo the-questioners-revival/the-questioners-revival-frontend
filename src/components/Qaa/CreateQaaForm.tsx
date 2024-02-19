@@ -2,7 +2,7 @@ import { Box, Button, Container, Heading } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 
-const options = [
+export const qaaTypeOptions = [
   {
     name: 'Personal',
     value: 'personal',
@@ -58,7 +58,7 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
               <CustomField name="question" type="input" />
               <CustomField name="answer" type="textArea" />
               <CustomField name="link" type="input" required={false} />
-              <CustomField name="type" type="select" options={options} />
+              <CustomField name="type" type="select" options={qaaTypeOptions} />
 
               <Button
                 mt={4}
