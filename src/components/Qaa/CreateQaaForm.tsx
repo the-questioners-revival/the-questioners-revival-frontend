@@ -15,6 +15,18 @@ const options = [
     name: 'Project',
     value: 'project',
   },
+  {
+    name: 'Learn',
+    value: 'learn',
+  },
+  {
+    name: 'Coding',
+    value: 'coding',
+  },
+  {
+    name: 'Other',
+    value: 'other',
+  },
 ];
 
 const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {

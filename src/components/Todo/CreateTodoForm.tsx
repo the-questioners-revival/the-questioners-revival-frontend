@@ -15,6 +15,14 @@ export const todoTypeOptions = [
     name: 'Project',
     value: 'project',
   },
+  {
+    name: 'Learn',
+    value: 'learn',
+  },
+  {
+    name: 'Watch later',
+    value: 'watch later',
+  },
 ];
 
 export const todoPriorityOptions = [
