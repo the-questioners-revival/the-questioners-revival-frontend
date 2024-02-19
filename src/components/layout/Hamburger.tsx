@@ -11,11 +11,20 @@ import {
   Flex,
   Image,
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, SearchIcon } from '@chakra-ui/icons';
 import { HEADER } from './CustomHeader';
 import { useNavigate } from 'react-router-dom';
+import { MouseEventHandler } from 'react';
 
-function Hamburger() {
+function Hamburger({
+  handleSearchOpen,
+  logout,
+  user,
+}: {
+  handleSearchOpen: MouseEventHandler<HTMLButtonElement>;
+  logout: Function;
+  user: any;
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
@@ -63,6 +72,13 @@ function Hamburger() {
                   </Button>
                 );
               })}
+              <Button variant="ghost" onClick={() => logout()}>
+                {user ? 'Log out' : 'Login'}
+              </Button>
+
+              <Button variant="ghost" onClick={handleSearchOpen}>
+                <SearchIcon cursor="pointer" fontSize="20px" />
+              </Button>
             </Flex>
           </DrawerBody>
         </DrawerContent>

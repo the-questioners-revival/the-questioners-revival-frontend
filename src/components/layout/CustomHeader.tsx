@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Flex, Link as ChakraLink, Image } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 import { useUser } from '../../providers/UserProvider';
 import Hamburger from './Hamburger';
+import CustomModal from '../custom/CustomModal';
+import SearchModal from './SearchModal';
 
 export const HEADER = [
   {
@@ -32,6 +36,11 @@ export const HEADER = [
 
 const CustomHeader = () => {
   const { user, logout } = useUser();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleSearchOpen = () => {
+    setIsOpen(true);
+  };
 
   return (
     <Flex alignItems="center" w="100%" justifyContent="space-between">
@@ -72,21 +81,35 @@ const CustomHeader = () => {
             </ChakraLink>
           ))}
         </Box>
-        <ChakraLink
-          as={Link}
-          to="/login"
-          marginRight={4}
-          fontSize="lg"
-          onClick={() => {
-            logout();
-          }}
-        >
-          {user ? 'Log out' : 'Login'}
-        </ChakraLink>
+        <Flex alignItems="center">
+          <SearchIcon
+            fontSize="20px"
+            onClick={handleSearchOpen}
+            marginRight="20px"
+            cursor="pointer"
+          />
+
+          <ChakraLink
+            as={Link}
+            to="/login"
+            marginRight={4}
+            fontSize="lg"
+            onClick={() => {
+              logout();
+            }}
+          >
+            {user ? 'Log out' : 'Login'}
+          </ChakraLink>
+        </Flex>
       </Flex>
       <Flex display={{ base: 'flex', md: 'none' }}>
-        <Hamburger />
+        <Hamburger
+          handleSearchOpen={handleSearchOpen}
+          logout={logout}
+          user={user}
+        />
       </Flex>
+      <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </Flex>
   );
 };

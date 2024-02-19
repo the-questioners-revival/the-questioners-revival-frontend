@@ -16,7 +16,16 @@ async function getRandomQuote(type) {
   return res;
 }
 
+async function search(searchString) {
+  const res = await API.get(
+    `${BACKEND_URL}/search/${searchString ? searchString : ''}`,
+    true,
+  );
+  return res;
+}
+
 export default {
   getHello,
   getRandomQuote,
+  search,
 };

@@ -10,7 +10,7 @@ export default function useAbstractProvider(
   params: any = null,
   autoFetch: boolean = true,
 ) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [value, setValue] = useState<ValueType>({ data: null, status: {} });
   const [error, setError] = useState<any>(null);
 
