@@ -18,8 +18,6 @@ import {
   ModalBody,
 } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
-import useAbstractProvider from '../../providers/AbstractProvider';
-import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
 import CreateHabitForm from '../Qaa/CreateHabitForm';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
