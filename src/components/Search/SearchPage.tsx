@@ -1,11 +1,18 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
   Box,
   Button,
   Flex,
+  Grid,
+  GridItem,
   Input,
   InputGroup,
   Text,
   Textarea,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useAbstractProvider from '../../providers/AbstractProvider';
@@ -21,10 +28,14 @@ import GoalsProvider from '../../providers/GoalsProvider';
 import ReviewsProvider from '../../providers/ReviewsProvider';
 
 const SearchPage = () => {
+  const isMobile = useBreakpointValue({ base: true, sm: false });
   const [search, setSearch] = useState<string>();
   const [selectedItem, setSelectedItem] = useState<any>();
   const [text, setText] = useState<string>();
   const [answer, setAnswer] = useState<string>();
+  const [isListOpen, setIsListOpen] = useState(false);
+  console.log('isListOpen: ', isListOpen);
+
   const {
     data: searchData,
     refetch: searchFetch,
@@ -46,20 +57,25 @@ const SearchPage = () => {
 
   const { editReview, editReviewData } = ReviewsProvider();
 
+  function handleRefetchSearch() {
+    searchFetch(search);
+    setSelectedItem(null);
+    setText('');
+    setAnswer('');
+  }
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      searchFetch(search);
+      handleRefetchSearch();
     }
   };
 
   useEffect(() => {
-    if (selectedItem) {
-      setText(selectedItem.text);
-      if (selectedItem.table_name === 'qaas') {
-        setAnswer(selectedItem.answer);
-      }
+    console.log('searchData: ', searchData);
+    if (searchData) {
+      setIsListOpen(true);
     }
-  }, [selectedItem]);
+  }, [searchData]);
 
   const editItem = () => {
     if (!selectedItem) return;
@@ -89,6 +105,19 @@ const SearchPage = () => {
     }
   }, [editTodoData, editQaaData, editBlogData, editGoalData, editReviewData]);
 
+  const handleSelectItem = (item: any) => {
+    setSelectedItem(item);
+    if (item) {
+      setText(item.text);
+      if (item.table_name === 'qaas') {
+        setAnswer(item.answer);
+      }
+    }
+    if (isMobile) {
+      setIsListOpen(false);
+    }
+  };
+
   return (
     <ProtectedPage>
       <CustomLayout>
@@ -111,49 +140,103 @@ const SearchPage = () => {
               colorScheme="teal"
               isLoading={searchLoading}
               type="submit"
-              onClick={() => searchFetch(search)}
+              onClick={() => handleRefetchSearch}
               ml="10px"
             >
               Search
             </Button>
           </InputGroup>
-          {searchData?.length > 0 ? (
-            <Flex mt="20px">
-              <Box width="30%">
-                <Text fontSize="lg">Result:</Text>
-                {searchData?.map((item: any) => (
-                  <Box
-                    height="50px"
-                    onClick={() => setSelectedItem(item)}
-                    borderBottom="2px solid white"
-                    cursor="pointer"
-                  >
-                    <Box className="searchText" whiteSpace="break-spaces">
-                      {item.table_name} - {item.text}
-                    </Box>
-                    <Text>
-                      {moment
-                        .tz(item.created_at, 'Asia/Manila')
-                        .format('DD.MM.YYYY HH:mm')}
-                    </Text>
-                  </Box>
-                ))}
-              </Box>
-              <Box width="70%" ml="30px">
-                {selectedItem?.table_name === 'qaas' ? (
-                  <>
-                    <Input
-                      className="input"
-                      placeholder="Question"
-                      border="2px solid white"
-                      fontWeight="600"
-                      fontSize="lg"
-                      textColor="white"
-                      mb="10px"
-                      color="white"
-                      onChange={(evt) => setText(evt.target.value)}
-                      value={text}
-                    />
+          <Box mt="20px">
+            {searchData?.length > 0 ? (
+              <Grid
+                templateColumns={{
+                  base: '100%',
+                  md: '30% 70%',
+                }}
+                width="100%"
+                gap={6}
+                height="100%"
+              >
+                <GridItem>
+                  <Accordion allowToggle index={isListOpen ? 0 : -1}>
+                    <AccordionItem border="none">
+                      <h2>
+                        <AccordionButton
+                          onClick={() => setIsListOpen(!isListOpen)}
+                        >
+                          <Box flex="1" textAlign="left" fontWeight="600">
+                            Result:
+                          </Box>
+                          <Box flex="1" textAlign="right">
+                            {isListOpen ? '-' : '+'}
+                          </Box>
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel
+                        pb={4}
+                        display={isListOpen ? 'block' : 'none'}
+                      >
+                        {/* Content of the list goes here */}
+                        {searchData?.map((item: any) => (
+                          <Box
+                            key={item.id}
+                            height="50px"
+                            onClick={() => handleSelectItem(item)}
+                            borderBottom="2px solid white"
+                            cursor="pointer"
+                            p="0px 5px"
+                            bg={
+                              selectedItem?.id === item.id &&
+                              selectedItem.table_name === item.table_name
+                                ? 'gray.300'
+                                : ''
+                            }
+                          >
+                            <Box
+                              className="searchText"
+                              whiteSpace="break-spaces"
+                            >
+                              {item.table_name} - {item.text}
+                            </Box>
+                            <Text>
+                              {moment
+                                .tz(item.created_at, 'Asia/Manila')
+                                .format('DD.MM.YYYY')}
+                            </Text>
+                          </Box>
+                        ))}
+                      </AccordionPanel>
+                    </AccordionItem>
+                  </Accordion>
+                </GridItem>
+                <GridItem>
+                  {selectedItem?.table_name === 'qaas' ? (
+                    <>
+                      <Input
+                        className="input"
+                        placeholder="Question"
+                        border="2px solid white"
+                        fontWeight="600"
+                        fontSize="lg"
+                        textColor="white"
+                        mb="10px"
+                        color="white"
+                        onChange={(evt) => setText(evt.target.value)}
+                        value={text}
+                      />
+                      <Textarea
+                        className="input"
+                        placeholder="text"
+                        rows={15}
+                        textColor="white"
+                        color="white"
+                        fontWeight="600"
+                        border="2px solid white"
+                        value={answer}
+                        onChange={(evt) => setAnswer(evt.target.value)}
+                      />
+                    </>
+                  ) : (
                     <Textarea
                       className="input"
                       placeholder="text"
@@ -162,36 +245,26 @@ const SearchPage = () => {
                       color="white"
                       fontWeight="600"
                       border="2px solid white"
-                      value={answer}
-                      onChange={(evt) => setAnswer(evt.target.value)}
+                      value={text}
+                      onChange={(evt) => setText(evt.target.value)}
                     />
-                  </>
-                ) : (
-                  <Textarea
-                    className="input"
-                    placeholder="text"
-                    rows={15}
-                    textColor="white"
-                    color="white"
-                    fontWeight="600"
-                    border="2px solid white"
-                    value={text}
-                    onChange={(evt) => setText(evt.target.value)}
-                  />
-                )}
+                  )}
 
-                <Button
-                  display="flex"
-                  colorScheme="teal"
-                  type="submit"
-                  onClick={() => editItem()}
-                  mt="10px"
-                >
-                  Submit
-                </Button>
-              </Box>
-            </Flex>
-          ) : null}
+                  <Button
+                    display="flex"
+                    colorScheme="teal"
+                    type="submit"
+                    onClick={() => editItem()}
+                    mt="10px"
+                  >
+                    Submit
+                  </Button>
+                </GridItem>
+              </Grid>
+            ) : (
+              <Text>No results</Text>
+            )}
+          </Box>
         </Box>
       </CustomLayout>
     </ProtectedPage>
