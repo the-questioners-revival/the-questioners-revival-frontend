@@ -140,7 +140,7 @@ const SearchPage = () => {
               colorScheme="teal"
               isLoading={searchLoading}
               type="submit"
-              onClick={() => handleRefetchSearch}
+              onClick={() => handleRefetchSearch()}
               ml="10px"
             >
               Search
