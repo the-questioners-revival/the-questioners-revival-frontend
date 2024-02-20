@@ -6,7 +6,8 @@ export default function BlogsProvider() {
   const {
     data: getAllBlogsGroupedByDateData,
     refetch: getAllBlogsGroupedByDate,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getAllBlogsGroupedByDateDataLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     BlogApi.getAllBlogsGroupedByDate,
     null,
     false,
@@ -29,6 +30,7 @@ export default function BlogsProvider() {
   return {
     getAllBlogsGroupedByDateData,
     getAllBlogsGroupedByDate,
+    getAllBlogsGroupedByDateDataLoading,
     createBlogData,
     createBlog,
     editBlogData,

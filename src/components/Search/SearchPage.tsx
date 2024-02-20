@@ -10,11 +10,12 @@ import {
   GridItem,
   Input,
   InputGroup,
+  SkeletonText,
   Text,
   Textarea,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useAbstractProvider from '../../providers/AbstractProvider';
 import AppApi from '../../api/app';
 import CustomLayout from '../layout/CustomLayout';
@@ -26,6 +27,7 @@ import QaasProvider from '../../providers/QaasProvider';
 import BlogsProvider from '../../providers/BlogsProvider';
 import GoalsProvider from '../../providers/GoalsProvider';
 import ReviewsProvider from '../../providers/ReviewsProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const SearchPage = () => {
   const isMobile = useBreakpointValue({ base: true, sm: false });
@@ -34,7 +36,12 @@ const SearchPage = () => {
   const [text, setText] = useState<string>();
   const [answer, setAnswer] = useState<string>();
   const [isListOpen, setIsListOpen] = useState(false);
-  console.log('isListOpen: ', isListOpen);
+  const inputRef = useRef<any>(null);
+
+  useEffect(() => {
+    // When the component mounts, select the text inside the input
+    inputRef.current.select();
+  }, []);
 
   const {
     data: searchData,
@@ -45,17 +52,12 @@ const SearchPage = () => {
     null,
     false,
   );
-  console.log('searchLoading: ', searchLoading);
-
   const { editTodo, editTodoData } = TodosProvider();
-
   const { editQaa, editQaaData } = QaasProvider();
-
   const { editBlog, editBlogData } = BlogsProvider();
-
   const { editGoal, editGoalData } = GoalsProvider();
-
   const { editReview, editReviewData } = ReviewsProvider();
+  const { setLoading } = useFloatingLoader();
 
   function handleRefetchSearch() {
     searchFetch(search);
@@ -69,6 +71,10 @@ const SearchPage = () => {
       handleRefetchSearch();
     }
   };
+
+  useEffect(() => {
+    setLoading(searchLoading);
+  }, [searchLoading]);
 
   useEffect(() => {
     console.log('searchData: ', searchData);
@@ -124,6 +130,7 @@ const SearchPage = () => {
         <Box mt="20px">
           <InputGroup>
             <Input
+              ref={inputRef}
               className="input"
               placeholder="Search phrase"
               border="2px solid white"
@@ -147,11 +154,11 @@ const SearchPage = () => {
             </Button>
           </InputGroup>
           <Box mt="20px">
-            {searchData?.length > 0 ? (
+            {searchData?.length > 0 || searchLoading ? (
               <Grid
                 templateColumns={{
                   base: '100%',
-                  md: '30% 70%',
+                  md: '30% 1fr',
                 }}
                 width="100%"
                 gap={6}

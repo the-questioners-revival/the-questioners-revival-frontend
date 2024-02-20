@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import GoalListItemSimple from '../Goals/GoalListItemSimple';
 import GoalsProvider from '../../providers/GoalsProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const GoalsListSimple = ({
   startDate,
@@ -13,8 +14,19 @@ const GoalsListSimple = ({
   endDate: any;
   type: string;
 }) => {
-  const { getGoalsFromToData, getGoalsFromTo, editGoalData, editGoal } =
-    GoalsProvider();
+  const { setLoading } = useFloatingLoader();
+
+  const {
+    getGoalsFromToData,
+    getGoalsFromTo,
+    getGoalsFromToLoading,
+    editGoalData,
+    editGoal,
+  } = GoalsProvider();
+
+  useEffect(() => {
+    setLoading(getGoalsFromToLoading);
+  }, [getGoalsFromToLoading]);
 
   useEffect(() => {
     if (editGoalData) {

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import ReviewListItemSimple from '../Reviews/ReviewListItemSimple';
 import ReviewsProvider from '../../providers/ReviewsProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const ReviewsListSimple = ({
   startDate,
@@ -13,8 +14,19 @@ const ReviewsListSimple = ({
   endDate: any;
   type: string;
 }) => {
-  const { getReviewsFromToData, getReviewsFromTo, editReviewData, editReview } =
-    ReviewsProvider();
+  const { setLoading } = useFloatingLoader();
+
+  const {
+    getReviewsFromToData,
+    getReviewsFromTo,
+    getReviewsFromToLoading,
+    editReviewData,
+    editReview,
+  } = ReviewsProvider();
+
+  useEffect(() => {
+    setLoading(getReviewsFromToLoading);
+  }, [getReviewsFromToLoading]);
 
   useEffect(() => {
     if (editReviewData) {

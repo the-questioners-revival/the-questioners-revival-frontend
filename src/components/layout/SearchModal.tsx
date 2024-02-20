@@ -29,7 +29,6 @@ const SearchModal = ({
     null,
     false,
   );
-  console.log('searchLoading: ', searchLoading);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {

@@ -6,7 +6,8 @@ export default function ReviewsProvider() {
   const {
     data: getReviewsFromToData,
     refetch: getReviewsFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getReviewsFromToLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     ReviewsApi.getReviewsFromTo,
     null,
     false,
@@ -36,6 +37,7 @@ export default function ReviewsProvider() {
   return {
     getReviewsFromToData,
     getReviewsFromTo,
+    getReviewsFromToLoading,
     createReviewData,
     createReview,
     editReviewData,

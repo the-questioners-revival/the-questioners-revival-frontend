@@ -7,6 +7,7 @@ import CreateQaaForm from './CreateQaaForm';
 import { Box } from '@chakra-ui/react';
 import ProtectedPage from '../ProtectedPage';
 import QaasProvider from '../../providers/QaasProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const QaaPage = () => {
   const [showRemoved, setShowRemoved] = useState<string>('false');
@@ -14,6 +15,7 @@ const QaaPage = () => {
   const {
     qaasData,
     qaasRefetch,
+    getLatestQaasLoading,
     createQaaData,
     createQaa,
     removeQaaData,
@@ -21,6 +23,7 @@ const QaaPage = () => {
     editQaaData,
     editQaa,
   } = QaasProvider();
+  const { setLoading } = useFloatingLoader();
 
   useEffect(() => {
     qaasRefetch({ type, showRemoved });
@@ -31,6 +34,10 @@ const QaaPage = () => {
       qaasRefetch({ type, showRemoved });
     }
   }, [createQaaData, removeQaaData, editQaaData]);
+
+  useEffect(() => {
+    setLoading(getLatestQaasLoading);
+  }, [getLatestQaasLoading]);
 
   return (
     <ProtectedPage>

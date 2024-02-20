@@ -6,7 +6,8 @@ export default function TodosProvider() {
   const {
     data: todoData,
     refetch: todoRefetch,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getLatestTodosLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     TodoApi.getLatestTodos,
     null,
     false,
@@ -42,7 +43,8 @@ export default function TodosProvider() {
   const {
     data: getAllTodosGroupedByDateData,
     refetch: getAllTodosGroupedByDate,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getAllTodosGroupedByDateLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     TodoApi.getAllTodosGroupedByDate,
     null,
     false,
@@ -51,6 +53,7 @@ export default function TodosProvider() {
   return {
     todoData,
     todoRefetch,
+    getLatestTodosLoading,
     createTodo,
     createTodoData,
     removeTodoData,
@@ -62,6 +65,7 @@ export default function TodosProvider() {
     completeTodoData,
     completeTodo,
     getAllTodosGroupedByDateData,
-    getAllTodosGroupedByDate
+    getAllTodosGroupedByDate,
+    getAllTodosGroupedByDateLoading,
   };
 }

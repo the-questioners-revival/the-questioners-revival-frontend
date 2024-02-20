@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 import { UserProvider } from './providers/UserProvider';
+import { FloatingLoaderProvider } from './providers/FloatingLoaderProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <ChakraProvider>
     <UserProvider>
-      <App />
+      <FloatingLoaderProvider>
+        <App />
+      </FloatingLoaderProvider>
     </UserProvider>
   </ChakraProvider>,
 );

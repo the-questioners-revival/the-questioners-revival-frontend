@@ -14,36 +14,42 @@ import QaasProvider from '../../providers/QaasProvider';
 import TodosProvider from '../../providers/TodosProvider';
 import HabitsProvider from '../../providers/HabitsProvider';
 import HabitsTrackerProvider from '../../providers/HabitsTrackerProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const SummaryPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
-
   const [endDate, setEndDate] = useState<any>(null);
-
   const [viewType, setViewType] = useState(viewTypeOptions[0].value);
-
   const [data, setData] = useState();
-
   const { getDailyHabitsData } = HabitsProvider();
+  const { setLoading } = useFloatingLoader();
 
   const {
     getDailyHabitsTrackers,
     getDailyHabitsTrackersData,
+    getDailyHabitsTrackersLoading,
     createHabitsTrackerData,
     createHabitsTracker,
     deleteHabitsTrackerData,
     deleteHabitsTracker,
   } = HabitsTrackerProvider();
 
-  const { getAllTodosGroupedByDateData, getAllTodosGroupedByDate } =
-    TodosProvider();
+  const {
+    getAllTodosGroupedByDateData,
+    getAllTodosGroupedByDate,
+    getAllTodosGroupedByDateLoading,
+  } = TodosProvider();
 
-  const { getAllQaasGroupedByDateData, getAllQaasGroupedByDate } =
-    QaasProvider();
+  const {
+    getAllQaasGroupedByDateData,
+    getAllQaasGroupedByDate,
+    getAllQaasGroupedByDateLoading,
+  } = QaasProvider();
 
   const {
     getAllBlogsGroupedByDateData,
     getAllBlogsGroupedByDate,
+    getAllBlogsGroupedByDateDataLoading,
     createBlogData,
     createBlog,
     editBlogData,
@@ -51,6 +57,20 @@ const SummaryPage = () => {
     removeBlogData,
     removeBlog,
   } = BlogsProvider();
+
+  useEffect(() => {
+    setLoading(
+      getAllBlogsGroupedByDateDataLoading ||
+        getAllTodosGroupedByDateLoading ||
+        getAllQaasGroupedByDateLoading ||
+        getDailyHabitsTrackersLoading,
+    );
+  }, [
+    getAllBlogsGroupedByDateDataLoading,
+    getAllTodosGroupedByDateLoading,
+    getAllQaasGroupedByDateLoading,
+    getDailyHabitsTrackersLoading,
+  ]);
 
   useEffect(() => {
     if (startDate && endDate) {

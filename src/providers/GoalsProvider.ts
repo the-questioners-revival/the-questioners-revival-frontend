@@ -6,7 +6,8 @@ export default function GoalsProvider() {
   const {
     data: getGoalsFromToData,
     refetch: getGoalsFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getGoalsFromToLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     GoalsApi.getGoalsFromTo,
     null,
     false,
@@ -30,6 +31,7 @@ export default function GoalsProvider() {
   return {
     getGoalsFromToData,
     getGoalsFromTo,
+    getGoalsFromToLoading,
     createGoalData,
     createGoal,
     editGoalData,

@@ -6,7 +6,8 @@ export default function HabitsProvider() {
   const {
     data: habitsData,
     refetch: getLatestHabits,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getLatestHabitsLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     HabitsApi.getLatestHabits,
   );
 
@@ -39,6 +40,7 @@ export default function HabitsProvider() {
   return {
     habitsData,
     getLatestHabits,
+    getLatestHabitsLoading,
     createHabitData,
     createHabit,
     editHabitData,
@@ -46,6 +48,6 @@ export default function HabitsProvider() {
     deleteHabitData,
     deleteHabit,
     getDailyHabitsData,
-    getDailyHabits
+    getDailyHabits,
   };
 }

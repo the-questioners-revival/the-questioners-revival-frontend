@@ -14,6 +14,7 @@ import EditGoalForm from '../Goals/EditGoalForm';
 import moment from 'moment';
 import GoalListItem from '../Goals/GoalListItem';
 import GoalsProvider from '../../providers/GoalsProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const GoalsList = ({
   startDate,
@@ -29,9 +30,12 @@ const GoalsList = ({
   const [isOpenEditGoalModal, setIsOpenEditGoalModal] = useState(false);
   const [isOpenDeleteGoalModal, setIsOpenDeleteGoalModal] = useState(false);
 
+  const { setLoading } = useFloatingLoader();
+
   const {
     getGoalsFromToData,
     getGoalsFromTo,
+    getGoalsFromToLoading,
     createGoalData,
     createGoal,
     editGoalData,
@@ -39,6 +43,10 @@ const GoalsList = ({
     removeGoalData,
     removeGoal,
   } = GoalsProvider();
+
+  useEffect(() => {
+    setLoading(getGoalsFromToLoading);
+  }, [getGoalsFromToLoading]);
 
   useEffect(() => {
     if (createGoalData || editGoalData || removeGoalData) {

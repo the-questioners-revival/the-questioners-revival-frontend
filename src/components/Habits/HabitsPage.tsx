@@ -31,6 +31,7 @@ import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import ProtectedPage from '../ProtectedPage';
 import HabitsProvider from '../../providers/HabitsProvider';
 import HabitsTrackerProvider from '../../providers/HabitsTrackerProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 export const viewTypeOptions = [
   {
@@ -60,10 +61,12 @@ const HabitsPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
   const [endDate, setEndDate] = useState<any>(null);
   const [viewType, setViewType] = useState(viewTypeOptions[0].value);
+  const { setLoading } = useFloatingLoader();
 
   const {
     habitsData,
     getLatestHabits,
+    getLatestHabitsLoading,
     createHabitData,
     createHabit,
     editHabitData,
@@ -75,11 +78,16 @@ const HabitsPage = () => {
   const {
     habitsTrackers,
     getHabitsTrackersFromTo,
+    getHabitsTrackersFromToLoading,
     createHabitsTrackerData,
     createHabitsTracker,
     deleteHabitsTrackerData,
     deleteHabitsTracker,
   } = HabitsTrackerProvider();
+
+  useEffect(() => {
+    setLoading(getLatestHabitsLoading || getHabitsTrackersFromToLoading);
+  }, [getLatestHabitsLoading, getHabitsTrackersFromToLoading]);
 
   useEffect(() => {
     if (createHabitsTrackerData || deleteHabitsTrackerData) {

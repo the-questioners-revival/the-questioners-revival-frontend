@@ -5,14 +5,18 @@ import { useEffect, useState } from 'react';
 import CustomLayout from '../layout/CustomLayout';
 import ProtectedPage from '../ProtectedPage';
 import TodosProvider from '../../providers/TodosProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const TodoPage = () => {
   const [status, setStatus] = useState('inprogress');
   const [priority, setPriority] = useState();
   const [type, setType] = useState();
+  const { setLoading } = useFloatingLoader();
+
   const {
     todoData,
     todoRefetch,
+    getLatestTodosLoading,
     createTodo,
     createTodoData,
     removeTodoData,
@@ -46,6 +50,10 @@ const TodoPage = () => {
     removeTodoData,
     editTodoData,
   ]);
+
+  useEffect(() => {
+    setLoading(getLatestTodosLoading);
+  }, [getLatestTodosLoading]);
 
   return (
     <ProtectedPage>

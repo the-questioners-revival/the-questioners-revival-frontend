@@ -15,6 +15,7 @@ import EditReviewForm from '../Reviews/EditReviewForm';
 import moment from 'moment';
 import ReviewListItem from '../Reviews/ReviewListItem';
 import ReviewsProvider from '../../providers/ReviewsProvider';
+import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const ReviewsList = ({
   startDate,
@@ -30,9 +31,12 @@ const ReviewsList = ({
   const [isOpenEditReviewModal, setIsOpenEditReviewModal] = useState(false);
   const [isOpenDeleteReviewModal, setIsOpenDeleteReviewModal] = useState(false);
 
+  const { setLoading } = useFloatingLoader();
+
   const {
     getReviewsFromToData,
     getReviewsFromTo,
+    getReviewsFromToLoading,
     createReviewData,
     createReview,
     editReviewData,
@@ -40,6 +44,10 @@ const ReviewsList = ({
     removeReviewData,
     removeReview,
   } = ReviewsProvider();
+
+  useEffect(() => {
+    setLoading(getReviewsFromToLoading);
+  }, [getReviewsFromToLoading]);
 
   useEffect(() => {
     if (createReviewData || editReviewData || removeReviewData) {

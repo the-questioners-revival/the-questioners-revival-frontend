@@ -74,7 +74,6 @@ const GoalsPage = () => {
         {viewType === viewTypeOptions[2].value ? (
           <YearView
             onChange={(val: any) => {
-              console.log('val: ', val);
               setStartDate(val?.startDate);
               setEndDate(val?.endDate);
             }}

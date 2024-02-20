@@ -6,7 +6,8 @@ export default function QaasProvider() {
   const {
     data: qaasData,
     refetch: qaasRefetch,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getLatestQaasLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     QaaApi.getLatestQaas,
     null,
     false,
@@ -30,7 +31,8 @@ export default function QaasProvider() {
   const {
     data: getAllQaasGroupedByDateData,
     refetch: getAllQaasGroupedByDate,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getAllQaasGroupedByDateLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     QaaApi.getAllQaasGroupedByDate,
     null,
     false,
@@ -39,6 +41,7 @@ export default function QaasProvider() {
   return {
     qaasData,
     qaasRefetch,
+    getLatestQaasLoading,
     createQaaData,
     createQaa,
     removeQaaData,
@@ -47,5 +50,6 @@ export default function QaasProvider() {
     editQaa,
     getAllQaasGroupedByDateData,
     getAllQaasGroupedByDate,
+    getAllQaasGroupedByDateLoading,
   };
 }

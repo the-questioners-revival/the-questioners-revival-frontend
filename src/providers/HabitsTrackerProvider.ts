@@ -6,7 +6,8 @@ export default function HabitsTrackerProvider() {
   const {
     data: habitsTrackers,
     refetch: getHabitsTrackersFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getHabitsTrackersFromToLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     HabitsTrackerApi.getHabitsTrackersFromTo,
     null,
     false,
@@ -29,18 +30,21 @@ export default function HabitsTrackerProvider() {
   const {
     data: getDailyHabitsTrackersData,
     refetch: getDailyHabitsTrackers,
-  }: { data: any; refetch: Function } = useAbstractProvider(
+    loading: getDailyHabitsTrackersLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     HabitsTrackerApi.getDailyHabitsTrackers,
   );
 
   return {
     habitsTrackers,
     getHabitsTrackersFromTo,
+    getHabitsTrackersFromToLoading,
     createHabitsTrackerData,
     createHabitsTracker,
     deleteHabitsTrackerData,
     deleteHabitsTracker,
     getDailyHabitsTrackersData,
     getDailyHabitsTrackers,
+    getDailyHabitsTrackersLoading,
   };
 }
