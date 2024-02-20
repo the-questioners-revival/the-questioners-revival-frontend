@@ -24,6 +24,7 @@ const SearchPage = () => {
   const [search, setSearch] = useState<string>();
   const [selectedItem, setSelectedItem] = useState<any>();
   const [text, setText] = useState<string>();
+  const [answer, setAnswer] = useState<string>();
   const {
     data: searchData,
     refetch: searchFetch,
@@ -54,6 +55,9 @@ const SearchPage = () => {
   useEffect(() => {
     if (selectedItem) {
       setText(selectedItem.text);
+      if (selectedItem.table_name === 'qaas') {
+        setAnswer(selectedItem.answer);
+      }
     }
   }, [selectedItem]);
 
@@ -61,15 +65,15 @@ const SearchPage = () => {
     if (!selectedItem) return;
     const { id, table_name, column_name } = selectedItem;
     if (table_name === 'todos') {
-      editTodo({ id: id, [column_name]: text });
+      editTodo({ id, [column_name]: text });
     } else if (table_name === 'qaas') {
-      editQaa({ id: id, [column_name]: text });
+      editQaa({ id, [column_name]: text, answer });
     } else if (table_name === 'blogs') {
-      editBlog({ id: id, [column_name]: text });
+      editBlog({ id, [column_name]: text });
     } else if (table_name === 'goals') {
-      editGoal({ id: id, [column_name]: text });
+      editGoal({ id, [column_name]: text });
     } else if (table_name === 'reviews') {
-      editReview({ id: id, [column_name]: text });
+      editReview({ id, [column_name]: text });
     }
   };
 
@@ -128,21 +132,49 @@ const SearchPage = () => {
                 ))}
               </Box>
               <Box width="70%" ml="30px">
-                <Textarea
-                  className="input"
-                  placeholder="text"
-                  rows={15}
-                  textColor="white"
-                  color="white"
-                  fontWeight="600"
-                  border="2px solid white"
-                  value={text}
-                  onChange={(evt) => setText(evt.target.value)}
-                />
+                {selectedItem?.table_name === 'qaas' ? (
+                  <>
+                    <Input
+                      className="input"
+                      placeholder="Question"
+                      border="2px solid white"
+                      fontWeight="600"
+                      fontSize="lg"
+                      textColor="white"
+                      mb="10px"
+                      color="white"
+                      onChange={(evt) => setText(evt.target.value)}
+                      value={text}
+                    />
+                    <Textarea
+                      className="input"
+                      placeholder="text"
+                      rows={15}
+                      textColor="white"
+                      color="white"
+                      fontWeight="600"
+                      border="2px solid white"
+                      value={answer}
+                      onChange={(evt) => setAnswer(evt.target.value)}
+                    />
+                  </>
+                ) : (
+                  <Textarea
+                    className="input"
+                    placeholder="text"
+                    rows={15}
+                    textColor="white"
+                    color="white"
+                    fontWeight="600"
+                    border="2px solid white"
+                    value={text}
+                    onChange={(evt) => setText(evt.target.value)}
+                  />
+                )}
+
                 <Button
                   display="flex"
                   colorScheme="teal"
-                  isLoading={searchLoading}
                   type="submit"
                   onClick={() => editItem()}
                   mt="10px"
