@@ -14,6 +14,11 @@ import CustomLayout from '../layout/CustomLayout';
 import ProtectedPage from '../ProtectedPage';
 import moment from 'moment';
 import './SearchPage.css';
+import TodosProvider from '../../providers/TodosProvider';
+import QaasProvider from '../../providers/QaasProvider';
+import BlogsProvider from '../../providers/BlogsProvider';
+import GoalsProvider from '../../providers/GoalsProvider';
+import ReviewsProvider from '../../providers/ReviewsProvider';
 
 const SearchPage = () => {
   const [search, setSearch] = useState<string>();
@@ -30,6 +35,16 @@ const SearchPage = () => {
   );
   console.log('searchLoading: ', searchLoading);
 
+  const { editTodo, editTodoData } = TodosProvider();
+
+  const { editQaa, editQaaData } = QaasProvider();
+
+  const { editBlog, editBlogData } = BlogsProvider();
+
+  const { editGoal, editGoalData } = GoalsProvider();
+
+  const { editReview, editReviewData } = ReviewsProvider();
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       searchFetch(search);
@@ -41,13 +56,34 @@ const SearchPage = () => {
       setText(selectedItem.text);
     }
   }, [selectedItem]);
+
+  const editItem = () => {
+    if (!selectedItem) return;
+    const { id, table_name, column_name } = selectedItem;
+    if (table_name === 'todos') {
+      editTodo({ id: id, [column_name]: text });
+    } else if (table_name === 'qaas') {
+      editQaa({ id: id, [column_name]: text });
+    } else if (table_name === 'blogs') {
+      editBlog({ id: id, [column_name]: text });
+    } else if (table_name === 'goals') {
+      editGoal({ id: id, [column_name]: text });
+    } else if (table_name === 'reviews') {
+      editReview({ id: id, [column_name]: text });
+    }
+  };
+
+  useEffect(() => {
+    searchFetch(search);
+  }, [editTodoData, editQaaData, editBlogData, editGoalData, editReviewData]);
+
   return (
     <ProtectedPage>
       <CustomLayout>
         <Box mt="20px">
           <InputGroup>
             <Input
-              className="search_input"
+              className="input"
               placeholder="Search phrase"
               border="2px solid white"
               fontWeight="600"
@@ -93,12 +129,26 @@ const SearchPage = () => {
               </Box>
               <Box width="70%" ml="30px">
                 <Textarea
+                  className="input"
                   placeholder="text"
                   rows={15}
+                  textColor="white"
+                  color="white"
+                  fontWeight="600"
                   border="2px solid white"
                   value={text}
                   onChange={(evt) => setText(evt.target.value)}
                 />
+                <Button
+                  display="flex"
+                  colorScheme="teal"
+                  isLoading={searchLoading}
+                  type="submit"
+                  onClick={() => editItem()}
+                  mt="10px"
+                >
+                  Submit
+                </Button>
               </Box>
             </Flex>
           ) : null}

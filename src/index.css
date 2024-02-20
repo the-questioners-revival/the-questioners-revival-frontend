@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-.search_input::placeholder {
+.input::placeholder {
   color: white !important; /* Placeholder color */
   font-weight: 600;
 }
