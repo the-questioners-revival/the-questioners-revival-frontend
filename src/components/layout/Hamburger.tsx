@@ -53,6 +53,10 @@ function Hamburger({ logout, user }: { logout: Function; user: any }) {
                 />
               </Button>
 
+              <Button variant="ghost" onClick={() => handleClose('/search')}>
+                <SearchIcon cursor="pointer" fontSize="20px" />
+              </Button>
+
               {HEADER.map((header) => {
                 return (
                   <Button
@@ -65,10 +69,6 @@ function Hamburger({ logout, user }: { logout: Function; user: any }) {
               })}
               <Button variant="ghost" onClick={() => logout()}>
                 {user ? 'Log out' : 'Login'}
-              </Button>
-
-              <Button variant="ghost" onClick={() => handleClose('/search')}>
-                <SearchIcon cursor="pointer" fontSize="20px" />
               </Button>
             </Flex>
           </DrawerBody>
