@@ -14,17 +14,8 @@ import {
 import { HamburgerIcon, SearchIcon } from '@chakra-ui/icons';
 import { HEADER } from './CustomHeader';
 import { useNavigate } from 'react-router-dom';
-import { MouseEventHandler } from 'react';
 
-function Hamburger({
-  handleSearchOpen,
-  logout,
-  user,
-}: {
-  handleSearchOpen: MouseEventHandler<HTMLButtonElement>;
-  logout: Function;
-  user: any;
-}) {
+function Hamburger({ logout, user }: { logout: Function; user: any }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
@@ -76,7 +67,7 @@ function Hamburger({
                 {user ? 'Log out' : 'Login'}
               </Button>
 
-              <Button variant="ghost" onClick={handleSearchOpen}>
+              <Button variant="ghost" onClick={() => handleClose('/search')}>
                 <SearchIcon cursor="pointer" fontSize="20px" />
               </Button>
             </Flex>

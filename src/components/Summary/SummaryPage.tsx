@@ -1,14 +1,7 @@
 import { Box, Grid, GridItem, Select, Text } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import SummaryList from './SummaryList';
-import useAbstractProvider from '../../providers/AbstractProvider';
-import TodoApi from '../../api/todo';
-import QaaApi from '../../api/qaa';
-import BlogApi from '../../api/blog';
 import { useEffect, useState } from 'react';
-import useAbstractMutator from '../../providers/AbstractMutator';
-import HabitsApi from '../../api/habit';
-import HabitsTrackerApi from '../../api/habitsTracker';
 import WeekView from '../Habits/WeekView';
 import MonthView from '../Habits/MonthView';
 import { viewTypeOptions } from '../Habits/HabitsPage';
@@ -16,6 +9,11 @@ import GoalsListSimple from './GoalsListSimple';
 import YearView from '../Habits/YearView';
 import ReviewsListSimple from './ReviewsListSimple';
 import ProtectedPage from '../ProtectedPage';
+import BlogsProvider from '../../providers/BlogsProvider';
+import QaasProvider from '../../providers/QaasProvider';
+import TodosProvider from '../../providers/TodosProvider';
+import HabitsProvider from '../../providers/HabitsProvider';
+import HabitsTrackerProvider from '../../providers/HabitsTrackerProvider';
 
 const SummaryPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
@@ -26,75 +24,33 @@ const SummaryPage = () => {
 
   const [data, setData] = useState();
 
-  const {
-    data: getDailyHabitsData,
-    refetch: getDailyHabits,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    HabitsApi.getDailyHabits,
-  );
+  const { getDailyHabitsData } = HabitsProvider();
 
   const {
-    data: getDailyHabitsTrackersData,
-    refetch: getDailyHabitsTrackers,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    HabitsTrackerApi.getDailyHabitsTrackers,
-  );
+    getDailyHabitsTrackers,
+    getDailyHabitsTrackersData,
+    createHabitsTrackerData,
+    createHabitsTracker,
+    deleteHabitsTrackerData,
+    deleteHabitsTracker,
+  } = HabitsTrackerProvider();
+
+  const { getAllTodosGroupedByDateData, getAllTodosGroupedByDate } =
+    TodosProvider();
+
+  const { getAllQaasGroupedByDateData, getAllQaasGroupedByDate } =
+    QaasProvider();
 
   const {
-    data: getAllTodosGroupedByDateData,
-    refetch: getAllTodosGroupedByDate,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    TodoApi.getAllTodosGroupedByDate,
-    null,
-    false,
-  );
-
-  const {
-    data: getAllQaasGroupedByDateData,
-    refetch: getAllQaasGroupedByDate,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    QaaApi.getAllQaasGroupedByDate,
-    null,
-    false,
-  );
-
-  const {
-    data: getAllBlogsGroupedByDateData,
-    refetch: getAllBlogsGroupedByDate,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    BlogApi.getAllBlogsGroupedByDate,
-    null,
-    false,
-  );
-
-  const {
-    data: createBlogData,
-    mutate: createBlog,
-  }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.createBlog);
-
-  const {
-    data: editBlogData,
-    mutate: editBlog,
-  }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.editBlog);
-
-  const {
-    data: removeBlogData,
-    mutate: removeBlog,
-  }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.removeBlog);
-
-  const {
-    data: createHabitsTrackerData,
-    mutate: createHabitsTracker,
-  }: { data: any; mutate: Function } = useAbstractMutator(
-    HabitsTrackerApi.createHabitsTracker,
-  );
-
-  const {
-    data: deleteHabitsTrackerData,
-    mutate: deleteHabitsTracker,
-  }: { data: any; mutate: Function } = useAbstractMutator(
-    HabitsTrackerApi.deleteHabitsTracker,
-  );
+    getAllBlogsGroupedByDateData,
+    getAllBlogsGroupedByDate,
+    createBlogData,
+    createBlog,
+    editBlogData,
+    editBlog,
+    removeBlogData,
+    removeBlog,
+  } = BlogsProvider();
 
   useEffect(() => {
     if (startDate && endDate) {

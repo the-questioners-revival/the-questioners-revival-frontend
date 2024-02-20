@@ -18,10 +18,7 @@ import {
   ModalBody,
 } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
-import { MONTHS } from '../../helpers/months';
 import useAbstractProvider from '../../providers/AbstractProvider';
-import HabitsApi from '../../api/habit';
-import HabitsTrackerApi from '../../api/habitsTracker';
 import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
 import CreateHabitForm from '../Qaa/CreateHabitForm';
@@ -34,6 +31,8 @@ import CustomModal from '../custom/CustomModal';
 import EditHabitForm from './EditHabitForm';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import ProtectedPage from '../ProtectedPage';
+import HabitsProvider from '../../providers/HabitsProvider';
+import HabitsTrackerProvider from '../../providers/HabitsTrackerProvider';
 
 export const viewTypeOptions = [
   {
@@ -65,53 +64,24 @@ const HabitsPage = () => {
   const [viewType, setViewType] = useState(viewTypeOptions[0].value);
 
   const {
-    data: habits,
-    refetch: getLatestHabits,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    HabitsApi.getLatestHabits,
-  );
+    habitsData,
+    getLatestHabits,
+    createHabitData,
+    createHabit,
+    editHabitData,
+    editHabit,
+    deleteHabitData,
+    deleteHabit,
+  } = HabitsProvider();
 
   const {
-    data: createHabitData,
-    mutate: createHabit,
-  }: { data: any; mutate: Function } = useAbstractMutator(
-    HabitsApi.createHabit,
-  );
-
-  const {
-    data: editHabitData,
-    mutate: editHabit,
-  }: { data: any; mutate: Function } = useAbstractMutator(HabitsApi.editHabit);
-
-  const {
-    data: deleteHabitData,
-    mutate: deleteHabit,
-  }: { data: any; mutate: Function } = useAbstractMutator(
-    HabitsApi.removeHabit,
-  );
-
-  const {
-    data: habitsTrackers,
-    refetch: getHabitsTrackersFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    HabitsTrackerApi.getHabitsTrackersFromTo,
-    null,
-    false,
-  );
-
-  const {
-    data: createHabitsTrackerData,
-    mutate: createHabitsTracker,
-  }: { data: any; mutate: Function } = useAbstractMutator(
-    HabitsTrackerApi.createHabitsTracker,
-  );
-
-  const {
-    data: deleteHabitsTrackerData,
-    mutate: deleteHabitsTracker,
-  }: { data: any; mutate: Function } = useAbstractMutator(
-    HabitsTrackerApi.deleteHabitsTracker,
-  );
+    habitsTrackers,
+    getHabitsTrackersFromTo,
+    createHabitsTrackerData,
+    createHabitsTracker,
+    deleteHabitsTrackerData,
+    deleteHabitsTracker,
+  } = HabitsTrackerProvider();
 
   useEffect(() => {
     if (createHabitsTrackerData || deleteHabitsTrackerData) {
@@ -168,7 +138,7 @@ const HabitsPage = () => {
             {moment(weekStart).date()} -{' '}
             {getDayOfWeekString(new Date(weekStart))}
           </Td>
-          {habits?.map((habit: any) => {
+          {habitsData?.map((habit: any) => {
             const foundHabitTracker = habitsTrackers?.find(
               (habitTracker: any) => {
                 const habitTrackerDate = habitTracker.created_at;
@@ -278,7 +248,7 @@ const HabitsPage = () => {
                 >
                   Days
                 </Th>
-                {habits?.map((habit: any) => (
+                {habitsData?.map((habit: any) => (
                   <Th
                     key={habit.id}
                     style={{ writingMode: 'vertical-rl' }}

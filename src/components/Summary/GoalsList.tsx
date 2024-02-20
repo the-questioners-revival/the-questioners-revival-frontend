@@ -1,25 +1,19 @@
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
-  Flex,
   Heading,
   ModalBody,
   ModalCloseButton,
   ModalHeader,
-  Tag,
-  Text,
 } from '@chakra-ui/react';
 import CustomModal from '../custom/CustomModal';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import { useEffect, useState } from 'react';
 import CreateGoalForm from '../Goals/CreateGoalForm';
 import EditGoalForm from '../Goals/EditGoalForm';
-import GoalsApi from '../../api/goal';
-import useAbstractMutator from '../../providers/AbstractMutator';
-import useAbstractProvider from '../../providers/AbstractProvider';
 import moment from 'moment';
 import GoalListItem from '../Goals/GoalListItem';
+import GoalsProvider from '../../providers/GoalsProvider';
 
 const GoalsList = ({
   startDate,
@@ -36,28 +30,15 @@ const GoalsList = ({
   const [isOpenDeleteGoalModal, setIsOpenDeleteGoalModal] = useState(false);
 
   const {
-    data: getGoalsFromToData,
-    refetch: getGoalsFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    GoalsApi.getGoalsFromTo,
-    null,
-    false,
-  );
-
-  const {
-    data: createGoalData,
-    mutate: createGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.createGoal);
-
-  const {
-    data: editGoalData,
-    mutate: editGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.editGoal);
-
-  const {
-    data: removeGoalData,
-    mutate: removeGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.removeGoal);
+    getGoalsFromToData,
+    getGoalsFromTo,
+    createGoalData,
+    createGoal,
+    editGoalData,
+    editGoal,
+    removeGoalData,
+    removeGoal,
+  } = GoalsProvider();
 
   useEffect(() => {
     if (createGoalData || editGoalData || removeGoalData) {

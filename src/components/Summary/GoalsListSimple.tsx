@@ -1,10 +1,8 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import GoalsApi from '../../api/goal';
-import useAbstractProvider from '../../providers/AbstractProvider';
 import moment from 'moment';
 import GoalListItemSimple from '../Goals/GoalListItemSimple';
-import useAbstractMutator from '../../providers/AbstractMutator';
+import GoalsProvider from '../../providers/GoalsProvider';
 
 const GoalsListSimple = ({
   startDate,
@@ -15,19 +13,8 @@ const GoalsListSimple = ({
   endDate: any;
   type: string;
 }) => {
-  const {
-    data: getGoalsFromToData,
-    refetch: getGoalsFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    GoalsApi.getGoalsFromTo,
-    null,
-    false,
-  );
-
-  const {
-    data: editGoalData,
-    mutate: editGoal,
-  }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.editGoal);
+  const { getGoalsFromToData, getGoalsFromTo, editGoalData, editGoal } =
+    GoalsProvider();
 
   useEffect(() => {
     if (editGoalData) {

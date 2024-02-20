@@ -1,4 +1,3 @@
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -7,19 +6,15 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalHeader,
-  Tag,
-  Text,
 } from '@chakra-ui/react';
 import CustomModal from '../custom/CustomModal';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import { useEffect, useState } from 'react';
 import CreateReviewForm from '../Reviews/CreateReviewForm';
 import EditReviewForm from '../Reviews/EditReviewForm';
-import ReviewsApi from '../../api/review';
-import useAbstractMutator from '../../providers/AbstractMutator';
-import useAbstractProvider from '../../providers/AbstractProvider';
 import moment from 'moment';
 import ReviewListItem from '../Reviews/ReviewListItem';
+import ReviewsProvider from '../../providers/ReviewsProvider';
 
 const ReviewsList = ({
   startDate,
@@ -36,28 +31,15 @@ const ReviewsList = ({
   const [isOpenDeleteReviewModal, setIsOpenDeleteReviewModal] = useState(false);
 
   const {
-    data: getReviewsFromToData,
-    refetch: getReviewsFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    ReviewsApi.getReviewsFromTo,
-    null,
-    false,
-  );
-
-  const {
-    data: createReviewData,
-    mutate: createReview,
-  }: { data: any; mutate: Function } = useAbstractMutator(ReviewsApi.createReview);
-
-  const {
-    data: editReviewData,
-    mutate: editReview,
-  }: { data: any; mutate: Function } = useAbstractMutator(ReviewsApi.editReview);
-
-  const {
-    data: removeReviewData,
-    mutate: removeReview,
-  }: { data: any; mutate: Function } = useAbstractMutator(ReviewsApi.removeReview);
+    getReviewsFromToData,
+    getReviewsFromTo,
+    createReviewData,
+    createReview,
+    editReviewData,
+    editReview,
+    removeReviewData,
+    removeReview,
+  } = ReviewsProvider();
 
   useEffect(() => {
     if (createReviewData || editReviewData || removeReviewData) {

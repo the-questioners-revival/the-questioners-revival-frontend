@@ -82,12 +82,18 @@ const CustomHeader = () => {
           ))}
         </Box>
         <Flex alignItems="center">
-          <SearchIcon
-            fontSize="20px"
-            onClick={handleSearchOpen}
-            marginRight="20px"
-            cursor="pointer"
-          />
+          <ChakraLink
+            as={Link}
+            to="/search"
+            fontSize="lg"
+          >
+            <SearchIcon
+              fontSize="20px"
+              
+              marginRight="20px"
+              cursor="pointer"
+            />
+          </ChakraLink>
 
           <ChakraLink
             as={Link}
@@ -104,12 +110,10 @@ const CustomHeader = () => {
       </Flex>
       <Flex display={{ base: 'flex', md: 'none' }}>
         <Hamburger
-          handleSearchOpen={handleSearchOpen}
           logout={logout}
           user={user}
         />
       </Flex>
-      <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </Flex>
   );
 };

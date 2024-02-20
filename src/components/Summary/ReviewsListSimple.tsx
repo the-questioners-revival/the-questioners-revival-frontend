@@ -1,10 +1,8 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import ReviewsApi from '../../api/review';
-import useAbstractProvider from '../../providers/AbstractProvider';
 import moment from 'moment';
 import ReviewListItemSimple from '../Reviews/ReviewListItemSimple';
-import useAbstractMutator from '../../providers/AbstractMutator';
+import ReviewsProvider from '../../providers/ReviewsProvider';
 
 const ReviewsListSimple = ({
   startDate,
@@ -15,21 +13,8 @@ const ReviewsListSimple = ({
   endDate: any;
   type: string;
 }) => {
-  const {
-    data: getReviewsFromToData,
-    refetch: getReviewsFromTo,
-  }: { data: any; refetch: Function } = useAbstractProvider(
-    ReviewsApi.getReviewsFromTo,
-    null,
-    false,
-  );
-
-  const {
-    data: editReviewData,
-    mutate: editReview,
-  }: { data: any; mutate: Function } = useAbstractMutator(
-    ReviewsApi.editReview,
-  );
+  const { getReviewsFromToData, getReviewsFromTo, editReviewData, editReview } =
+    ReviewsProvider();
 
   useEffect(() => {
     if (editReviewData) {

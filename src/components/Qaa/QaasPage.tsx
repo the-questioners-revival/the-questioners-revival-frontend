@@ -4,39 +4,31 @@ import useAbstractMutator from '../../providers/AbstractMutator';
 import { useEffect, useState } from 'react';
 import CustomLayout from '../layout/CustomLayout';
 import CreateQaaForm from './CreateQaaForm';
-import QaaApi from '../../api/qaa';
 import { Box } from '@chakra-ui/react';
 import ProtectedPage from '../ProtectedPage';
+import QaasProvider from '../../providers/QaasProvider';
 
 const QaaPage = () => {
   const [showRemoved, setShowRemoved] = useState<string>('false');
   const [type, setType] = useState<string>();
-  // Updated component name
-  const { data, refetch }: { data: any; refetch: Function } =
-    useAbstractProvider(QaaApi.getLatestQaas, { type, showRemoved }); // Updated provider function
-
   const {
-    data: createQaaData,
-    mutate: createQaa,
-  }: { data: any; mutate: Function } = useAbstractMutator(QaaApi.createQaa); // Updated provider function
-
-  const {
-    data: removeQaaData,
-    mutate: removeQaa,
-  }: { data: any; mutate: Function } = useAbstractMutator(QaaApi.removeQaa); // Updated provider function
-
-  const {
-    data: editQaaData,
-    mutate: editQaa,
-  }: { data: any; mutate: Function } = useAbstractMutator(QaaApi.editQaa);
+    qaasData,
+    qaasRefetch,
+    createQaaData,
+    createQaa,
+    removeQaaData,
+    removeQaa,
+    editQaaData,
+    editQaa,
+  } = QaasProvider();
 
   useEffect(() => {
-    refetch({ type, showRemoved });
+    qaasRefetch({ type, showRemoved });
   }, [type, showRemoved]);
 
   useEffect(() => {
     if (createQaaData || removeQaaData || editQaaData) {
-      refetch({ type, showRemoved });
+      qaasRefetch({ type, showRemoved });
     }
   }, [createQaaData, removeQaaData, editQaaData]);
 
@@ -44,10 +36,10 @@ const QaaPage = () => {
     <ProtectedPage>
       <CustomLayout>
         <Box paddingTop="20px">
-          <CreateQaaForm createQaa={createQaa} /> {/* Updated component name */}
-          <QaaList // Updated component name
-            qaas={data} // Updated variable name
-            removeQaa={removeQaa} // Updated function name
+          <CreateQaaForm createQaa={createQaa} />{' '}
+          <QaaList
+            qaas={qaasData}
+            removeQaa={removeQaa}
             type={type}
             setType={setType}
             showRemoved={showRemoved}
