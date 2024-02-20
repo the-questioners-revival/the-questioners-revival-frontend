@@ -78,7 +78,15 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    searchFetch(search);
+    if (
+      editTodoData ||
+      editQaaData ||
+      editBlogData ||
+      editGoalData ||
+      editReviewData
+    ) {
+      searchFetch(search);
+    }
   }, [editTodoData, editQaaData, editBlogData, editGoalData, editReviewData]);
 
   return (
