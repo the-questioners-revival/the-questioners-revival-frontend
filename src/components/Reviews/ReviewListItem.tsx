@@ -1,5 +1,6 @@
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Flex, Tag, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 
 const ReviewListItem = ({
   review,
@@ -12,11 +13,20 @@ const ReviewListItem = ({
   setIsOpenEditReviewModal: Function;
   setIsOpenDeleteReviewModal: Function;
 }) => {
+  const [showReviewText, setShowReviewText] = useState(false);
+
   return (
     <Flex justifyContent="space-between">
       <Flex>
-        <Text marginRight="10px" whiteSpace="break-spaces">
-          {review.text}
+        <Text
+          marginRight="10px"
+          fontSize="md"
+          whiteSpace="break-spaces"
+          wordBreak="break-word"
+          className={showReviewText ? '' : 'blogText'}
+          onClick={() => setShowReviewText(!showReviewText)}
+        >
+          {review?.text}
         </Text>
         <Box>
           <Tag>{review.type}</Tag>

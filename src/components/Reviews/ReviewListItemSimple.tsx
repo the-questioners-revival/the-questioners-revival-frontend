@@ -1,4 +1,5 @@
 import { Box, Flex, Switch, Tag, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 
 const ReviewListItemSimple = ({
   review,
@@ -7,6 +8,8 @@ const ReviewListItemSimple = ({
   review: any;
   editReview: Function;
 }) => {
+  const [showReviewText, setShowReviewText] = useState(false);
+
   return (
     <Flex
       justifyContent="space-between"
@@ -16,8 +19,15 @@ const ReviewListItemSimple = ({
       padding="5px 10px"
     >
       <Flex>
-        <Text marginRight="10px" whiteSpace="break-spaces">
-          {review.text}
+  
+        <Text
+          fontSize="md"
+          whiteSpace="break-spaces"
+          wordBreak="break-word"
+          className={showReviewText ? '' : 'blogText'}
+          onClick={() => setShowReviewText(!showReviewText)}
+        >
+          {review?.text}
         </Text>
         <Box>
           <Tag h="fit-content">{review.type}</Tag>
