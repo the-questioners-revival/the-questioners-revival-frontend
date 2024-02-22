@@ -1,21 +1,7 @@
 import { Box, Button, Container } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
-
-const options = [
-  {
-    name: 'Personal',
-    value: 'personal',
-  },
-  {
-    name: 'Work',
-    value: 'work',
-  },
-  {
-    name: 'Project',
-    value: 'project',
-  },
-];
+import { qaaTypeOptions } from './CreateQaaForm';
 
 const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
   // Updated component name
@@ -40,7 +26,7 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
               <CustomField name="question" type="input" />
               <CustomField name="answer" type="textArea" />
               <CustomField name="link" type="input" required={false} />
-              <CustomField name="type" type="select" options={options} />
+              <CustomField name="type" type="select" options={qaaTypeOptions} />
 
               <Button
                 mt={4}
