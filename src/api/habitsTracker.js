@@ -9,15 +9,20 @@ async function getAllHabitsTrackers() {
 }
 
 async function getHabitsTrackersFromTo(data) {
-  const res = await API.get(`${BACKEND_URL}/habits-tracker/fromTo?from=${data?.from}&to=${data?.to}`, true);
+  const res = await API.get(
+    `${BACKEND_URL}/habits-tracker/fromTo?from=${data?.from}&to=${data?.to}`,
+    true,
+  );
   return res;
 }
 
 async function getDailyHabitsTrackers() {
-  const res = await API.get(`${BACKEND_URL}/habits-tracker/dailyHabitsTrackers`, true);
+  const res = await API.get(
+    `${BACKEND_URL}/habits-tracker/dailyHabitsTrackers`,
+    true,
+  );
   return res;
 }
-
 
 async function getHabitsTrackersGroupedByDate() {
   const res = await API.get(
@@ -28,11 +33,7 @@ async function getHabitsTrackersGroupedByDate() {
 }
 
 async function deleteHabitsTracker(id) {
-  const res = await API.remove(
-    `${BACKEND_URL}/habits-tracker/${id}`,
-    null,
-    true,
-  );
+  const res = await API.remove(`${BACKEND_URL}/habits-tracker/${id}`, true);
   return res;
 }
 
@@ -47,5 +48,5 @@ export default {
   deleteHabitsTracker,
   createHabitsTracker,
   getDailyHabitsTrackers,
-  getHabitsTrackersFromTo
+  getHabitsTrackersFromTo,
 };
