@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import { sanitize } from 'dompurify';
 
 const Blog = ({
   blog,
@@ -18,15 +19,13 @@ const Blog = ({
   return (
     <Flex justifyContent="space-between">
       <Box>
-        <Text
-          fontSize="md"
-          whiteSpace="break-spaces"
-          wordBreak="break-word"
+        <div
           className={showBlogText ? '' : 'blogText'}
           onClick={() => setShowBlogText(!showBlogText)}
-        >
-          {blog?.text}
-        </Text>
+          dangerouslySetInnerHTML={{
+            __html: sanitize(blog?.text),
+          }}
+        ></div>
       </Box>
       <Flex>
         <Flex

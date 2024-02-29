@@ -1,7 +1,11 @@
 import { Box, Button, Container } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
-
+import HtmlEditor from '../HtmlEditor/HtmlEditor';
+import StarterKit from '@tiptap/starter-kit';
+import {
+  useEditor,
+} from '@tiptap/react';
 const CreateBlogForm = ({
   createBlog,
   date,
@@ -9,6 +13,25 @@ const CreateBlogForm = ({
   createBlog: Function;
   date: any;
 }) => {
+  const editor = useEditor({
+    extensions: [StarterKit],
+    editorProps: {
+      attributes: {
+        class: 'Editor',
+      },
+    },
+    content: `
+    <h3>Morning Gratitude</h3>
+    <p></p>
+    <h3>How I feel today</h3>
+    <p></p>
+    <h3>What I did during the day</h3>
+    <p></p>
+    <h3>Goals for tomorrow</h3>
+    <p></p>
+    `,
+  });
+  console.log('editor: ', editor?.getHTML());
   // Updated component name
   return (
     <Formik
@@ -16,7 +39,7 @@ const CreateBlogForm = ({
         text: 'Morning Gratitude\n\n\nHow I feel today\n\n\nWhat I did during the day\n\n\nGoals for tomorrow\n',
       }}
       onSubmit={(values, actions) => {
-        createBlog({ text: values.text, given_at: date }); // Updated function name
+        createBlog({ text: editor?.getHTML(), given_at: date }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
       }}
@@ -25,8 +48,10 @@ const CreateBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-              <CustomField name="text" type="textArea" rows={15}/>
+            <HtmlEditor editor={editor}/>
+              {/* <CustomField name="text" type="textArea" rows={15}/> */}
 
+            </Box>
               <Button
                 mt={4}
                 display="flex"
@@ -36,7 +61,6 @@ const CreateBlogForm = ({
               >
                 Submit
               </Button>
-            </Box>
           </Container>
         </Form>
       )}

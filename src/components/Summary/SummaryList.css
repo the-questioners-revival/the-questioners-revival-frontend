@@ -4,5 +4,7 @@
     -webkit-box-orient: vertical;  
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: break-spaces;
+    word-break: break-word;
   }
 

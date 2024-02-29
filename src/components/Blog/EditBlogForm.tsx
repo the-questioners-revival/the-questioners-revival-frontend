@@ -1,6 +1,11 @@
 import { Box, Button, Container } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
+import HtmlEditor from '../HtmlEditor/HtmlEditor';
+import StarterKit from '@tiptap/starter-kit';
+import {
+  useEditor,
+} from '@tiptap/react';
 
 const EditBlogForm = ({
   editBlog,
@@ -9,6 +14,15 @@ const EditBlogForm = ({
   editBlog: Function;
   blog: any;
 }) => {
+  const editor = useEditor({
+    extensions: [StarterKit],
+    editorProps: {
+      attributes: {
+        class: 'Editor',
+      },
+    },
+    content: blog.text,
+  });
   // Updated component name
   return (
     <Formik
@@ -17,6 +31,7 @@ const EditBlogForm = ({
         editBlog({
           ...blog,
           ...values,
+          text: editor?.getHTML()
         }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
@@ -26,7 +41,9 @@ const EditBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-              <CustomField name="text" type="textArea" rows={15} />
+            <HtmlEditor editor={editor}/>
+              
+              {/* <CustomField name="text" type="textArea" rows={15} /> */}
 
               <Button
                 mt={4}
