@@ -24,17 +24,12 @@ const GoalListItemSimple = ({
       <Flex>
         <Switch
           isChecked={goal.completed_at}
-          onChange={(e) =>
-            e.target.checked === true
-              ? editGoal({
-                  ...goal,
-                  completed_at: new Date(),
-                })
-              : editGoal({
-                  ...goal,
-                  completed_at: null,
-                })
-          }
+          onChange={(e) => {
+            editGoal({
+              ...goal,
+              completed_at: e.target.checked === true ? new Date() : null,
+            });
+          }}
         ></Switch>
       </Flex>
     </Flex>
