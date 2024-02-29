@@ -55,21 +55,19 @@
   margin: 0.1rem;
 }
 
-.tiptap h1{
-	display: block;
-font-size: 2em;
+.tiptap h1 {
+  display: block;
+  font-size: 2em;
 
-
-margin-left: 0;
-margin-right: 0;
-font-weight: bold;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
 }
 
 .tiptap h2 {
   display: block;
   font-size: 1.5em;
-  
-  
+
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
@@ -78,8 +76,7 @@ font-weight: bold;
 .tiptap h3 {
   display: block;
   font-size: 1.17em;
-  
-  
+
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
@@ -88,17 +85,15 @@ font-weight: bold;
 .tiptap h4 {
   display: block;
 
-
-margin-left: 0;
-margin-right: 0;
-font-weight: bold;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
 }
 
 .tiptap h5 {
   display: block;
-  font-size: .83em;
-  
-  
+  font-size: 0.83em;
+
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
@@ -106,10 +101,15 @@ font-weight: bold;
 
 .tiptap h6 {
   display: block;
-  font-size: .67em;
-  
-  
+  font-size: 0.67em;
+
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
+}
+
+.tiptap a {
+  color: #125CC8;
+  text-decoration: underline;
+  cursor: auto;
 }

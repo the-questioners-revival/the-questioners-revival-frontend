@@ -3,9 +3,9 @@ import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import StarterKit from '@tiptap/starter-kit';
-import {
-  useEditor,
-} from '@tiptap/react';
+import Link from '@tiptap/extension-link';
+import { useEditor } from '@tiptap/react';
+
 const CreateBlogForm = ({
   createBlog,
   date,
@@ -14,7 +14,13 @@ const CreateBlogForm = ({
   date: any;
 }) => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+      }),
+    ],
     editorProps: {
       attributes: {
         class: 'Editor',
@@ -48,19 +54,18 @@ const CreateBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-            <HtmlEditor editor={editor}/>
+              <HtmlEditor editor={editor} />
               {/* <CustomField name="text" type="textArea" rows={15}/> */}
-
             </Box>
-              <Button
-                mt={4}
-                display="flex"
-                colorScheme="teal"
-                isLoading={props.isSubmitting}
-                type="submit"
-              >
-                Submit
-              </Button>
+            <Button
+              mt={4}
+              display="flex"
+              colorScheme="teal"
+              isLoading={props.isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
           </Container>
         </Form>
       )}

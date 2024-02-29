@@ -3,9 +3,8 @@ import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import StarterKit from '@tiptap/starter-kit';
-import {
-  useEditor,
-} from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
+import Link from '@tiptap/extension-link';
 
 const EditBlogForm = ({
   editBlog,
@@ -15,7 +14,13 @@ const EditBlogForm = ({
   blog: any;
 }) => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+      }),
+    ],
     editorProps: {
       attributes: {
         class: 'Editor',
@@ -31,7 +36,7 @@ const EditBlogForm = ({
         editBlog({
           ...blog,
           ...values,
-          text: editor?.getHTML()
+          text: editor?.getHTML(),
         }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
@@ -41,8 +46,8 @@ const EditBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-            <HtmlEditor editor={editor}/>
-              
+              <HtmlEditor editor={editor} />
+
               {/* <CustomField name="text" type="textArea" rows={15} /> */}
 
               <Button

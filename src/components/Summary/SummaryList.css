@@ -1,10 +1,15 @@
 .blogText {
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: break-spaces;
-    word-break: break-word;
-  }
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: break-spaces;
+  word-break: break-word;
+}
 
+.blogText a {
+  color: #125CC8;
+  text-decoration: underline;
+  cursor: pointer;
+}

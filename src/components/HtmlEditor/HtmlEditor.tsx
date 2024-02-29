@@ -2,14 +2,13 @@
 import {
   EditorContent,
 } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import './styles.css'
+import { useCallback } from 'react';
 
 // define your extension array
-const extensions = [StarterKit];
 const content = '<p>Hello World!</p>';
 
-const MenuBar = ({ editor }: { editor: any }) => {
+const MenuBar = ({ editor,setLink }: { editor: any,setLink:any }) => {
   if (!editor) {
     return null;
   }
@@ -216,6 +215,15 @@ const MenuBar = ({ editor }: { editor: any }) => {
       >
         purple
       </button>
+      <button onClick={setLink} className={editor.isActive('link') ? 'is-active' : ''}>
+        setLink
+      </button>
+      <button
+        onClick={() => editor.chain().focus().unsetLink().run()}
+        disabled={!editor.isActive('link')}
+      >
+        unsetLink
+      </button>
     </div>
   );
 };
@@ -225,6 +233,31 @@ const HtmlEditor = ({editor}:{editor:any}) => {
   
   console.log('editor: ', editor);
   console.log('editor: ', editor?.getHTML());
+
+  const setLink = useCallback((e:any) => {
+    e.preventDefault();
+
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    // cancelled
+    if (url === null) {
+      return
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink()
+        .run()
+
+      return
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      .run()
+  }, [editor])
+
 
   return (
     // <EditorProvider
@@ -237,7 +270,7 @@ const HtmlEditor = ({editor}:{editor:any}) => {
     //   <BubbleMenu>This is the bubble menu</BubbleMenu>
     // </EditorProvider>
     <>
-      <MenuBar editor={editor} />
+      <MenuBar editor={editor} setLink={setLink}/>
       <EditorContent editor={editor} />
     </>
   );
