@@ -39,13 +39,14 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
       weekStart = weekEnd.clone().add(1, 'day');
     }
     setWeeks(newWeeks);
-    
     if (firstLoad) {
       const now = moment();
       const day = now.day();
-      const week = now.week()
-      
-      setSelectedWeekNumber(day === 0 ? week : week + 1);
+      const foundWeek = newWeeks?.findIndex(
+        (week: any) => now >= week.startDate && now < week.endDate,
+      );
+
+      setSelectedWeekNumber(day === 0 ? foundWeek : foundWeek + 1);
       setFirstLoad(false);
     } else {
       setSelectedWeekNumber(minus ? newWeeks.length : 1);
