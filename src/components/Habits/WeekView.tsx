@@ -41,9 +41,11 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
     setWeeks(newWeeks);
     if (firstLoad) {
       const now = moment();
+      now.endOf('day');
       const day = now.day();
+
       const foundWeek = newWeeks?.findIndex(
-        (week: any) => now >= week.startDate && now < week.endDate,
+        (week: any) => now >= week.startDate && now <= week.endDate,
       );
 
       setSelectedWeekNumber(day === 0 ? foundWeek : foundWeek + 1);
