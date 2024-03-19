@@ -77,9 +77,11 @@ const SummaryList = ({
             <Box
               key={dataByDate.date}
               marginBottom="15px"
-              border={`${isItToday ? '2px solid #FFDF00' : '2px solid white'}`}
+              border={`${isItToday ? '1.5px solid #FFDF00' : '1.5px solid #fff'}`}
               borderRadius="10"
               padding="10px"
+              color="#000"
+              background="#fff"
             >
               <Heading as="h1" fontSize="xl">
                 {getDayOfWeekString(new Date(dataByDate?.date))} -{' '}

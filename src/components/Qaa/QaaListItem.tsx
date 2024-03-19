@@ -77,7 +77,7 @@ const QaaListItem = ({
 
   function renderBg(deleted_at: string) {
     if (deleted_at === null) {
-      return '#4CAF4F';
+      return '#fff';
     } else {
       return '#E03C3C';
     }
@@ -85,9 +85,10 @@ const QaaListItem = ({
 
   return (
     <Box
+      color='#000'
       key={qaa.id}
       marginBottom="10px"
-      border="2px solid white"
+      border="1.5px solid #fff"
       borderRadius="10"
       bg={renderBg(qaa.deleted_at)}
       overflow="hidden"
