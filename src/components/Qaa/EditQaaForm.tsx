@@ -21,7 +21,7 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
         class: 'Editor',
       },
     },
-    content: qaa.answer,
+    content: qaa.answer.split('\n').join('\n<br>\n'),
   });
   // Updated component name
   return (

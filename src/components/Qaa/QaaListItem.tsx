@@ -169,7 +169,7 @@ const QaaListItem = ({
         <div
           className="tiptap"
           dangerouslySetInnerHTML={{
-            __html: sanitize(qaa?.answer),
+            __html: sanitize(qaa?.answer.split('\n').join('\n<br>\n')),
           }}
         ></div>
         {qaa.link ? (
