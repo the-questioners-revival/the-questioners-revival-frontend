@@ -40,7 +40,9 @@ const CustomLayout = ({ children }: { children: any }) => {
         overflowY="unset"
         paddingX={{ base: '10px', md: '150px' }}
       >
-        {children}
+        <Box maxW="760px" margin="auto">
+          {children}
+        </Box>
       </GridItem>
       <GridItem
         pl="2"
