@@ -57,6 +57,7 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
         createQaa({ ...values, answer: editor?.getHTML() }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
+        editor?.commands.setContent('');
       }}
     >
       {(props) => (
