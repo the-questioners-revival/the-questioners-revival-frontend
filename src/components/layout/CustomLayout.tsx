@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
 import Footer from './CustomFooter';
 import CustomHeader from './CustomHeader';
 
@@ -40,7 +40,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         overflowY="unset"
         paddingX={{ base: '10px', md: '150px' }}
       >
-        <Box maxW="760px" margin="auto">
+        <Box maxW="760px" margin="auto" h="100%">
           {children}
         </Box>
       </GridItem>
