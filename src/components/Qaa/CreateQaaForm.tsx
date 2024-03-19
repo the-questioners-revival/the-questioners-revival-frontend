@@ -47,7 +47,7 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
         class: 'Editor',
       },
     },
-    content: '',
+    content: '<p><br><br><br></p>',
   });
   // Updated component name
   return (

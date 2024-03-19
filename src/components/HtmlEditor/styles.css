@@ -113,3 +113,7 @@
   text-decoration: underline;
   cursor: auto;
 }
+
+.Editor {
+  padding: 8px 16px;
+}
