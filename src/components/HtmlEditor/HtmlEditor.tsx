@@ -5,8 +5,7 @@ import {
 import './styles.css'
 import { useCallback } from 'react';
 
-// define your extension array
-const content = '<p>Hello World!</p>';
+
 
 const MenuBar = ({ editor,setLink }: { editor: any,setLink:any }) => {
   if (!editor) {
@@ -229,8 +228,6 @@ const MenuBar = ({ editor,setLink }: { editor: any,setLink:any }) => {
 };
 
 const HtmlEditor = ({editor}:{editor:any}) => {
-  console.log('content: ', content);
-  
   console.log('editor: ', editor);
   console.log('editor: ', editor?.getHTML());
 
@@ -260,15 +257,6 @@ const HtmlEditor = ({editor}:{editor:any}) => {
 
 
   return (
-    // <EditorProvider
-    //   slotBefore={<MenuBar />}
-    //   extensions={extensions}
-
-    //   content={content}
-    // >
-    //   <FloatingMenu>This is the floating menu</FloatingMenu>
-    //   <BubbleMenu>This is the bubble menu</BubbleMenu>
-    // </EditorProvider>
     <>
       <MenuBar editor={editor} setLink={setLink}/>
       <EditorContent editor={editor} />

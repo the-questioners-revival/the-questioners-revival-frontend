@@ -55,7 +55,6 @@ const CreateBlogForm = ({
           <Container p={0} maxW="100%">
             <Box color="black">
               <HtmlEditor editor={editor} />
-              {/* <CustomField name="text" type="textArea" rows={15}/> */}
             </Box>
             <Button
               mt={4}

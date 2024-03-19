@@ -20,7 +20,7 @@ const Blog = ({
     <Flex justifyContent="space-between">
       <Box>
         <div
-          className={showBlogText ? '' : 'blogText'}
+          className={showBlogText ? 'tiptap' : 'tiptap blogText'}
           onClick={() => setShowBlogText(!showBlogText)}
           dangerouslySetInnerHTML={{
             __html: sanitize(blog?.text),

@@ -48,8 +48,6 @@ const EditBlogForm = ({
             <Box color="black">
               <HtmlEditor editor={editor} />
 
-              {/* <CustomField name="text" type="textArea" rows={15} /> */}
-
               <Button
                 mt={4}
                 display="flex"

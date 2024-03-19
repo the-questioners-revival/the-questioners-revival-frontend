@@ -3,6 +3,7 @@ import { Box, Flex, Link, Tag, Text } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
 import { useState } from 'react';
 import moment from 'moment-timezone';
+import { sanitize } from 'dompurify';
 
 const QaaListItem = ({
   qaa,
@@ -165,15 +166,24 @@ const QaaListItem = ({
         </Flex>
       </Box>
       <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
-        <Text fontSize="lg" paddingRight="7px" whiteSpace="break-spaces">
-          {qaa.answer}
-        </Text>
+        <div
+          className="tiptap"
+          dangerouslySetInnerHTML={{
+            __html: sanitize(qaa?.answer),
+          }}
+        ></div>
         {qaa.link ? (
           <Flex>
             <Text fontSize="lg" paddingRight="7px">
               source:{' '}
             </Text>
-            <Link href={qaa.link} isExternal fontSize="lg" paddingRight="7px" textDecor="underline">
+            <Link
+              href={qaa.link}
+              isExternal
+              fontSize="lg"
+              paddingRight="7px"
+              textDecor="underline"
+            >
               {qaa.link}
             </Link>
           </Flex>
