@@ -77,7 +77,7 @@ const SummaryList = ({
             <Box
               key={dataByDate.date}
               marginBottom="15px"
-              border={`${isItToday ? '1.5px solid #FFDF00' : '1.5px solid #fff'}`}
+              border={`${isItToday ? '2px solid #FFDF00' : '2px solid #fff'}`}
               borderRadius="10"
               padding="10px"
               color="#000"
