@@ -1,5 +1,5 @@
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, Flex, Link, Tag, Text } from '@chakra-ui/react';
+import { Box, Flex, Link, Tag, Text, useColorModeValue } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
 import { useState } from 'react';
 import moment from 'moment-timezone';
@@ -24,6 +24,8 @@ const QaaListItem = ({
   isOpenAnswer: boolean;
   openAnswer: Function;
 }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
   const RIGHT_SIDE_WIDTH = 80;
   const [startRightSide, setStartRightSide] = useState(0);
   const [rightSide, setRightSide] = useState(-RIGHT_SIDE_WIDTH);
@@ -77,7 +79,7 @@ const QaaListItem = ({
 
   function renderBg(deleted_at: string) {
     if (deleted_at === null) {
-      return '#fff';
+      return bgColor;
     } else {
       return '#E03C3C';
     }
@@ -85,10 +87,10 @@ const QaaListItem = ({
 
   return (
     <Box
-      color='#000'
+      color={color}
       key={qaa.id}
       marginBottom="10px"
-      border="1.5px solid #fff"
+      border={`1.5px solid ${bgColor}`}
       borderRadius="10"
       bg={renderBg(qaa.deleted_at)}
       overflow="hidden"

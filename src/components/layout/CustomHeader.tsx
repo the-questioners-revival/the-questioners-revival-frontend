@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Flex, Link as ChakraLink, Image } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Link as ChakraLink,
+  Image,
+  useColorModeValue,
+  Button,
+  useColorMode,
+} from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useUser } from '../../providers/UserProvider';
 import Hamburger from './Hamburger';
-import CustomModal from '../custom/CustomModal';
-import SearchModal from './SearchModal';
 
 export const HEADER = [
   {
@@ -35,12 +41,8 @@ export const HEADER = [
 ];
 
 const CustomHeader = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const { user, logout } = useUser();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleSearchOpen = () => {
-    setIsOpen(true);
-  };
 
   return (
     <Flex alignItems="center" w="100%" justifyContent="space-between">
@@ -48,7 +50,7 @@ const CustomHeader = () => {
       <Box marginRight="10px">
         <Link to="/">
           <Image
-            src="../../favicon.ico"
+            src={colorMode === 'light'? '../../favicon.ico': '../../faviconLight.ico'}
             alt="Logo"
             boxSize="50px"
             padding={'8px 0px'}
@@ -63,7 +65,7 @@ const CustomHeader = () => {
         w="100%"
         display={{ base: 'none', md: 'flex' }}
       >
-        <Box>
+        <Flex alignItems='center'>
           <ChakraLink
             as={Link}
             to="/todos"
@@ -80,19 +82,13 @@ const CustomHeader = () => {
               {header.name}
             </ChakraLink>
           ))}
-        </Box>
+        </Flex>
         <Flex alignItems="center">
-          <ChakraLink
-            as={Link}
-            to="/search"
-            fontSize="lg"
-          >
-            <SearchIcon
-              fontSize="20px"
-              
-              marginRight="20px"
-              cursor="pointer"
-            />
+          <Box cursor='pointer' p='10px' marginRight='15px' onClick={toggleColorMode} fontSize='20px'>
+            {colorMode === 'light' ? '🌙' : '☀️'}
+          </Box>
+          <ChakraLink as={Link} to="/search" fontSize="lg">
+            <SearchIcon fontSize="20px" marginRight="20px" cursor="pointer" />
           </ChakraLink>
 
           <ChakraLink
@@ -109,10 +105,7 @@ const CustomHeader = () => {
         </Flex>
       </Flex>
       <Flex display={{ base: 'flex', md: 'none' }}>
-        <Hamburger
-          logout={logout}
-          user={user}
-        />
+        <Hamburger logout={logout} user={user} />
       </Flex>
     </Flex>
   );

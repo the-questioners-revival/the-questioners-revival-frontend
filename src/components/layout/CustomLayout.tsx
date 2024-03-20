@@ -1,8 +1,12 @@
-import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
 import Footer from './CustomFooter';
 import CustomHeader from './CustomHeader';
 
 const CustomLayout = ({ children }: { children: any }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
+  const bgColorBody = useColorModeValue("green","purpleDark");
+
   return (
     <Grid
       minHeight={'100vh'}
@@ -18,8 +22,8 @@ const CustomLayout = ({ children }: { children: any }) => {
     >
       <GridItem
         pl="2"
-        bg="#fff"
-        color="#000"
+        bg={bgColor}
+        color={color}
         display="flex"
         alignItems="center"
         area="header"
@@ -33,7 +37,7 @@ const CustomLayout = ({ children }: { children: any }) => {
       </GridItem>
       <GridItem
         pl="2"
-        bg="#21D19F"
+        bg={bgColorBody}
         area="main"
         maxWidth="100%"
         width="100%"
@@ -47,8 +51,8 @@ const CustomLayout = ({ children }: { children: any }) => {
       </GridItem>
       <GridItem
         pl="2"
-        bg="#fff"
-        color="#000"
+        bg={bgColor}
+        color={color}
         display="flex"
         alignItems="center"
         justifyContent="center"

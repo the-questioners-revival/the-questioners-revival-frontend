@@ -1,5 +1,5 @@
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, Flex, Tag, Text } from '@chakra-ui/react';
+import { Box, Flex, Tag, Text, useColorModeValue } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
 import { useState } from 'react';
 import moment from 'moment-timezone';
@@ -28,6 +28,8 @@ const TodoListItem = ({
   isOpenAnswer: boolean;
   openAnswer: Function;
 }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const itemBgColor = useColorModeValue("greenLight", "black");
   const LEFT_SIDE_WIDTH = 40;
   const RIGHT_SIDE_WIDTH = 80;
   const [startLeftSide, setStartLeftSide] = useState(0);
@@ -112,7 +114,7 @@ const TodoListItem = ({
   }
   function renderBg(status: string) {
     if (status === TODO_STATUS.IN_PROGRESS) {
-      return '#4CAF4F';
+      return itemBgColor;
     }
     if (status === TODO_STATUS.REMOVED) {
       return '#E03C3C';
@@ -141,7 +143,7 @@ const TodoListItem = ({
     <Box
       key={todo.id}
       marginBottom="10px"
-      border="2px solid white"
+      border={`2px solid ${bgColor}`}
       borderRadius="10"
       overflow="hidden"
       _hover={{ cursor: 'pointer' }}
@@ -152,9 +154,9 @@ const TodoListItem = ({
       onTouchStart={(e) => handleOnDragStart(e)}
       onTouchMove={(e) => onDrag(e)}
       onTouchEnd={(e) => onDragEnd(e)}
+      background={renderBg(todo.status)}
       style={{
         position: 'relative',
-        backgroundColor: renderBg(todo.status),
       }}
     >
       <Box
@@ -226,7 +228,7 @@ const TodoListItem = ({
             setTodoSelected(todo);
           }}
         >
-          <EditIcon w={4} h={4} color="white" />
+          <EditIcon w={4} h={4} color={bgColor} />
         </Flex>
         <Flex
           alignItems="center"
@@ -238,7 +240,7 @@ const TodoListItem = ({
             setTodoSelected(todo);
           }}
         >
-          <CloseIcon w={4} h={4} color="white" />
+          <CloseIcon w={4} h={4} color={bgColor} />
         </Flex>
       </Box>
       <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">

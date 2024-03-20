@@ -16,6 +16,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import { useEffect, useState } from 'react';
@@ -55,6 +56,9 @@ export function getDayOfWeekString(date: any) {
 }
 
 const HabitsPage = () => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
+
   const [isOpenEditHabitModal, setIsOpenEditHabitModal] = useState(false);
   const [isOpenDeleteHabitModal, setIsOpenDeleteHabitModal] = useState(false);
   const [habitSelected, setHabitSelected] = useState<any>();
@@ -132,13 +136,13 @@ const HabitsPage = () => {
         <Tr>
           <Td
             textAlign="center"
-            border={`${isItToday ? '2px solid #FFDF00' : '1px solid white'}`}
+            border={`${isItToday ? '2px solid #FFDF00' : `1px solid ${bgColor}`}`}
             width="50px"
             position="sticky"
             left="0"
-            background="white"
+            background={bgColor}
             zIndex="docked"
-            color="black"
+            color={color}
             p="0px 5px"
           >
             {moment(weekStart).date()} -{' '}
@@ -162,7 +166,7 @@ const HabitsPage = () => {
                 key={habit.id}
                 textAlign="center"
                 border={`${
-                  isItToday ? '2px solid #FFDF00' : '1px solid white'
+                  isItToday ? '2px solid #FFDF00' : `1px solid ${bgColor}`
                 }`}
               >
                 <Checkbox
@@ -200,8 +204,8 @@ const HabitsPage = () => {
           value={viewType}
           onChange={(evt) => setViewType(evt.target.value)}
           placeholder="Type"
-          color="black"
-          bg="white"
+          color={color}
+          bg={bgColor}
           marginBottom="10px"
           width="fit-content"
         >
@@ -244,7 +248,7 @@ const HabitsPage = () => {
           mt="20px"
         >
           <Table variant="simple" position="relative">
-            <Thead position="sticky" top="0" background="white" zIndex="docked">
+            <Thead position="sticky" top="0" background={bgColor} zIndex="docked">
               <Tr>
                 <Th
                   style={{ writingMode: 'vertical-rl' }}
@@ -283,7 +287,7 @@ const HabitsPage = () => {
                             h={4}
                             marginTop="7px"
                             marginBottom="7px"
-                            color="black"
+                            color={color}
                           />
                         </Flex>
                         <Flex
@@ -300,7 +304,7 @@ const HabitsPage = () => {
                             w={4}
                             h={4}
                             marginTop="7px"
-                            color="black"
+                            color={color}
                           />
                         </Flex>
                       </Flex>

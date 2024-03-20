@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { sanitize } from 'dompurify';
@@ -14,6 +14,8 @@ const Blog = ({
   setIsOpenDeleteBlogModal: Function;
   setSelectedItem: Function;
 }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
   const [showBlogText, setShowBlogText] = useState(false);
 
   return (
@@ -38,7 +40,7 @@ const Blog = ({
           }}
           paddingRight="15px"
         >
-          <EditIcon w={4} h={4} color="#000" />
+          <EditIcon w={4} h={4} color={color} />
         </Flex>
         <Flex
           w="100%"
@@ -49,7 +51,7 @@ const Blog = ({
             setIsOpenDeleteBlogModal(true);
           }}
         >
-          <CloseIcon w={4} h={4} color="#000" />
+          <CloseIcon w={4} h={4} color={color} />
         </Flex>
       </Flex>
     </Flex>

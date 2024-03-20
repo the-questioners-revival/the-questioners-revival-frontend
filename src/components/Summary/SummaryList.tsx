@@ -9,6 +9,7 @@ import {
   Switch,
   Tag,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import moment from 'moment';
 import CustomModal from '../custom/CustomModal';
@@ -39,6 +40,8 @@ const SummaryList = ({
   createHabitsTracker: Function;
   deleteHabitsTracker: Function;
 }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
   const [isOpenCreateBlogModal, setIsOpenCreateBlogModal] = useState(false);
   const [isOpenEditBlogModal, setIsOpenEditBlogModal] = useState(false);
   const [isOpenDeleteBlogModal, setIsOpenDeleteBlogModal] = useState(false);
@@ -77,11 +80,11 @@ const SummaryList = ({
             <Box
               key={dataByDate.date}
               marginBottom="15px"
-              border={`${isItToday ? '2px solid #FFDF00' : '2px solid #fff'}`}
+              border={`${isItToday ? '2px solid #FFDF00' : `2px solid ${bgColor}`}`}
               borderRadius="10"
               padding="10px"
-              color="#000"
-              background="#fff"
+              color={color}
+              background={bgColor}
             >
               <Heading as="h1" fontSize="xl">
                 {getDayOfWeekString(new Date(dataByDate?.date))} -{' '}

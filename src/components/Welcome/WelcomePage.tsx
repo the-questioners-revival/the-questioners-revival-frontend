@@ -5,9 +5,9 @@ import {
   Button,
   Flex,
   Select,
-  Skeleton,
   SkeletonText,
   Text,
+  useColorMode,
 } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import ProtectedPage from '../ProtectedPage';
@@ -52,6 +52,7 @@ export const typeOptions = [
 ];
 
 const TodoPage = () => {
+  const { colorMode } = useColorMode();
   const [quote, setQuote] = useState<Quote>();
   const [type, setType] = useState<any>();
   const { user } = useUser();
@@ -91,7 +92,13 @@ const TodoPage = () => {
             {!getRandomQuoteLoading && quote ? (
               <Box maxWidth="600px">
                 <div className="quote">
-                  <blockquote>
+                  <blockquote
+                    className={`${
+                      colorMode === 'light'
+                        ? 'blockquoteLight'
+                        : 'blockquoteDark'
+                    }`}
+                  >
                     <Text fontSize="3xl">"{quote.quote}"</Text>
                     <cite>{quote.author}</cite>
                   </blockquote>

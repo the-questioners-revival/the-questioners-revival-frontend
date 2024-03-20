@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, FormLabel, Heading } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, FormLabel, Heading, useColorModeValue } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import { useEditor } from '@tiptap/react';
@@ -34,6 +34,8 @@ export const qaaTypeOptions = [
 ];
 
 const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
+  const bgColor = useColorModeValue("greenLight", "black");
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -64,7 +66,7 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
         <Form>
           <Container bg="#F1F0EA" p={0} maxW="100%">
             <Box
-              bg="#4CAF4F"
+              bg={bgColor}
               display={'flex'}
               p="0 1.5rem"
               h="50px"

@@ -1,4 +1,4 @@
-import { Box, Button, Container, Heading } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, useColorModeValue } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 
@@ -9,6 +9,8 @@ const LoginForm = ({
   login: Function;
   loginLoading: boolean;
 }) => {
+  const bgColor = useColorModeValue("greenLight", "black");
+
   // Updated component name
   return (
     <Formik
@@ -23,7 +25,7 @@ const LoginForm = ({
         <Form>
           <Container bg="#F1F0EA" p={0} maxW="100%">
             <Box
-              bg="#4CAF4F"
+              bg={bgColor}
               display={'flex'}
               p="0 1.5rem"
               h="50px"
