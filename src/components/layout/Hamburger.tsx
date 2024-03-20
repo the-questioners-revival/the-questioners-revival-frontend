@@ -10,12 +10,14 @@ import {
   useDisclosure,
   Flex,
   Image,
+  useColorMode,
 } from '@chakra-ui/react';
 import { HamburgerIcon, SearchIcon } from '@chakra-ui/icons';
 import { HEADER } from './CustomHeader';
 import { useNavigate } from 'react-router-dom';
 
 function Hamburger({ logout, user }: { logout: Function; user: any }) {
+  const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
@@ -56,6 +58,16 @@ function Hamburger({ logout, user }: { logout: Function; user: any }) {
               <Button variant="ghost" onClick={() => handleClose('/search')}>
                 <SearchIcon cursor="pointer" fontSize="20px" />
               </Button>
+
+              <Box
+                cursor="pointer"
+                p="10px"
+                marginRight="15px"
+                onClick={toggleColorMode}
+                fontSize="20px"
+              >
+                {colorMode === 'light' ? '🌙' : '☀️'}
+              </Box>
 
               {HEADER.map((header) => {
                 return (
