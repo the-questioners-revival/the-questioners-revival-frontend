@@ -17,7 +17,7 @@ import { HEADER } from './CustomHeader';
 import { useNavigate } from 'react-router-dom';
 
 function Hamburger({ logout, user }: { logout: Function; user: any }) {
-  const { colorMode, toggleColorMode } = useColoverMode();
+  const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
