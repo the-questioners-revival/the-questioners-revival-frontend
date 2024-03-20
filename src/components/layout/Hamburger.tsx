@@ -17,7 +17,7 @@ import { HEADER } from './CustomHeader';
 import { useNavigate } from 'react-router-dom';
 
 function Hamburger({ logout, user }: { logout: Function; user: any }) {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColoverMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
@@ -62,7 +62,6 @@ function Hamburger({ logout, user }: { logout: Function; user: any }) {
               <Box
                 cursor="pointer"
                 p="10px"
-                marginRight="15px"
                 onClick={toggleColorMode}
                 fontSize="20px"
               >
