@@ -38,7 +38,7 @@ const Blog = ({
           }}
           paddingRight="15px"
         >
-          <EditIcon w={4} h={4} color="white" />
+          <EditIcon w={4} h={4} color="#000" />
         </Flex>
         <Flex
           w="100%"
@@ -49,7 +49,7 @@ const Blog = ({
             setIsOpenDeleteBlogModal(true);
           }}
         >
-          <CloseIcon w={4} h={4} color="white" />
+          <CloseIcon w={4} h={4} color="#000" />
         </Flex>
       </Flex>
     </Flex>
