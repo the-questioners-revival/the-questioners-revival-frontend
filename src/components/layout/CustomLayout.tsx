@@ -18,7 +18,8 @@ const CustomLayout = ({ children }: { children: any }) => {
     >
       <GridItem
         pl="2"
-        bg="#2c3e4f"
+        bg="#fff"
+        color="#000"
         display="flex"
         alignItems="center"
         area="header"
@@ -32,7 +33,7 @@ const CustomLayout = ({ children }: { children: any }) => {
       </GridItem>
       <GridItem
         pl="2"
-        bg="#19BC9B"
+        bg="#21D19F"
         area="main"
         maxWidth="100%"
         width="100%"
@@ -46,7 +47,8 @@ const CustomLayout = ({ children }: { children: any }) => {
       </GridItem>
       <GridItem
         pl="2"
-        bg="#2c3e4f"
+        bg="#fff"
+        color="#000"
         display="flex"
         alignItems="center"
         justifyContent="center"

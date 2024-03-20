@@ -3,14 +3,14 @@
     margin: 1rem 0rem 0.5rem 0rem;
     overflow:hidden;
     blockquote {
-      background-color:#19BC9B;
+      background-color:#21D19F;
       border: solid 2px #fff;
       display: inline-block;
       margin: 0;
       padding: 1em;
       position: relative;
       &:before {
-        background-color: #19BC9B;
+        background-color: #21D19F;
         bottom: -10%;
         content: "";
         left: 0;
