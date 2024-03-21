@@ -1,7 +1,11 @@
-import { Box, Button, Container } from '@chakra-ui/react';
+import { Box, Button, Container, FormLabel } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import { reviewOptions } from './CreateReviewForm';
+import HtmlEditor from '../HtmlEditor/HtmlEditor';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
 
 const EditReviewForm = ({
   review,
@@ -10,6 +14,21 @@ const EditReviewForm = ({
   editReview: Function;
   review: any;
 }) => {
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+      }),
+    ],
+    editorProps: {
+      attributes: {
+        class: 'Editor',
+      },
+    },
+    content: review?.text,
+  });
   // Updated component name
   return (
     <Formik
@@ -18,6 +37,7 @@ const EditReviewForm = ({
         editReview({
           ...review,
           ...values,
+          text: editor?.getHTML(),
         }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
@@ -27,7 +47,11 @@ const EditReviewForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-              <CustomField name="text" type="textArea" rows={15} />
+              <FormLabel>Text</FormLabel>
+
+              <Box background="white">
+                <HtmlEditor editor={editor} />
+              </Box>
               <CustomField name="type" type="select" options={reviewOptions} />
 
               <Button

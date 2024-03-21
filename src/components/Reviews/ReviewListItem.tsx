@@ -1,5 +1,6 @@
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Flex, Tag, Text } from '@chakra-ui/react';
+import { sanitize } from 'dompurify';
 import { useState } from 'react';
 
 const ReviewListItem = ({
@@ -18,16 +19,14 @@ const ReviewListItem = ({
   return (
     <Flex justifyContent="space-between">
       <Flex>
-        <Text
-          marginRight="10px"
-          fontSize="md"
-          whiteSpace="break-spaces"
-          wordBreak="break-word"
-          className={showReviewText ? '' : 'blogText'}
-          onClick={() => setShowReviewText(!showReviewText)}
-        >
-          {review?.text}
-        </Text>
+        <Box marginRight="10px">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: sanitize(review?.text),
+            }}
+          ></div>
+        </Box>
+
         <Box>
           <Tag>{review.type}</Tag>
         </Box>

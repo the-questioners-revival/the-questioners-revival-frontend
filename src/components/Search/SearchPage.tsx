@@ -110,13 +110,13 @@ const SearchPage = () => {
     if (table_name === 'todos') {
       editTodo({ id, [column_name]: text });
     } else if (table_name === 'qaas') {
-      editQaa({ id, [column_name]: text, answer:editor?.getHTML(), link });
+      editQaa({ id, [column_name]: text, answer: editor?.getHTML(), link });
     } else if (table_name === 'blogs') {
       editBlog({ id, [column_name]: editor?.getHTML() });
     } else if (table_name === 'goals') {
       editGoal({ id, [column_name]: text });
     } else if (table_name === 'reviews') {
-      editReview({ id, [column_name]: text });
+      editReview({ id, [column_name]: editor?.getHTML() });
     }
   };
 
@@ -141,7 +141,7 @@ const SearchPage = () => {
         editor?.commands.setContent(item.answer);
         setLink(item.link);
       }
-      if (item.table_name === 'blogs') {
+      if (item.table_name === 'blogs' || item.table_name === 'reviews') {
         setText(item.text);
         editor?.commands.setContent(item.text);
       }
@@ -279,7 +279,8 @@ const SearchPage = () => {
                         value={link}
                       />
                     </>
-                  ) : selectedItem?.table_name !== 'blogs' ? (
+                  ) : selectedItem?.table_name !== 'blogs' &&
+                    selectedItem?.table_name !== 'reviews' ? (
                     <>
                       <FormLabel>Text</FormLabel>
                       <Textarea
@@ -288,7 +289,7 @@ const SearchPage = () => {
                         rows={15}
                         textColor="black"
                         color="black"
-                        background='white'
+                        background="white"
                         fontWeight="600"
                         border="2px solid white"
                         value={text}
