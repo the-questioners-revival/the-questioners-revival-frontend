@@ -29,6 +29,10 @@ import BlogsProvider from '../../providers/BlogsProvider';
 import GoalsProvider from '../../providers/GoalsProvider';
 import ReviewsProvider from '../../providers/ReviewsProvider';
 import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
+import HtmlEditor from '../HtmlEditor/HtmlEditor';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
 
 const SearchPage = () => {
   const isMobile = useBreakpointValue({ base: true, sm: false });
@@ -39,6 +43,21 @@ const SearchPage = () => {
   const [link, setLink] = useState<string>();
   const [isListOpen, setIsListOpen] = useState(false);
   const inputRef = useRef<any>(null);
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+      }),
+    ],
+    editorProps: {
+      attributes: {
+        class: 'Editor',
+      },
+    },
+    content: answer,
+  });
 
   useEffect(() => {
     // When the component mounts, select the text inside the input
@@ -91,9 +110,9 @@ const SearchPage = () => {
     if (table_name === 'todos') {
       editTodo({ id, [column_name]: text });
     } else if (table_name === 'qaas') {
-      editQaa({ id, [column_name]: text, answer, link });
+      editQaa({ id, [column_name]: text, answer:editor?.getHTML(), link });
     } else if (table_name === 'blogs') {
-      editBlog({ id, [column_name]: text });
+      editBlog({ id, [column_name]: editor?.getHTML() });
     } else if (table_name === 'goals') {
       editGoal({ id, [column_name]: text });
     } else if (table_name === 'reviews') {
@@ -119,7 +138,12 @@ const SearchPage = () => {
       setText(item.text);
       if (item.table_name === 'qaas') {
         setAnswer(item.answer);
+        editor?.commands.setContent(item.answer);
         setLink(item.link);
+      }
+      if (item.table_name === 'blogs') {
+        setText(item.text);
+        editor?.commands.setContent(item.text);
       }
     }
     if (isMobile) {
@@ -229,24 +253,17 @@ const SearchPage = () => {
                         border="2px solid white"
                         fontWeight="600"
                         fontSize="lg"
-                        textColor="white"
+                        textColor="black"
                         mb="10px"
-                        color="white"
+                        color="black"
+                        background="white"
                         onChange={(evt) => setText(evt.target.value)}
                         value={text}
                       />
                       <FormLabel>Answer</FormLabel>
-                      <Textarea
-                        className="input"
-                        placeholder="text"
-                        rows={15}
-                        textColor="white"
-                        color="white"
-                        fontWeight="600"
-                        border="2px solid white"
-                        value={answer}
-                        onChange={(evt) => setAnswer(evt.target.value)}
-                      />
+                      <Box background="white" color="black">
+                        <HtmlEditor editor={editor} />
+                      </Box>
                       <FormLabel>Link</FormLabel>
                       <Input
                         className="input"
@@ -254,27 +271,36 @@ const SearchPage = () => {
                         border="2px solid white"
                         fontWeight="600"
                         fontSize="lg"
-                        textColor="white"
+                        textColor="black"
                         mb="10px"
-                        color="white"
+                        color="black"
+                        background="white"
                         onChange={(evt) => setLink(evt.target.value)}
                         value={link}
                       />
                     </>
-                  ) : (
+                  ) : selectedItem?.table_name !== 'blogs' ? (
                     <>
                       <FormLabel>Text</FormLabel>
                       <Textarea
                         className="input"
                         placeholder="text"
                         rows={15}
-                        textColor="white"
-                        color="white"
+                        textColor="black"
+                        color="black"
+                        background='white'
                         fontWeight="600"
                         border="2px solid white"
                         value={text}
                         onChange={(evt) => setText(evt.target.value)}
                       />
+                    </>
+                  ) : (
+                    <>
+                      <FormLabel>Text</FormLabel>
+                      <Box background="white" color="black">
+                        <HtmlEditor editor={editor} />
+                      </Box>
                     </>
                   )}
 
