@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Flex,
+  FormLabel,
   Grid,
   GridItem,
   Input,
@@ -35,6 +36,7 @@ const SearchPage = () => {
   const [selectedItem, setSelectedItem] = useState<any>();
   const [text, setText] = useState<string>();
   const [answer, setAnswer] = useState<string>();
+  const [link, setLink] = useState<string>();
   const [isListOpen, setIsListOpen] = useState(false);
   const inputRef = useRef<any>(null);
 
@@ -89,7 +91,7 @@ const SearchPage = () => {
     if (table_name === 'todos') {
       editTodo({ id, [column_name]: text });
     } else if (table_name === 'qaas') {
-      editQaa({ id, [column_name]: text, answer });
+      editQaa({ id, [column_name]: text, answer, link });
     } else if (table_name === 'blogs') {
       editBlog({ id, [column_name]: text });
     } else if (table_name === 'goals') {
@@ -117,6 +119,7 @@ const SearchPage = () => {
       setText(item.text);
       if (item.table_name === 'qaas') {
         setAnswer(item.answer);
+        setLink(item.link);
       }
     }
     if (isMobile) {
@@ -219,6 +222,7 @@ const SearchPage = () => {
                 <GridItem>
                   {selectedItem?.table_name === 'qaas' ? (
                     <>
+                      <FormLabel>Question</FormLabel>
                       <Input
                         className="input"
                         placeholder="Question"
@@ -231,6 +235,7 @@ const SearchPage = () => {
                         onChange={(evt) => setText(evt.target.value)}
                         value={text}
                       />
+                      <FormLabel>Answer</FormLabel>
                       <Textarea
                         className="input"
                         placeholder="text"
@@ -242,19 +247,35 @@ const SearchPage = () => {
                         value={answer}
                         onChange={(evt) => setAnswer(evt.target.value)}
                       />
+                      <FormLabel>Link</FormLabel>
+                      <Input
+                        className="input"
+                        placeholder="Link"
+                        border="2px solid white"
+                        fontWeight="600"
+                        fontSize="lg"
+                        textColor="white"
+                        mb="10px"
+                        color="white"
+                        onChange={(evt) => setLink(evt.target.value)}
+                        value={link}
+                      />
                     </>
                   ) : (
-                    <Textarea
-                      className="input"
-                      placeholder="text"
-                      rows={15}
-                      textColor="white"
-                      color="white"
-                      fontWeight="600"
-                      border="2px solid white"
-                      value={text}
-                      onChange={(evt) => setText(evt.target.value)}
-                    />
+                    <>
+                      <FormLabel>Text</FormLabel>
+                      <Textarea
+                        className="input"
+                        placeholder="text"
+                        rows={15}
+                        textColor="white"
+                        color="white"
+                        fontWeight="600"
+                        border="2px solid white"
+                        value={text}
+                        onChange={(evt) => setText(evt.target.value)}
+                      />
+                    </>
                   )}
 
                   <Button
