@@ -3,9 +3,9 @@ import Footer from './CustomFooter';
 import CustomHeader from './CustomHeader';
 
 const CustomLayout = ({ children }: { children: any }) => {
-  const bgColor = useColorModeValue("white", "black");
-  const color = useColorModeValue("black", "white");
-  const bgColorBody = useColorModeValue("green","purpleDark");
+  const bgColor = useColorModeValue('white', 'black');
+  const color = useColorModeValue('black', 'white');
+  const bgColorBody = useColorModeValue('green', 'purpleDark');
 
   return (
     <Grid
@@ -21,7 +21,6 @@ const CustomLayout = ({ children }: { children: any }) => {
       fontWeight="bold"
     >
       <GridItem
-        pl="2"
         bg={bgColor}
         color={color}
         display="flex"
@@ -31,7 +30,9 @@ const CustomLayout = ({ children }: { children: any }) => {
         width="100%"
         overflowX="scroll"
         overflowY="unset"
-        paddingX={{ base: '10px', md: '150px' }}
+        position="fixed"
+        zIndex={1}
+        boxShadow="0px 1px 5px rgba(190, 190, 190, 0.46) !important"
       >
         <CustomHeader />
       </GridItem>

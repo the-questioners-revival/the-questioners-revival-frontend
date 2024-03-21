@@ -45,12 +45,22 @@ const CustomHeader = () => {
   const { user, logout } = useUser();
 
   return (
-    <Flex alignItems="center" w="100%" justifyContent="space-between">
+    <Flex
+      paddingX={{ base: '10px', md: '150px' }}
+      alignItems="center"
+      w="100%"
+      justifyContent="space-between"
+      boxShadow="0px 1px 5px rgba(190, 190, 190, 0.46) !important"
+    >
       {/* Logo */}
       <Box marginRight="10px">
         <Link to="/">
           <Image
-            src={colorMode === 'light'? '../../favicon.ico': '../../faviconLight.ico'}
+            src={
+              colorMode === 'light'
+                ? '../../favicon.ico'
+                : '../../faviconLight.ico'
+            }
             alt="Logo"
             boxSize="50px"
             padding={'8px 0px'}
@@ -65,7 +75,7 @@ const CustomHeader = () => {
         w="100%"
         display={{ base: 'none', md: 'flex' }}
       >
-        <Flex alignItems='center'>
+        <Flex alignItems="center">
           <ChakraLink
             as={Link}
             to="/todos"
@@ -84,7 +94,13 @@ const CustomHeader = () => {
           ))}
         </Flex>
         <Flex alignItems="center">
-          <Box cursor='pointer' p='10px' marginRight='15px' onClick={toggleColorMode} fontSize='20px'>
+          <Box
+            cursor="pointer"
+            p="10px"
+            marginRight="15px"
+            onClick={toggleColorMode}
+            fontSize="20px"
+          >
             {colorMode === 'light' ? '🌙' : '☀️'}
           </Box>
           <ChakraLink as={Link} to="/search" fontSize="lg">
