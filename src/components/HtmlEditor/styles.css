@@ -117,3 +117,7 @@
 .Editor {
   padding: 8px 16px;
 }
+
+.tiptap p {
+  min-height: 24px;
+}
