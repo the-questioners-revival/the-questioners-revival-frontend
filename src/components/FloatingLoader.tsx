@@ -8,7 +8,7 @@ const FloatingLoader = () => {
   return (
     <CircularProgress
       isIndeterminate
-      color="green.300"
+      color="green"
       aria-label="Add"
       position="fixed"
       bottom="4"
