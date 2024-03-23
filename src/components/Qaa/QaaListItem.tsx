@@ -186,6 +186,7 @@ const QaaListItem = ({
               fontSize="lg"
               paddingRight="7px"
               textDecor="underline"
+              wordBreak="break-all"
             >
               {qaa.link}
             </Link>
