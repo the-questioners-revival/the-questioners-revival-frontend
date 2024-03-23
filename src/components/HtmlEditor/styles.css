@@ -121,3 +121,11 @@
 .tiptap p {
   min-height: 24px;
 }
+
+.tiptap strong {
+  font-weight: 800;
+}
+
+.tiptap {
+  font-weight: 500;
+}
