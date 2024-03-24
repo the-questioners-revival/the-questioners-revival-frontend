@@ -14,6 +14,7 @@
 .tiptap code {
   background-color: rgba(97, 97, 97, 0.1);
   color: #616161;
+  white-space: break-spaces;
 }
 .tiptap pre {
   background: #0d0d0d;
