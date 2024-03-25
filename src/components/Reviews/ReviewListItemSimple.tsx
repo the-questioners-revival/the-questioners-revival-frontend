@@ -1,4 +1,5 @@
 import { Box, Flex, Switch, Tag, Text } from '@chakra-ui/react';
+import { sanitize } from 'dompurify';
 import { useState } from 'react';
 
 const ReviewListItemSimple = ({
@@ -18,21 +19,18 @@ const ReviewListItemSimple = ({
       borderRadius="10"
       padding="5px 10px"
     >
-      <Flex>
-  
-        <Text
-          fontSize="md"
-          whiteSpace="break-spaces"
-          wordBreak="break-word"
-          className={showReviewText ? '' : 'blogText'}
+      <Box>
+        <div
+          className={showReviewText ? 'tiptap' : 'tiptap blogText'}
           onClick={() => setShowReviewText(!showReviewText)}
-        >
-          {review?.text}
-        </Text>
+          dangerouslySetInnerHTML={{
+            __html: sanitize(review?.text),
+          }}
+        ></div>
         <Box>
           <Tag h="fit-content">{review.type}</Tag>
         </Box>
-      </Flex>
+      </Box>
     </Flex>
   );
 };
