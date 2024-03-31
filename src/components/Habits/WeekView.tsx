@@ -48,7 +48,7 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
         (week: any) => now >= week.startDate && now <= week.endDate,
       );
 
-      setSelectedWeekNumber(day === 0 ? foundWeek : foundWeek + 1);
+      setSelectedWeekNumber(foundWeek + 1);
       setFirstLoad(false);
     } else {
       setSelectedWeekNumber(minus ? newWeeks.length : 1);
@@ -75,6 +75,11 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
       onChange(weeks[selectedWeekNumber - 1]);
     }
   }, [selectedWeekNumber, weeks]);
+  console.log(
+    'weeks: ',
+    selectedWeekNumber && weeks?.length > 0 && weeks[selectedWeekNumber],
+  );
+  console.log('selectedWeekNumber: ', selectedWeekNumber);
 
   return (
     <div>
