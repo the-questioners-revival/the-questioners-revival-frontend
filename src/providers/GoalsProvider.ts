@@ -14,6 +14,16 @@ export default function GoalsProvider() {
   );
 
   const {
+    data: getAllGoalsGroupedByDateData,
+    refetch: getAllGoalsGroupedByDate,
+    loading: getAllGoalsGroupedByDateLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
+    GoalsApi.getAllGoalsGroupedByDate,
+    null,
+    false,
+  );
+
+  const {
     data: createGoalData,
     mutate: createGoal,
   }: { data: any; mutate: Function } = useAbstractMutator(GoalsApi.createGoal);
@@ -32,6 +42,9 @@ export default function GoalsProvider() {
     getGoalsFromToData,
     getGoalsFromTo,
     getGoalsFromToLoading,
+    getAllGoalsGroupedByDateData,
+    getAllGoalsGroupedByDateLoading,
+    getAllGoalsGroupedByDate,
     createGoalData,
     createGoal,
     editGoalData,

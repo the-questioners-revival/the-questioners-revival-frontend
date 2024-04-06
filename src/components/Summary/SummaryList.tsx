@@ -91,6 +91,34 @@ const SummaryList = ({
                 {moment(dataByDate?.date).format('DD MMMM YYYY')}{' '}
                 {isItToday ? '(TODAY)' : null}
               </Heading>
+              {dataByDate?.goals?.length > 0 ? (
+                <Heading
+                  as="h2"
+                  fontSize="lg"
+                  marginTop="10px"
+                  textDecoration="underline"
+                >
+                  {dataByDate?.goals?.length} Goals:
+                </Heading>
+              ) : null}
+               {dataByDate?.goals?.map((goal: any) => (
+                <Box
+                  key={goal.id}
+                  display="flex"
+                  alignItems="center"
+                  w="100%"
+                  style={{
+                    position: 'relative',
+                  }}
+                >
+                  <Text fontSize="md" paddingRight="7px">
+                    {goal.title}
+                  </Text>
+                  <Box>
+                    <Tag>{goal.type}</Tag>
+                  </Box>
+                </Box>
+              ))}
               {dataByDate?.todos?.length > 0 ? (
                 <Heading
                   as="h2"

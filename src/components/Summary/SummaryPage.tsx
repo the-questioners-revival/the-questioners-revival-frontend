@@ -15,6 +15,7 @@ import TodosProvider from '../../providers/TodosProvider';
 import HabitsProvider from '../../providers/HabitsProvider';
 import HabitsTrackerProvider from '../../providers/HabitsTrackerProvider';
 import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
+import GoalsProvider from '../../providers/GoalsProvider';
 
 const SummaryPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
@@ -23,6 +24,7 @@ const SummaryPage = () => {
   const [data, setData] = useState();
   const { getDailyHabitsData } = HabitsProvider();
   const { setLoading } = useFloatingLoader();
+  console.log('data: ', data);
 
   const {
     getDailyHabitsTrackers,
@@ -41,10 +43,19 @@ const SummaryPage = () => {
   } = TodosProvider();
 
   const {
+    getAllGoalsGroupedByDateData,
+    getAllGoalsGroupedByDate,
+    getAllGoalsGroupedByDateLoading,
+  } = GoalsProvider();
+  console.log('getAllGoalsGroupedByDateData: ', getAllGoalsGroupedByDateData);
+
+  const {
     getAllQaasGroupedByDateData,
     getAllQaasGroupedByDate,
     getAllQaasGroupedByDateLoading,
   } = QaasProvider();
+
+  
 
   const {
     getAllBlogsGroupedByDateData,
@@ -63,13 +74,15 @@ const SummaryPage = () => {
       getAllBlogsGroupedByDateDataLoading ||
         getAllTodosGroupedByDateLoading ||
         getAllQaasGroupedByDateLoading ||
-        getDailyHabitsTrackersLoading,
+        getDailyHabitsTrackersLoading ||
+        getAllGoalsGroupedByDateLoading
     );
   }, [
     getAllBlogsGroupedByDateDataLoading,
     getAllTodosGroupedByDateLoading,
     getAllQaasGroupedByDateLoading,
     getDailyHabitsTrackersLoading,
+    getAllGoalsGroupedByDateLoading
   ]);
 
   useEffect(() => {
@@ -86,6 +99,10 @@ const SummaryPage = () => {
         from: new Date(startDate).toISOString(),
         to: new Date(endDate).toISOString(),
       });
+      getAllGoalsGroupedByDate({
+        from: new Date(startDate).toISOString(),
+        to: new Date(endDate).toISOString(),
+      })
     }
   }, [startDate, endDate]);
 
@@ -97,7 +114,8 @@ const SummaryPage = () => {
     if (
       getAllTodosGroupedByDateData &&
       getAllQaasGroupedByDateData &&
-      getAllBlogsGroupedByDateData
+      getAllBlogsGroupedByDateData && 
+      getAllGoalsGroupedByDateData
     ) {
       const combinedData: any = [];
 
@@ -159,6 +177,27 @@ const SummaryPage = () => {
         }
       });
 
+      // Add goals to the combinedData array
+      getAllGoalsGroupedByDateData.forEach((goalItem: any) => {
+        const existingDateIndex = combinedData.findIndex(
+          (item: any) =>
+            item?.date?.length > 0 &&
+            goalItem?.date?.length > 0 &&
+            item?.date?.slice(0, 10) === goalItem?.date?.slice(0, 10),
+        );
+
+        if (existingDateIndex !== -1) {
+          // Date already exists, add the qaa to the existing array
+          combinedData[existingDateIndex].goals = goalItem.goals;
+        } else {
+          // Date doesn't exist, create a new entry
+          combinedData.push({
+            date: goalItem.date,
+            goals: goalItem.goals,
+          });
+        }
+      });
+
       // Add todos to the combinedData array
       getAllTodosGroupedByDateData.forEach((todoItem: any) => {
         const existingDateIndex = combinedData.findIndex(
@@ -193,6 +232,7 @@ const SummaryPage = () => {
     getAllTodosGroupedByDateData,
     getAllQaasGroupedByDateData,
     getAllBlogsGroupedByDateData,
+    getAllGoalsGroupedByDateData
   ]);
 
   useEffect(() => {
