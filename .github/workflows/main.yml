@@ -59,5 +59,8 @@ jobs:
       # Run gunicorn server
       - name: Run fe
         run: |
+          source ~/.bashrc
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
           cd build
           nohup serve -s -l 3001 > error &
