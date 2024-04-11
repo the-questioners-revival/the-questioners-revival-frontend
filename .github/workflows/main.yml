@@ -62,5 +62,4 @@ jobs:
           source ~/.bashrc
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
-          cd build
-          serve -s -l 3001 --verbose &
+          npm start &
