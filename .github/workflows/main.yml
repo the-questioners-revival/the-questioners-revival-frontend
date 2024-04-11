@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy to Raspberry Pi
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  FLASK_APP: app.py
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    
+    steps:
+      # Kill gunicorn server, if running already
+      - name: Kill TQR FE
+        run: pkill -f "node /home/joes/.nvm/versions/node/v18.13.0/bin/serve -s -l 3001" || true
+
+      # Run gunicorn server
+      - name: Run fe
+        run: |
+          cd build
+          nohup serve -s -l 3001 > error &
