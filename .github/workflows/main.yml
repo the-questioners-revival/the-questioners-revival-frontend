@@ -62,4 +62,6 @@ jobs:
           source ~/.bashrc
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
-          nohup serve -s -l 3000 build &
+          cd build
+          nohup serve -s -l 3001 > error &
+          cd ../
