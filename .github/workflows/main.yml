@@ -65,4 +65,4 @@ jobs:
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
           cd build
-          serve -s -l 3001 & disown
+          RUNNER_TRACKING_ID="" && serve -s -l 3001 & disown
