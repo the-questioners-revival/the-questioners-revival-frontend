@@ -46,23 +46,20 @@ jobs:
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
           npm run build
-          cd build
-          nohup serve -s -l 3001 > serve.log 2>&1 &
 
-  # deploy:
-  #   runs-on: self-hosted
-  #   needs: build
+  deploy:
+    runs-on: self-hosted
+    needs: build
 
-  #   steps:
-  #     # Kill gunicorn server, if running already
-  #     - name: Kill TQR FE
-  #       run: pkill -f "node /home/joes/.nvm/versions/node/v18.13.0/bin/serve -s -l 3001" || true
+    steps:
+      # Kill gunicorn server, if running already
+      - name: Kill TQR FE
+        run: pkill -f "node /home/joes/.nvm/versions/node/v18.13.0/bin/serve -s -l 3001" || true
 
-  #     # Run gunicorn server
-  #     - name: Run fe
-  #       run: |
-  #         source ~/.bashrc
-  #         source ~/.nvm/nvm.sh
-  #         nvm use 18.13.0
-  #         cd build
-  #         nohup serve -s -l 3001 > serve.log 2>&1 &
+      # Run gunicorn server
+      - name: Run fe
+        run: |
+          source ~/.bashrc
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
+          nohup serve -s -l 3000 build &
