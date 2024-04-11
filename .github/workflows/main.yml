@@ -26,6 +26,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Source nvm
+        run: source ~/.nvm/nvm.sh
+
       - name: Use the right node
         run: nvm use 18.13.0
 
