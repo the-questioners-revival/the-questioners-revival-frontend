@@ -18,38 +18,38 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  # build:
-  #   # The type of runner that the job will run on
-  #   runs-on: self-hosted
+  build:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
 
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Use the right node
-  #       run: |
-  #         source ~/.bashrc
-  #         source ~/.nvm/nvm.sh
-  #         nvm use 18.13.0
+      - name: Use the right node
+        run: |
+          source ~/.bashrc
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
 
-  #     - name: Install dependencies
-  #       run: |
-  #         source ~/.bashrc
-  #         source ~/.nvm/nvm.sh
-  #         nvm use 18.13.0
-  #         npm install
+      - name: Install dependencies
+        run: |
+          source ~/.bashrc
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
+          npm install
 
-  #     - name: Build
-  #       run: |
-  #         source ~/.bashrc
-  #         source ~/.nvm/nvm.sh
-  #         nvm use 18.13.0
-  #         npm run build
+      - name: Build
+        run: |
+          source ~/.bashrc
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
+          npm run build
 
   deploy:
     runs-on: self-hosted
-    # needs: build
+    needs: build
 
     steps:
       # Kill gunicorn server, if running already
