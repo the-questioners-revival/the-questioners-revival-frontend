@@ -14,6 +14,8 @@ on:
 env:
   FLASK_APP: app.py
   CI: false
+  CI_DETACH: true
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -62,4 +64,5 @@ jobs:
           source ~/.bashrc
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
-          npm start &
+          cd build
+          serve -s -l 3001 &
