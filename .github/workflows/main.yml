@@ -52,6 +52,8 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: build
+    variables:
+      CI_DETACH: true
 
     steps:
       # Kill gunicorn server, if running already
@@ -65,4 +67,4 @@ jobs:
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
           cd build
-          serve -s -l 3001 &
+          serve -s -l 3001 & disown
