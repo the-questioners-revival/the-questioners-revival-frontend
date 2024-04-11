@@ -64,4 +64,6 @@ jobs:
           nvm use 18.13.0
           cd build
           nohup serve -s -l 3001 > error &
+          echo "PATH: $PATH"
+          which serve
           cd ../
