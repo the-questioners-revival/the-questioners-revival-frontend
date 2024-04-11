@@ -63,4 +63,4 @@ jobs:
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
           cd build
-          serve -s -l 3001 > error &
+          /home/joes/.nvm/versions/node/v18.13.0/bin/serve -s -l 3001 > error &
