@@ -52,8 +52,6 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: build
-    variables:
-      CI_DETACH: true
 
     steps:
       # Kill gunicorn server, if running already
