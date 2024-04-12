@@ -48,6 +48,7 @@ const QaaList = ({
   const [isOpenDeleteQaaModal, setIsOpenDeleteQaaModal] = useState(false);
   const [isOpenEditQaaModal, setIsOpenEditQaaModal] = useState(false);
   const [qaaSelected, setQaaSelected] = useState<any>();
+  console.log('test')
 
   const handleItemClick = (itemId: any) => {
     setSelectedItemIds((prevSelectedIds: any) => {
