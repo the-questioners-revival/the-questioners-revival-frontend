@@ -24,26 +24,26 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '18.13.0'
-   
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install dependencies
-        run: npm install
+        run: |
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
+          npm install
 
       - name: Build
-        run: npm run build
+        run: |
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
+          npm run build
 
   deploy:
     runs-on: self-hosted
     needs: build
 
     steps:
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '18.13.0'
-          
       # Kill React app already running
       - name: Kill TQR FE
         run: pkill -f "node /home/joes/.nvm/versions/node/v18.13.0/bin/serve -s -l 3001" || true
@@ -51,5 +51,7 @@ jobs:
       # Run React Using Serve with Nohup
       - name: Run fe
         run: |
+          source ~/.nvm/nvm.sh
+          nvm use 18.13.0
           cd build
           RUNNER_TRACKING_ID="" && nohup serve -s -l 3001 > error &
