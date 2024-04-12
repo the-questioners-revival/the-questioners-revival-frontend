@@ -15,6 +15,7 @@ env:
   FLASK_APP: app.py
   CI: false
   CI_DETACH: true
+  REACT_APP_BACKEND_URL: https://thequestionersbe.joesexperiences.com
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
