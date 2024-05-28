@@ -28,7 +28,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="header"
         maxWidth="100%"
         width="100%"
-        overflowX="scroll"
+        overflowX="hidden"
         overflowY="unset"
         position="fixed"
         zIndex={1}
@@ -43,7 +43,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         maxWidth="100%"
         width="100%"
         overflowX="scroll"
-        overflowY="unset"
+        overflowY="hidden"
         paddingX={{ base: '10px', md: '150px' }}
       >
         <Box maxW="760px" margin="auto" h="100%">
