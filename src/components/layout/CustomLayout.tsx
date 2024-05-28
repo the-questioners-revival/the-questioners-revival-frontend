@@ -42,7 +42,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="main"
         maxWidth="100%"
         width="100%"
-        overflowX="scroll"
+        overflowX="hidden"
         overflowY="hidden"
         paddingX={{ base: '10px', md: '150px' }}
       >
@@ -60,7 +60,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="footer"
         maxWidth="100%"
         width="100%"
-        overflowX="scroll"
+        overflowX="hidden"
         overflowY="unset"
         paddingX={{ base: '10px', md: '150px' }}
       >
