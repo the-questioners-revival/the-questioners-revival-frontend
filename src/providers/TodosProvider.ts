@@ -64,7 +64,7 @@ export default function TodosProvider() {
   useEffect(() => {
     console.log('REFETCHING');
     const fetchTodos = async () => {
-      getAllTodos({ status: 'inprogress' });
+      getAllTodos();
     };
 
     fetchTodos();
