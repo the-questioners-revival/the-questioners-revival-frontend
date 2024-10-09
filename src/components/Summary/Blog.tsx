@@ -19,7 +19,7 @@ const Blog = ({
   const [showBlogText, setShowBlogText] = useState(false);
 
   return (
-    <Flex justifyContent="space-between" position="relative">
+    <Flex justifyContent="space-between" position="relative" marginBottom={2}>
       <Box>
         <div
           className={showBlogText ? 'tiptap' : 'tiptap blogText'}

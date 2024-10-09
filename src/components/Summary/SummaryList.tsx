@@ -97,6 +97,7 @@ const SummaryList = ({
                   fontSize="lg"
                   marginTop="10px"
                   textDecoration="underline"
+                  marginBottom={1}
                 >
                   {dataByDate?.goals?.length} Goals:
                 </Heading>
@@ -123,8 +124,9 @@ const SummaryList = ({
                 <Heading
                   as="h2"
                   fontSize="lg"
-                  marginTop="10px"
                   textDecoration="underline"
+                  marginTop={3}
+                  marginBottom={1}
                 >
                   {dataByDate?.todos?.length} Todos:
                 </Heading>
@@ -151,8 +153,9 @@ const SummaryList = ({
                 <Heading
                   as="h2"
                   fontSize="lg"
-                  marginTop="10px"
                   textDecoration="underline"
+                  marginTop={3}
+                  marginBottom={1}
                 >
                   {dataByDate?.qaas?.length} QaAs:
                 </Heading>
@@ -180,8 +183,9 @@ const SummaryList = ({
                 <Heading
                   as="h2"
                   fontSize="lg"
-                  marginTop="10px"
                   textDecoration="underline"
+                  marginTop={3}
+                  marginBottom={1}
                 >
                   {dataByDate?.blogs?.length} Blogs:
                 </Heading>
