@@ -238,14 +238,30 @@ const TodoListItem = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <Text
-              fontSize="lg"
-              paddingRight="7px"
-              textDecorationLine={`${
-                todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
-              }`}
-              dangerouslySetInnerHTML={{ __html: renderTodoTitle(todo.title) }}
-            ></Text>
+            <Box display="flex">
+              <Text
+                fontSize="lg"
+                paddingRight="7px"
+                textDecorationLine={`${
+                  todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
+                }`}
+                dangerouslySetInnerHTML={{
+                  __html: renderTodoTitle(todo.title),
+                }}
+              ></Text>
+              {todo.blog_id ? (
+                <Box
+                  marginRight="2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpenEditNoteModal(!isOpenEditNoteModal);
+                    setSelectedTodo(todo);
+                  }}
+                >
+                  📝
+                </Box>
+              ) : null}
+            </Box>
             <Flex>
               <Box paddingRight="7px">
                 <Tag>{todo.type}</Tag>
@@ -257,25 +273,6 @@ const TodoListItem = ({
               ) : null}
             </Flex>
           </Box>
-          {todo.blog_id ? (
-            <div
-              onClick={() => {
-                setIsOpenEditNoteModal(!isOpenEditNoteModal);
-                setSelectedTodo(todo);
-              }}
-            >
-              📝
-            </div>
-          ) : (
-            <div
-              onClick={() => {
-                setIsOpenCreateNoteModal(!isOpenCreateNoteModal);
-                setSelectedTodo(todo);
-              }}
-            >
-              ✍️
-            </div>
-          )}
         </Box>
         <Box
           style={{
@@ -316,6 +313,16 @@ const TodoListItem = ({
           </Flex>
         </Box>
         <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
+          {!todo.blog_id ? (
+            <div
+              onClick={() => {
+                setIsOpenCreateNoteModal(!isOpenCreateNoteModal);
+                setSelectedTodo(todo);
+              }}
+            >
+              ✍️
+            </div>
+          ) : null}
           <Text fontSize="sm" paddingRight="7px">
             created:{' '}
             {moment
