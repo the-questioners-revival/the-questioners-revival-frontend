@@ -55,7 +55,7 @@ const EditBlogForm = ({
               {assignTodo ? (
                 <CustomField
                   name="todo_id"
-                  type="select"
+                  type="searchableSelect"
                   options={todoOptions}
                   required={false}
                 />

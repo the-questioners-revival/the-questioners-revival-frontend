@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   FormControl,
   FormErrorMessage,
@@ -5,6 +6,12 @@ import {
   Input,
   Select,
   Textarea,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+  Box,
 } from '@chakra-ui/react';
 import { Field } from 'formik';
 
@@ -19,15 +26,17 @@ const CustomField = ({
   type,
   options,
   rows,
-  inputType
+  inputType,
 }: {
   name: string;
   required?: boolean;
   type: string;
   options?: SelectOption[];
-  rows?: Number;
-  inputType?: string
+  rows?: number;
+  inputType?: string;
 }) => {
+  const [query, setQuery] = useState('');
+
   function validateField(name: string, value: string) {
     let error;
     if (required && !value) {
@@ -40,14 +49,20 @@ const CustomField = ({
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
   return (
     <Field name={name} validate={(value: string) => validateField(name, value)}>
-      {({ field, form }: { field: any; form: any }) => (
+      {({ field, form, meta }: { field: any; form: any; meta: any }) => (
         <FormControl isInvalid={form.errors[name] && form.touched[name]}>
           <FormLabel>{capitalizeFirstLetter(name)}</FormLabel>
+
           {type === 'input' ? (
-            <Input {...field} placeholder={name} bg="white" type={inputType}/>
+            <Input {...field} placeholder={name} bg="white" type={inputType} />
           ) : null}
+
           {type === 'textArea' ? (
             <Textarea {...field} placeholder={name} bg="white" rows={rows} />
           ) : null}
@@ -55,12 +70,43 @@ const CustomField = ({
           {type === 'select' ? (
             <Select {...field} placeholder="Select option" bg="white">
               {options?.map((option) => (
-                <option key={option.name} value={option.value}>
+                <option key={option.value} value={option.value}>
                   {option.name}
                 </option>
               ))}
             </Select>
           ) : null}
+
+          {type === 'searchableSelect' ? (
+            <Menu>
+              <MenuButton as={Button} width="100%" bg="white" textAlign="left">
+                {meta.value || 'Select option'}
+              </MenuButton>
+              <MenuList>
+                <Box padding="10px">
+                  <Input
+                    placeholder="Search..."
+                    value={query}
+                    onChange={handleSearchChange}
+                    autoFocus
+                  />
+                </Box>
+                {options
+                  ?.filter((option) =>
+                    option.name.toLowerCase().includes(query.toLowerCase()),
+                  )
+                  .map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      onClick={() => form.setFieldValue(name, option.value)}
+                    >
+                      {option.name}
+                    </MenuItem>
+                  ))}
+              </MenuList>
+            </Menu>
+          ) : null}
+
           <FormErrorMessage>{form.errors[name]}</FormErrorMessage>
         </FormControl>
       )}
