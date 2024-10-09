@@ -14,6 +14,16 @@ export default function TodosProvider() {
   );
 
   const {
+    data: getAllTodosData,
+    refetch: getAllTodos,
+    loading: getAllTodosLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
+    TodoApi.getAllTodos,
+    null,
+    false,
+  );
+
+  const {
     data: completeTodoData,
     mutate: completeTodo,
   }: { data: any; mutate: Function } = useAbstractMutator(TodoApi.completeTodo);
@@ -67,5 +77,8 @@ export default function TodosProvider() {
     getAllTodosGroupedByDateData,
     getAllTodosGroupedByDate,
     getAllTodosGroupedByDateLoading,
+    getAllTodosData,
+    getAllTodos,
+    getAllTodosLoading
   };
 }
