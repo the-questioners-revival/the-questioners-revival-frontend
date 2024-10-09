@@ -1,10 +1,12 @@
-import { Box, Button, Container } from '@chakra-ui/react';
+import { Box, Button, Container, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import StarterKit from '@tiptap/starter-kit';
 import { useEditor } from '@tiptap/react';
 import Link from '@tiptap/extension-link';
+import {  useState } from 'react';
+import TodosProvider from '../../providers/TodosProvider';
 
 const EditBlogForm = ({
   editBlog,
@@ -13,6 +15,9 @@ const EditBlogForm = ({
   editBlog: Function;
   blog: any;
 }) => {
+  const [assignTodo, setAssignTodo] = useState(false);
+  const { todoOptions } = TodosProvider();
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -31,7 +36,7 @@ const EditBlogForm = ({
   // Updated component name
   return (
     <Formik
-      initialValues={{ text: blog.text }}
+      initialValues={{ text: blog.text, todo_id: blog.todo_id }}
       onSubmit={(values, actions) => {
         editBlog({
           ...blog,
@@ -47,6 +52,18 @@ const EditBlogForm = ({
           <Container p={0} maxW="100%">
             <Box color="black">
               <HtmlEditor editor={editor} />
+              {assignTodo ? (
+                <CustomField
+                  name="todo_id"
+                  type="select"
+                  options={todoOptions}
+                  required={false}
+                />
+              ) : (
+                <Text fontSize="xs" onClick={() => setAssignTodo(!assignTodo)}>
+                  assign todo
+                </Text>
+              )}
 
               <Button
                 mt={4}

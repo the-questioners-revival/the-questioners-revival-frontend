@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react';
 import TodoApi from '../api/todo';
 import useAbstractMutator from './AbstractMutator';
 import useAbstractProvider from './AbstractProvider';
@@ -60,7 +61,25 @@ export default function TodosProvider() {
     false,
   );
 
+  useEffect(() => {
+    console.log('REFETCHING');
+    const fetchTodos = async () => {
+      getAllTodos({ status: 'inprogress' });
+    };
+
+    fetchTodos();
+  }, [createTodoData, removeTodoData]); // Call getAllTodos whenever it changes
+
+  const todoOptions = useMemo(() => {
+    return getAllTodosData?.map((todo: any) => ({
+      name: todo.title,
+      value: todo.id,
+    }));
+  }, [getAllTodosData]);
+  console.log('todoOptions: ', todoOptions);
+
   return {
+    todoOptions,
     todoData,
     todoRefetch,
     getLatestTodosLoading,
@@ -79,6 +98,6 @@ export default function TodosProvider() {
     getAllTodosGroupedByDateLoading,
     getAllTodosData,
     getAllTodos,
-    getAllTodosLoading
+    getAllTodosLoading,
   };
 }

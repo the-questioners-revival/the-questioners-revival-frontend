@@ -43,7 +43,7 @@ async function getAllTodosGroupedByDate(data) {
 }
 
 async function getAllTodos(params) {
-  let url = `${BACKEND_URL}/todo/latest`;
+  let url = `${BACKEND_URL}/todo`;
 
   // Add type parameter if not null
   if (params && params.status !== null && params.status !== undefined) {
