@@ -28,7 +28,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="header"
         maxWidth="100%"
         width="100%"
-        overflowX="scroll"
+        overflowX="hidden"
         overflowY="unset"
         position="fixed"
         zIndex={1}
@@ -42,8 +42,8 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="main"
         maxWidth="100%"
         width="100%"
-        overflowX="scroll"
-        overflowY="unset"
+        overflowX="hidden"
+        overflowY="hidden"
         paddingX={{ base: '10px', md: '150px' }}
       >
         <Box maxW="760px" margin="auto" h="100%">
@@ -60,7 +60,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         area="footer"
         maxWidth="100%"
         width="100%"
-        overflowX="scroll"
+        overflowX="hidden"
         overflowY="unset"
         paddingX={{ base: '10px', md: '150px' }}
       >

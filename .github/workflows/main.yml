@@ -12,8 +12,12 @@ on:
   workflow_dispatch:
 
 env:
+<<<<<<< HEAD
+  FLASK_APP: app.py
+=======
   CI: false
   REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
+>>>>>>> cb1c28eff3ebe53e24162ea7c6c14a11f0c5c2bf
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -28,6 +32,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
+<<<<<<< HEAD
+        run: npm install
+
+      - name: Build
+        run: npm run build
+=======
         run: |
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
@@ -38,10 +48,24 @@ jobs:
           source ~/.nvm/nvm.sh
           nvm use 18.13.0
           npm run build
+>>>>>>> cb1c28eff3ebe53e24162ea7c6c14a11f0c5c2bf
 
   deploy:
     runs-on: self-hosted
     needs: build
+<<<<<<< HEAD
+    
+    steps:
+      # Kill gunicorn server, if running already
+      - name: Kill TQR FE
+        run: pkill -f "node /home/joes/.nvm/versions/node/v18.13.0/bin/serve -s -l 3001" || true
+
+      # Run gunicorn server
+      - name: Run fe
+        run: |
+          cd build
+          nohup serve -s -l 3001 > error &
+=======
 
     steps:
       # Kill React app already running
@@ -55,3 +79,4 @@ jobs:
           nvm use 18.13.0
           cd build
           RUNNER_TRACKING_ID="" && nohup serve -s -l 3001 > error &
+>>>>>>> cb1c28eff3ebe53e24162ea7c6c14a11f0c5c2bf
