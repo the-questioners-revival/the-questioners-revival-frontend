@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { Field } from 'formik';
 
-interface SelectOption {
+export interface SelectOption {
   name: string;
   value: string;
 }
