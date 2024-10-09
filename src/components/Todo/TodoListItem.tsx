@@ -1,9 +1,46 @@
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, Flex, Tag, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  ModalBody,
+  ModalCloseButton,
+  ModalHeader,
+  Tag,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment-timezone';
 import DOMPurify from 'dompurify';
+import CustomModal from '../custom/CustomModal';
+import CreateBlogForm from '../Blog/CreateBlogForm';
+import BlogsProvider from '../../providers/BlogsProvider';
+import EditBlogForm from '../Blog/EditBlogForm';
+
+const defaultTodo: Todo = {
+  id: 0,
+  title: '',
+  type: '',
+  priority: '',
+  status: '',
+  created_at: new Date(),
+  updated_at: new Date(),
+  completed_at: new Date(),
+  deleted_at: new Date(),
+};
+
+interface Todo {
+  id: number;
+  title: string;
+  type: string;
+  priority: string;
+  status: string;
+  created_at: Date;
+  updated_at: Date;
+  completed_at: Date;
+  deleted_at: Date;
+}
 
 const TodoListItem = ({
   todo,
@@ -28,14 +65,34 @@ const TodoListItem = ({
   isOpenAnswer: boolean;
   openAnswer: Function;
 }) => {
-  const bgColor = useColorModeValue("white", "black");
-  const itemBgColor = useColorModeValue("greenLight", "black");
+  const bgColor = useColorModeValue('white', 'black');
+  const itemBgColor = useColorModeValue('greenLight', 'black');
   const LEFT_SIDE_WIDTH = 40;
   const RIGHT_SIDE_WIDTH = 80;
   const [startLeftSide, setStartLeftSide] = useState(0);
   const [startRightSide, setStartRightSide] = useState(0);
   const [leftSide, setLeftSide] = useState(-LEFT_SIDE_WIDTH);
   const [rightSide, setRightSide] = useState(-RIGHT_SIDE_WIDTH);
+  const [isOpenCreateNoteModal, setIsOpenCreateNoteModal] = useState(false);
+  const [isOpenEditNoteModal, setIsOpenEditNoteModal] = useState(false);
+  const [blog, setBlog] = useState();
+  console.log('blog: ', blog);
+  const [selectedTodo, setSelectedTodo] = useState<Todo>(defaultTodo);
+  const { createBlog, getBlogByTodoId, getBlogByTodoIdData, editBlog, editBlogData } = BlogsProvider();
+
+  useEffect(() => {
+    console.log('todo.id: ', todo.id);
+    if (todo.id) {
+      getBlogByTodoId(todo.id);
+    }
+  }, [todo, editBlogData]);
+
+  useEffect(() => {
+    if (getBlogByTodoIdData) {
+      console.log('getBlogByTodoIdData: ', getBlogByTodoIdData);
+      setBlog(getBlogByTodoIdData);
+    }
+  }, [getBlogByTodoIdData]);
 
   const dragImg = new Image(0, 0);
   dragImg.src =
@@ -128,7 +185,10 @@ const TodoListItem = ({
     // Regular expression to find URLs starting with https:// or http://
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     // Replace URLs with clickable links
-    return text.replace(urlRegex, '<a href="$1" target="_blank" rel="noreferrer" style="text-decoration: underline">$1</a>');
+    return text.replace(
+      urlRegex,
+      '<a href="$1" target="_blank" rel="noreferrer" style="text-decoration: underline">$1</a>',
+    );
   }
 
   function renderTodoTitle(title: string) {
@@ -140,140 +200,201 @@ const TodoListItem = ({
   }
 
   return (
-    <Box
-      key={todo.id}
-      marginBottom="10px"
-      border={`2px solid ${bgColor}`}
-      borderRadius="10"
-      overflow="hidden"
-      _hover={{ cursor: 'pointer' }}
-      draggable={true}
-      onDragStart={(e) => handleOnDragStart(e)}
-      onDragOver={(e) => onDrag(e)}
-      onDragEnd={(e) => onDragEnd(e)}
-      onTouchStart={(e) => handleOnDragStart(e)}
-      onTouchMove={(e) => onDrag(e)}
-      onTouchEnd={(e) => onDragEnd(e)}
-      background={renderBg(todo.status)}
-      style={{
-        position: 'relative',
-      }}
-    >
+    <>
       <Box
-        style={{
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#04A144',
-          height: '100%',
-          width: LEFT_SIDE_WIDTH,
-          left: leftSide,
-          top: 0,
-          zIndex: 1,
-        }}
-      >
-        <CheckIcon />
-      </Box>
-      <Box
-        display="flex"
-        alignItems="center"
-        w="100%"
-        padding="5px 10px"
-        justifyContent="space-between"
+        key={todo.id}
+        marginBottom="10px"
+        border={`2px solid ${bgColor}`}
+        borderRadius="10"
+        overflow="hidden"
+        _hover={{ cursor: 'pointer' }}
+        draggable={true}
+        onDragStart={(e) => handleOnDragStart(e)}
+        onDragOver={(e) => onDrag(e)}
+        onDragEnd={(e) => onDragEnd(e)}
+        onTouchStart={(e) => handleOnDragStart(e)}
+        onTouchMove={(e) => onDrag(e)}
+        onTouchEnd={(e) => onDragEnd(e)}
+        background={renderBg(todo.status)}
         style={{
           position: 'relative',
         }}
-        onClick={() => rightSide < 0 && openAnswer(todo.id)}
       >
-        <Text
-          fontSize="lg"
-          paddingRight="7px"
-          textDecorationLine={`${
-            todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
-          }`}
-          dangerouslySetInnerHTML={{ __html: renderTodoTitle(todo.title) }}
-        ></Text>
-        <Flex>
-          <Box paddingRight="7px">
-            <Tag>{todo.type}</Tag>
+        <Box
+          style={{
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#04A144',
+            height: '100%',
+            width: LEFT_SIDE_WIDTH,
+            left: leftSide,
+            top: 0,
+            zIndex: 1,
+          }}
+        >
+          <CheckIcon />
+        </Box>
+        <Box
+          w="100%"
+          padding="5px 10px"
+          style={{
+            position: 'relative',
+          }}
+          onClick={() => rightSide < 0 && openAnswer(todo.id)}
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Text
+              fontSize="lg"
+              paddingRight="7px"
+              textDecorationLine={`${
+                todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
+              }`}
+              dangerouslySetInnerHTML={{ __html: renderTodoTitle(todo.title) }}
+            ></Text>
+            <Flex>
+              <Box paddingRight="7px">
+                <Tag>{todo.type}</Tag>
+              </Box>
+              {todo.priority ? (
+                <Box>
+                  <Tag>{todo.priority}</Tag>
+                </Box>
+              ) : null}
+            </Flex>
           </Box>
-          {todo.priority ? (
-            <Box>
-              <Tag>{todo.priority}</Tag>
-            </Box>
+          {todo.blog_id ? (
+            <div
+              onClick={() => {
+                setIsOpenEditNoteModal(!isOpenEditNoteModal);
+                setSelectedTodo(todo);
+              }}
+            >
+              📝
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                setIsOpenCreateNoteModal(!isOpenCreateNoteModal);
+                setSelectedTodo(todo);
+              }}
+            >
+              ✍️
+            </div>
+          )}
+        </Box>
+        <Box
+          style={{
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            background: 'red',
+            height: '100%',
+            width: RIGHT_SIDE_WIDTH,
+            right: rightSide,
+            top: 0,
+          }}
+        >
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            w="100%"
+            h="100%"
+            onClick={() => {
+              setIsOpenEditTodoModal(true);
+              setTodoSelected(todo);
+            }}
+          >
+            <EditIcon w={4} h={4} color={bgColor} />
+          </Flex>
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            w="100%"
+            h="100%"
+            onClick={() => {
+              setIsOpenDeleteTodoModal(true);
+              setTodoSelected(todo);
+            }}
+          >
+            <CloseIcon w={4} h={4} color={bgColor} />
+          </Flex>
+        </Box>
+        <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
+          <Text fontSize="sm" paddingRight="7px">
+            created:{' '}
+            {moment
+              .tz(todo.created_at, 'Asia/Manila')
+              .format('DD.MM.YYYY HH:mm')}
+          </Text>
+          {todo.completed_at ? (
+            <Text fontSize="sm" paddingRight="7px">
+              completed:{' '}
+              {moment
+                .tz(todo.completed_at, 'Asia/Manila')
+                .format('DD.MM.YYYY HH:mm')}
+            </Text>
           ) : null}
-        </Flex>
+          {todo.updated_at ? (
+            <Text fontSize="sm" paddingRight="7px">
+              updated:{' '}
+              {moment
+                .tz(todo.updated_at, 'Asia/Manila')
+                .format('DD.MM.YYYY HH:mm')}
+            </Text>
+          ) : null}
+          {todo.deleted_at ? (
+            <Text fontSize="sm" paddingRight="7px">
+              removed:{' '}
+              {moment
+                .tz(todo.removed_at, 'Asia/Manila')
+                .format('DD.MM.YYYY HH:mm')}
+            </Text>
+          ) : null}
+        </Box>
       </Box>
-      <Box
-        style={{
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          background: 'red',
-          height: '100%',
-          width: RIGHT_SIDE_WIDTH,
-          right: rightSide,
-          top: 0,
-        }}
+      <CustomModal
+        isOpen={isOpenCreateNoteModal}
+        closeModal={() => setIsOpenCreateNoteModal(false)}
       >
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          w="100%"
-          h="100%"
-          onClick={() => {
-            setIsOpenEditTodoModal(true);
-            setTodoSelected(todo);
-          }}
-        >
-          <EditIcon w={4} h={4} color={bgColor} />
-        </Flex>
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          w="100%"
-          h="100%"
-          onClick={() => {
-            setIsOpenDeleteTodoModal(true);
-            setTodoSelected(todo);
-          }}
-        >
-          <CloseIcon w={4} h={4} color={bgColor} />
-        </Flex>
-      </Box>
-      <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
-        <Text fontSize="sm" paddingRight="7px">
-          created:{' '}
-          {moment.tz(todo.created_at, 'Asia/Manila').format('DD.MM.YYYY HH:mm')}
-        </Text>
-        {todo.completed_at ? (
-          <Text fontSize="sm" paddingRight="7px">
-            completed:{' '}
-            {moment
-              .tz(todo.completed_at, 'Asia/Manila')
-              .format('DD.MM.YYYY HH:mm')}
-          </Text>
-        ) : null}
-        {todo.updated_at ? (
-          <Text fontSize="sm" paddingRight="7px">
-            updated:{' '}
-            {moment
-              .tz(todo.updated_at, 'Asia/Manila')
-              .format('DD.MM.YYYY HH:mm')}
-          </Text>
-        ) : null}
-        {todo.deleted_at ? (
-          <Text fontSize="sm" paddingRight="7px">
-            removed:{' '}
-            {moment
-              .tz(todo.removed_at, 'Asia/Manila')
-              .format('DD.MM.YYYY HH:mm')}
-          </Text>
-        ) : null}
-      </Box>
-    </Box>
+        <ModalHeader>Create Note</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <CreateBlogForm
+            date={selectedTodo.created_at}
+            createBlog={(blog: any) => {
+              console.log('blog: ', blog);
+              console.log('selectedTodo.id:', selectedTodo.id);
+              createBlog({ ...blog, todo_id: selectedTodo.id });
+              setIsOpenCreateNoteModal(false);
+            }}
+          ></CreateBlogForm>
+        </ModalBody>
+      </CustomModal>
+      <CustomModal
+        isOpen={isOpenEditNoteModal}
+        closeModal={() => setIsOpenEditNoteModal(false)}
+      >
+        <ModalHeader>Edit Note</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <EditBlogForm
+            blog={blog}
+            editBlog={(blog: any) => {
+              console.log('blog: ', blog);
+              editBlog(blog);
+              setIsOpenEditNoteModal(false);
+            }}
+          ></EditBlogForm>
+        </ModalBody>
+      </CustomModal>
+    </>
   );
 };
 
