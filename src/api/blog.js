@@ -3,6 +3,12 @@ import Api from '.';
 
 const API = Api();
 
+async function getBlogByTodoId(id) {
+  console.log('getBlogByTodoId id: ', id);
+  const res = await API.get(`${BACKEND_URL}/blog/getByTodoId/${id}`, true)
+  return res
+}
+
 async function getLatestBlogs() {
   const res = await API.get(`${BACKEND_URL}/blog/latest`, true);
   return res;
@@ -32,6 +38,7 @@ async function editBlog(data) {
 }
 
 export default {
+  getBlogByTodoId,
   getLatestBlogs,
   getAllBlogsGroupedByDate,
   removeBlog,

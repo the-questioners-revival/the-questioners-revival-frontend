@@ -42,6 +42,17 @@ async function getAllTodosGroupedByDate(data) {
   return res;
 }
 
+async function getAllTodos(params) {
+  let url = `${BACKEND_URL}/todo/latest`;
+
+  // Add type parameter if not null
+  if (params && params.status !== null && params.status !== undefined) {
+    url += `?status=${params.status}`;
+  }
+  const res = await API.get(url, true);
+  return res;
+}
+
 async function completeTodo(id) {
   const res = await API.post(`${BACKEND_URL}/todo/complete/${id}`, null, true);
   return res;
@@ -78,5 +89,6 @@ export default {
   removeTodo,
   createTodo,
   getAllTodosGroupedByDate,
+  getAllTodos,
   editTodo,
 };
