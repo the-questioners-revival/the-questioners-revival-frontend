@@ -42,6 +42,8 @@ const TodoList = ({
   editTodo,
   priority,
   setPriority,
+  createBlog,
+  editBlog,
 }: {
   todos: any;
   completeTodo: Function;
@@ -54,6 +56,8 @@ const TodoList = ({
   editTodo: Function;
   priority?: string;
   setPriority: Function;
+  createBlog: Function;
+  editBlog: Function;
 }) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
   const [todoSelected, setTodoSelected] = useState<any>();
@@ -136,6 +140,8 @@ const TodoList = ({
           setIsOpenDeleteTodoModal={setIsOpenDeleteTodoModal}
           isOpenAnswer={selectedItemIds.includes(todo?.id)}
           openAnswer={handleItemClick}
+          createBlog={createBlog}
+          editBlog={editBlog}
         />
       ))}
       <CustomConfirmationModal

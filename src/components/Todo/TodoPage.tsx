@@ -6,6 +6,7 @@ import CustomLayout from '../layout/CustomLayout';
 import ProtectedPage from '../ProtectedPage';
 import TodosProvider from '../../providers/TodosProvider';
 import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
+import BlogsProvider from '../../providers/BlogsProvider';
 
 const TodoPage = () => {
   const [status, setStatus] = useState('inprogress');
@@ -29,6 +30,9 @@ const TodoPage = () => {
     completeTodo,
   } = TodosProvider();
 
+  const { createBlog, editBlog, createBlogData, editBlogData } =
+    BlogsProvider();
+
   useEffect(() => {
     todoRefetch({ type, status, priority });
   }, [type, status, priority]);
@@ -39,7 +43,9 @@ const TodoPage = () => {
       inprogressTodoData ||
       createTodoData ||
       removeTodoData ||
-      editTodoData
+      editTodoData ||
+      createBlogData ||
+      editBlogData
     ) {
       todoRefetch({ type, status, priority });
     }
@@ -49,6 +55,8 @@ const TodoPage = () => {
     createTodoData,
     removeTodoData,
     editTodoData,
+    createBlogData,
+    editBlogData,
   ]);
 
   useEffect(() => {
@@ -72,6 +80,8 @@ const TodoPage = () => {
             editTodo={editTodo}
             priority={priority}
             setPriority={setPriority}
+            createBlog={createBlog}
+            editBlog={editBlog}
           ></TodoList>
         </Box>
       </CustomLayout>

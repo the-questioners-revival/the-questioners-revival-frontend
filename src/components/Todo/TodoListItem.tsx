@@ -24,6 +24,7 @@ const defaultTodo: Todo = {
   type: '',
   priority: '',
   status: '',
+  blog: null,
   created_at: new Date(),
   updated_at: new Date(),
   completed_at: new Date(),
@@ -36,6 +37,7 @@ interface Todo {
   type: string;
   priority: string;
   status: string;
+  blog: any;
   created_at: Date;
   updated_at: Date;
   completed_at: Date;
@@ -53,6 +55,8 @@ const TodoListItem = ({
   setIsOpenDeleteTodoModal,
   isOpenAnswer,
   openAnswer,
+  createBlog,
+  editBlog,
 }: {
   todo: any;
   completeTodo: Function;
@@ -64,6 +68,8 @@ const TodoListItem = ({
   setIsOpenDeleteTodoModal: Function;
   isOpenAnswer: boolean;
   openAnswer: Function;
+  createBlog: Function;
+  editBlog: Function;
 }) => {
   const bgColor = useColorModeValue('white', 'black');
   const itemBgColor = useColorModeValue('greenLight', 'black');
@@ -75,24 +81,7 @@ const TodoListItem = ({
   const [rightSide, setRightSide] = useState(-RIGHT_SIDE_WIDTH);
   const [isOpenCreateNoteModal, setIsOpenCreateNoteModal] = useState(false);
   const [isOpenEditNoteModal, setIsOpenEditNoteModal] = useState(false);
-  const [blog, setBlog] = useState();
-  console.log('blog: ', blog);
   const [selectedTodo, setSelectedTodo] = useState<Todo>(defaultTodo);
-  const { createBlog, getBlogByTodoId, getBlogByTodoIdData, editBlog, editBlogData } = BlogsProvider();
-
-  useEffect(() => {
-    console.log('todo.id: ', todo.id);
-    if (todo.id) {
-      getBlogByTodoId(todo.id);
-    }
-  }, [todo, editBlogData]);
-
-  useEffect(() => {
-    if (getBlogByTodoIdData) {
-      console.log('getBlogByTodoIdData: ', getBlogByTodoIdData);
-      setBlog(getBlogByTodoIdData);
-    }
-  }, [getBlogByTodoIdData]);
 
   const dragImg = new Image(0, 0);
   dragImg.src =
@@ -369,8 +358,6 @@ const TodoListItem = ({
           <CreateBlogForm
             date={selectedTodo.created_at}
             createBlog={(blog: any) => {
-              console.log('blog: ', blog);
-              console.log('selectedTodo.id:', selectedTodo.id);
               createBlog({ ...blog, todo_id: selectedTodo.id });
               setIsOpenCreateNoteModal(false);
             }}
@@ -385,9 +372,8 @@ const TodoListItem = ({
         <ModalCloseButton />
         <ModalBody>
           <EditBlogForm
-            blog={blog}
+            blog={selectedTodo.blog}
             editBlog={(blog: any) => {
-              console.log('blog: ', blog);
               editBlog(blog);
               setIsOpenEditNoteModal(false);
             }}
