@@ -1,6 +1,7 @@
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Button,
   Flex,
   ModalBody,
   ModalCloseButton,
@@ -17,6 +18,7 @@ import CustomModal from '../custom/CustomModal';
 import CreateBlogForm from '../Blog/CreateBlogForm';
 import BlogsProvider from '../../providers/BlogsProvider';
 import EditBlogForm from '../Blog/EditBlogForm';
+import DatePicker from '../DatePicker/DatePicker';
 
 const defaultTodo: Todo = {
   id: 0,
@@ -82,6 +84,7 @@ const TodoListItem = ({
   const [isOpenCreateNoteModal, setIsOpenCreateNoteModal] = useState(false);
   const [isOpenEditNoteModal, setIsOpenEditNoteModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo>(defaultTodo);
+  const [scheduleTodo, setScheduleTodo] = useState<boolean>(false);
 
   const dragImg = new Image(0, 0);
   dragImg.src =
@@ -323,6 +326,23 @@ const TodoListItem = ({
               ✍️
             </div>
           ) : null}
+          {scheduleTodo ? (
+            <Box display="flex">
+              <DatePicker />
+              <Button
+                marginLeft={2}
+                display="flex"
+                colorScheme="teal"
+                type="submit"
+              >
+                Submit
+              </Button>
+            </Box>
+          ) : (
+            <Text fontSize="xs" onClick={() => setScheduleTodo(!scheduleTodo)}>
+              schedule todo
+            </Text>
+          )}
           <Text fontSize="sm" paddingRight="7px">
             created:{' '}
             {moment
