@@ -16,6 +16,7 @@ import HabitsProvider from '../../providers/HabitsProvider';
 import HabitsTrackerProvider from '../../providers/HabitsTrackerProvider';
 import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 import GoalsProvider from '../../providers/GoalsProvider';
+import TodoScheduleProvider from '../../providers/TodoScheduleProvider';
 
 const SummaryPage = () => {
   const [startDate, setStartDate] = useState<any>(null);
@@ -55,7 +56,16 @@ const SummaryPage = () => {
     getAllQaasGroupedByDateLoading,
   } = QaasProvider();
 
-  
+  const {
+    getAllTodoSchedulesGroupedByDateData,
+    getAllTodoSchedulesGroupedByDate,
+    getAllTodoSchedulesGroupedByDateLoading,
+  } = TodoScheduleProvider();
+
+  console.log(
+    'getAllTodoSchedulesGroupedByDateData: ',
+    getAllTodoSchedulesGroupedByDateData,
+  );
 
   const {
     getAllBlogsGroupedByDateData,
@@ -75,14 +85,16 @@ const SummaryPage = () => {
         getAllTodosGroupedByDateLoading ||
         getAllQaasGroupedByDateLoading ||
         getDailyHabitsTrackersLoading ||
-        getAllGoalsGroupedByDateLoading
+        getAllGoalsGroupedByDateLoading ||
+        getAllTodoSchedulesGroupedByDateLoading,
     );
   }, [
     getAllBlogsGroupedByDateDataLoading,
     getAllTodosGroupedByDateLoading,
     getAllQaasGroupedByDateLoading,
     getDailyHabitsTrackersLoading,
-    getAllGoalsGroupedByDateLoading
+    getAllGoalsGroupedByDateLoading,
+    getAllTodoSchedulesGroupedByDateLoading,
   ]);
 
   useEffect(() => {
@@ -102,7 +114,11 @@ const SummaryPage = () => {
       getAllGoalsGroupedByDate({
         from: new Date(startDate).toISOString(),
         to: new Date(endDate).toISOString(),
-      })
+      });
+      getAllTodoSchedulesGroupedByDate({
+        from: new Date(startDate).toISOString(),
+        to: new Date(endDate).toISOString(),
+      });
     }
   }, [startDate, endDate]);
 
@@ -114,8 +130,9 @@ const SummaryPage = () => {
     if (
       getAllTodosGroupedByDateData &&
       getAllQaasGroupedByDateData &&
-      getAllBlogsGroupedByDateData && 
-      getAllGoalsGroupedByDateData
+      getAllBlogsGroupedByDateData &&
+      getAllGoalsGroupedByDateData &&
+      getAllTodoSchedulesGroupedByDateData
     ) {
       const combinedData: any = [];
 
@@ -130,7 +147,9 @@ const SummaryPage = () => {
           date: myDate,
           blogs: [],
           todos: [],
+          goals: [],
           qaas: [],
+          todoSchedules: []
         });
         weekStart = weekStart.clone().add(1, 'day');
       }
@@ -198,6 +217,27 @@ const SummaryPage = () => {
         }
       });
 
+      // Add todo schedules to the combinedData array
+      getAllTodoSchedulesGroupedByDateData.forEach((todoScheduleItem: any) => {
+        const existingDateIndex = combinedData.findIndex(
+          (item: any) =>
+            item?.date?.length > 0 &&
+            todoScheduleItem?.date?.length > 0 &&
+            item?.date?.slice(0, 10) === todoScheduleItem?.date?.slice(0, 10),
+        );
+
+        if (existingDateIndex !== -1) {
+          // Date already exists, add the qaa to the existing array
+          combinedData[existingDateIndex].todoSchedules = todoScheduleItem.todoSchedules;
+        } else {
+          // Date doesn't exist, create a new entry
+          combinedData.push({
+            date: todoScheduleItem.date,
+            todoSchedules: todoScheduleItem.todoSchedules,
+          });
+        }
+      });
+
       // Add todos to the combinedData array
       getAllTodosGroupedByDateData.forEach((todoItem: any) => {
         const existingDateIndex = combinedData.findIndex(
@@ -225,6 +265,7 @@ const SummaryPage = () => {
         return bDate + aDate;
       });
 
+      console.log('combinedDataSortedByDate: ', combinedDataSortedByDate);
       setData(combinedDataSortedByDate);
       // Now, combinedData contains the merged data grouped by date
     }
@@ -232,7 +273,8 @@ const SummaryPage = () => {
     getAllTodosGroupedByDateData,
     getAllQaasGroupedByDateData,
     getAllBlogsGroupedByDateData,
-    getAllGoalsGroupedByDateData
+    getAllGoalsGroupedByDateData,
+    getAllTodoSchedulesGroupedByDateData,
   ]);
 
   useEffect(() => {

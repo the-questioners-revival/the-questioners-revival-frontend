@@ -40,8 +40,8 @@ const SummaryList = ({
   createHabitsTracker: Function;
   deleteHabitsTracker: Function;
 }) => {
-  const bgColor = useColorModeValue("white", "black");
-  const color = useColorModeValue("black", "white");
+  const bgColor = useColorModeValue('white', 'black');
+  const color = useColorModeValue('black', 'white');
   const [isOpenCreateBlogModal, setIsOpenCreateBlogModal] = useState(false);
   const [isOpenEditBlogModal, setIsOpenEditBlogModal] = useState(false);
   const [isOpenDeleteBlogModal, setIsOpenDeleteBlogModal] = useState(false);
@@ -80,7 +80,9 @@ const SummaryList = ({
             <Box
               key={dataByDate.date}
               marginBottom="15px"
-              border={`${isItToday ? '2px solid #FFDF00' : `2px solid ${bgColor}`}`}
+              border={`${
+                isItToday ? '2px solid #FFDF00' : `2px solid ${bgColor}`
+              }`}
               borderRadius="10"
               padding="10px"
               color={color}
@@ -102,7 +104,7 @@ const SummaryList = ({
                   {dataByDate?.goals?.length} Goals:
                 </Heading>
               ) : null}
-               {dataByDate?.goals?.map((goal: any) => (
+              {dataByDate?.goals?.map((goal: any) => (
                 <Box
                   key={goal.id}
                   display="flex"
@@ -117,6 +119,35 @@ const SummaryList = ({
                   </Text>
                   <Box>
                     <Tag>{goal.type}</Tag>
+                  </Box>
+                </Box>
+              ))}
+              {dataByDate?.todoSchedules?.length > 0 ? (
+                <Heading
+                  as="h2"
+                  fontSize="lg"
+                  textDecoration="underline"
+                  marginTop={3}
+                  marginBottom={1}
+                >
+                  {dataByDate?.todoSchedules?.length} Todo Schedules:
+                </Heading>
+              ) : null}
+              {dataByDate?.todoSchedules?.map((todo: any) => (
+                <Box
+                  key={todo.id}
+                  display="flex"
+                  alignItems="center"
+                  w="100%"
+                  style={{
+                    position: 'relative',
+                  }}
+                >
+                  <Text fontSize="md" paddingRight="7px">
+                    {todo.title}
+                  </Text>
+                  <Box>
+                    <Tag>{todo.type}</Tag>
                   </Box>
                 </Box>
               ))}
@@ -205,8 +236,8 @@ const SummaryList = ({
                   const checked = isChecked(habit, dataByDate);
 
                   return (
-                    <Flex key={habit.key} alignItems='center'>
-                      <Text marginRight='7px'>{habit.title}</Text>
+                    <Flex key={habit.key} alignItems="center">
+                      <Text marginRight="7px">{habit.title}</Text>
                       <Switch
                         id="email-alerts"
                         isChecked={checked ? true : false}
