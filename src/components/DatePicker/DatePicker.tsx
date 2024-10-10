@@ -1,8 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { Input } from '@chakra-ui/react';
 
-const MinimalDatePicker: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<string>('');
+interface MinimalDatePickerProps {
+  date: string;
+  onDateChange: (date: string) => void;
+}
+
+const MinimalDatePicker: React.FC<MinimalDatePickerProps> = ({
+  date,
+  onDateChange,
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleInputClick = () => {
@@ -10,16 +17,16 @@ const MinimalDatePicker: React.FC = () => {
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(e.target.value);
+    onDateChange(e.target.value);
   };
 
   return (
     <Input
-    width={200}
-    borderWidth={1.5}
+      width={200}
+      borderWidth={1.5}
       ref={inputRef}
       type="date"
-      value={selectedDate}
+      value={date}
       onChange={handleDateChange}
       placeholder="Select date"
       onClick={handleInputClick}

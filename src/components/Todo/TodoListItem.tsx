@@ -59,6 +59,7 @@ const TodoListItem = ({
   openAnswer,
   createBlog,
   editBlog,
+  createTodoSchedule,
 }: {
   todo: any;
   completeTodo: Function;
@@ -72,6 +73,7 @@ const TodoListItem = ({
   openAnswer: Function;
   createBlog: Function;
   editBlog: Function;
+  createTodoSchedule: Function;
 }) => {
   const bgColor = useColorModeValue('white', 'black');
   const itemBgColor = useColorModeValue('greenLight', 'black');
@@ -85,6 +87,7 @@ const TodoListItem = ({
   const [isOpenEditNoteModal, setIsOpenEditNoteModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo>(defaultTodo);
   const [scheduleTodo, setScheduleTodo] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<string>('');
 
   const dragImg = new Image(0, 0);
   dragImg.src =
@@ -328,12 +331,17 @@ const TodoListItem = ({
           ) : null}
           {scheduleTodo ? (
             <Box display="flex">
-              <DatePicker />
+              <DatePicker date={selectedDate} onDateChange={setSelectedDate} />
               <Button
                 marginLeft={2}
                 display="flex"
                 colorScheme="teal"
-                type="submit"
+                onClick={() => {
+                  createTodoSchedule({
+                    todo_id: todo.id,
+                    scheduled_date: selectedDate,
+                  });
+                }}
               >
                 Submit
               </Button>

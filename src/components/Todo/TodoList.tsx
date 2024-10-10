@@ -44,6 +44,7 @@ const TodoList = ({
   setPriority,
   createBlog,
   editBlog,
+  createTodoSchedule,
 }: {
   todos: any;
   completeTodo: Function;
@@ -58,6 +59,7 @@ const TodoList = ({
   setPriority: Function;
   createBlog: Function;
   editBlog: Function;
+  createTodoSchedule: Function;
 }) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
   const [todoSelected, setTodoSelected] = useState<any>();
@@ -142,6 +144,7 @@ const TodoList = ({
           openAnswer={handleItemClick}
           createBlog={createBlog}
           editBlog={editBlog}
+          createTodoSchedule={createTodoSchedule}
         />
       ))}
       <CustomConfirmationModal
