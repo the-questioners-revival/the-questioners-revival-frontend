@@ -351,6 +351,19 @@ const TodoListItem = ({
               schedule todo
             </Text>
           )}
+          {todo.schedules.length > 0 ? (
+            <Box display="flex">
+              <Text fontSize="sm">Scheduled:</Text>
+              {todo.schedules.map((schedule: any, index: number) => (
+                <Text fontSize="sm" paddingLeft="7px">
+                  {moment
+                    .tz(schedule.scheduled_date, 'Asia/Manila')
+                    .format('DD.MM.YYYY')}
+                    <Box marginLeft={2} as='span'>{index < todo.schedules.length - 1 ? '-> ' : ''}</Box>
+                </Text>
+              ))}
+            </Box>
+          ) : null}
           <Text fontSize="sm" paddingRight="7px">
             created:{' '}
             {moment
