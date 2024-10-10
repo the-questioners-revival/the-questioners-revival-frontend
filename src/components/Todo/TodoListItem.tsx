@@ -86,6 +86,7 @@ const TodoListItem = ({
   const [isOpenCreateNoteModal, setIsOpenCreateNoteModal] = useState(false);
   const [isOpenEditNoteModal, setIsOpenEditNoteModal] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo>(defaultTodo);
+  const [selectedBlog, setSelectedBlog] = useState<any>();
   const [scheduleTodo, setScheduleTodo] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>('');
 
@@ -255,18 +256,21 @@ const TodoListItem = ({
                   __html: renderTodoTitle(todo.title),
                 }}
               ></Text>
-              {todo.blog_id ? (
-                <Box
-                  marginRight="2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsOpenEditNoteModal(!isOpenEditNoteModal);
-                    setSelectedTodo(todo);
-                  }}
-                >
-                  📝
-                </Box>
-              ) : null}
+              {todo?.blogs?.length > 0
+                ? todo?.blogs?.map((blog: any) => (
+                    <Box
+                      marginRight="2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsOpenEditNoteModal(!isOpenEditNoteModal);
+                        setSelectedTodo(todo);
+                        setSelectedBlog(blog);
+                      }}
+                    >
+                      📝
+                    </Box>
+                  ))
+                : null}
             </Box>
             <Flex>
               <Box paddingRight="7px">
@@ -359,7 +363,9 @@ const TodoListItem = ({
                   {moment
                     .tz(schedule.scheduled_date, 'Asia/Manila')
                     .format('DD.MM.YYYY')}
-                    <Box marginLeft={2} as='span'>{index < todo.schedules.length - 1 ? '-> ' : ''}</Box>
+                  <Box marginLeft={2} as="span">
+                    {index < todo.schedules.length - 1 ? '-> ' : ''}
+                  </Box>
                 </Text>
               ))}
             </Box>
@@ -420,7 +426,7 @@ const TodoListItem = ({
         <ModalCloseButton />
         <ModalBody>
           <EditBlogForm
-            blog={selectedTodo.blog}
+            blog={selectedBlog}
             editBlog={(blog: any) => {
               editBlog(blog);
               setIsOpenEditNoteModal(false);
