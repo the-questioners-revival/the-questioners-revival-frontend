@@ -50,17 +50,20 @@ const ActivityCalendarPage: React.FC = () => {
   const [contributions, setContributions] = useState<[] | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null); // State for the selected date
-  const { getDailyActivityCountsData, getDailyActivityCounts, getMonthlyActivityCountsData, getMonthlyActivityCounts } =
-  ActivityCalendarProvider();
+  const {
+    getDailyActivityCountsData,
+    getDailyActivityCounts,
+    getMonthlyActivityCountsData,
+    getMonthlyActivityCounts,
+  } = ActivityCalendarProvider();
   console.log('getMonthlyActivityCountsData: ', getMonthlyActivityCountsData);
-
 
   const { fetchGitHubContributionsData, fetchGitHubContributions } =
     GithubProvider();
 
   useEffect(() => {
     getDailyActivityCounts();
-    getMonthlyActivityCounts()
+    getMonthlyActivityCounts();
   }, []);
 
   useEffect(() => {
@@ -74,16 +77,13 @@ const ActivityCalendarPage: React.FC = () => {
     }
   }, [getDailyActivityCountsData]);
 
-
   useEffect(() => {
     if (getMonthlyActivityCountsData) {
-      const newActivityData = {...activityData}
-      newActivityData.months = getMonthlyActivityCountsData
+      const newActivityData = { ...activityData };
+      newActivityData.months = getMonthlyActivityCountsData;
       setActivityData(newActivityData);
     }
   }, [getMonthlyActivityCountsData]);
-
-  
 
   const allDays = eachDayOfInterval({
     start: startOfYear(new Date()),
@@ -227,26 +227,27 @@ const ActivityCalendarPage: React.FC = () => {
           </Grid>
 
           <Heading size="md">Monthly Activity</Heading>
-      <Grid templateColumns="repeat(12, 1fr)" gap={2}>
-        {allMonths.map((month, index) => {
-          const formattedMonth = format(month, 'yyyy-MM');
-          const activityCount = activityData?.months[formattedMonth]?.total || 0;
-          const tooltipLabel = `${formattedMonth} - ${activityCount} contributions`;
+          <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+            {allMonths.map((month, index) => {
+              const formattedMonth = format(month, 'yyyy-MM');
+              const activityCount =
+                activityData?.months[formattedMonth]?.total || 0;
+              const tooltipLabel = `${formattedMonth} - ${activityCount} contributions`;
 
-          return (
-            <Tooltip label={tooltipLabel} key={index} placement="top">
-              <Box
-                width="30px"
-                height="30px"
-                bg={getDayColor(activityCount, false)} // No need to check for today here
-                borderRadius="md"
-              />
-            </Tooltip>
-          );
-        })}
-      </Grid>
+              return (
+                <Tooltip label={tooltipLabel} key={index} placement="top">
+                  <Box
+                    width="30px"
+                    height="30px"
+                    bg={getDayColor(activityCount, false)} // No need to check for today here
+                    borderRadius="md"
+                  />
+                </Tooltip>
+              );
+            })}
+          </Grid>
 
-      {/* <Heading size="md">Yearly Activity</Heading>
+          {/* <Heading size="md">Yearly Activity</Heading>
       <Grid templateColumns="repeat(10, 1fr)" gap={2}>
         {allYears.map((year, index) => {
           const activityCount = activityData?.years[year.toString()] || 0;
