@@ -50,14 +50,17 @@ const ActivityCalendarPage: React.FC = () => {
   const [contributions, setContributions] = useState<[] | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null); // State for the selected date
-  const { getDailyActivityCountsData, getDailyActivityCounts } =
-    ActivityCalendarProvider();
+  const { getDailyActivityCountsData, getDailyActivityCounts, getMonthlyActivityCountsData, getMonthlyActivityCounts } =
+  ActivityCalendarProvider();
+  console.log('getMonthlyActivityCountsData: ', getMonthlyActivityCountsData);
+
 
   const { fetchGitHubContributionsData, fetchGitHubContributions } =
     GithubProvider();
 
   useEffect(() => {
     getDailyActivityCounts();
+    getMonthlyActivityCounts()
   }, []);
 
   useEffect(() => {
@@ -70,6 +73,17 @@ const ActivityCalendarPage: React.FC = () => {
       setActivityData(data);
     }
   }, [getDailyActivityCountsData]);
+
+
+  useEffect(() => {
+    if (getMonthlyActivityCountsData) {
+      const newActivityData = {...activityData}
+      newActivityData.months = getMonthlyActivityCountsData
+      setActivityData(newActivityData);
+    }
+  }, [getMonthlyActivityCountsData]);
+
+  
 
   const allDays = eachDayOfInterval({
     start: startOfYear(new Date()),
