@@ -297,7 +297,7 @@ const ActivityCalendarPage: React.FC = () => {
           </Grid>
 
           <Heading size="md">Yearly Activity</Heading>
-          <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+          <Grid templateColumns="repeat(10, 1fr)" gap={2}>
             {allYears.map((year, index) => {
               console.log('year: ', year);
               const activityCount = activityData?.years[year]?.total || 0; // Get total for the year
