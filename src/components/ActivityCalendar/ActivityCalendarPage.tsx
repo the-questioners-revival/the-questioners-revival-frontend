@@ -171,12 +171,13 @@ const ActivityCalendarPage: React.FC = () => {
           <Grid templateColumns="repeat(7, 1fr)" gap={1}>
             {allDays.map((day, index) => {
               const formattedDate = format(day, 'yyyy-MM-dd');
+              const formattedDateLabel = format(day, 'yyyy MMMM dd');
               const activityCount =
                 activityData.days[formattedDate]?.total || 0;
               const isToday = formattedDate === today;
               const tooltipLabel = isToday
-                ? `${formattedDate} (today) - ${activityCount} contributions`
-                : `${formattedDate} - ${activityCount} contributions`;
+                ? `${formattedDateLabel} (today) - ${activityCount} contributions`
+                : `${formattedDateLabel} - ${activityCount} contributions`;
 
               return (
                 <Tooltip
@@ -239,9 +240,10 @@ const ActivityCalendarPage: React.FC = () => {
           <Grid templateColumns="repeat(12, 1fr)" gap={2}>
             {allMonths.map((month, index) => {
               const formattedMonth = format(month, 'yyyy-MM');
+              const formattedMonthLabel = format(month, 'yyyy MMMM');
               const activityCount =
                 activityData?.months[formattedMonth]?.total || 0;
-              const tooltipLabel = `${formattedMonth} - ${activityCount} contributions`;
+              const tooltipLabel = `${formattedMonthLabel} - ${activityCount} contributions`;
 
               return (
                 <Tooltip label={tooltipLabel} key={index} placement="top">
