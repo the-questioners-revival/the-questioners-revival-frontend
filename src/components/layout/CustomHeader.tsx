@@ -38,6 +38,10 @@ export const HEADER = [
     name: 'Reviews',
     link: '/reviews',
   },
+  {
+    name: 'Calendar',
+    link: '/calendar',
+  },
 ];
 
 const CustomHeader = () => {

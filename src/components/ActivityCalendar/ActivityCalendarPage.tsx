@@ -1,8 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Grid, VStack, Heading, Tooltip } from '@chakra-ui/react';
-import { eachDayOfInterval, format, startOfYear, endOfYear, eachMonthOfInterval, getYear } from 'date-fns';
+import {
+  eachDayOfInterval,
+  format,
+  startOfYear,
+  endOfYear,
+  eachMonthOfInterval,
+  getYear,
+} from 'date-fns';
 import ActivityCalendarProvider from '../../providers/ActivityCalendarProvider';
 import GithubProvider from '../../providers/GithubProvider';
+import ProtectedPage from '../ProtectedPage';
+import CustomLayout from '../layout/CustomLayout';
 
 interface Activity {
   todos?: number;
@@ -81,26 +90,25 @@ const ActivityCalendarPage: React.FC = () => {
   }, [fetchGitHubContributionsData]);
 
   useEffect(() => {
-    if(contributions){
-    const newActivityData = { ...activityData };
-    contributions?.forEach((week: any) => {
-      week.contributionDays.forEach((day: any) => {
-        const formattedDate = day.date;
+    if (contributions) {
+      const newActivityData = { ...activityData };
+      contributions?.forEach((week: any) => {
+        week.contributionDays.forEach((day: any) => {
+          const formattedDate = day.date;
 
-        if (!newActivityData.days[formattedDate]) {
-          newActivityData.days[formattedDate] = {
-            github: 0,
-          };
-        }
-        newActivityData.days[formattedDate].github = day.contributionCount;
+          if (!newActivityData.days[formattedDate]) {
+            newActivityData.days[formattedDate] = {
+              github: 0,
+            };
+          }
+          newActivityData.days[formattedDate].github = day.contributionCount;
+        });
+        setActivityData((prevData) => ({
+          ...prevData,
+          ...newActivityData,
+        }));
       });
-      setActivityData((prevData) => ({
-        ...prevData,
-        ...newActivityData,
-      }));
-    });
-  }
-
+    }
   }, [contributions]);
 
   const allMonths = eachMonthOfInterval({
@@ -133,75 +141,78 @@ const ActivityCalendarPage: React.FC = () => {
   };
 
   return (
-    <VStack spacing={8}>
-      <Heading size="md">Daily Activity</Heading>
-      <Grid templateColumns="repeat(7, 1fr)" gap={1}>
-        {allDays.map((day, index) => {
-          const formattedDate = format(day, 'yyyy-MM-dd');
-          const activityCount = activityData.days[formattedDate]?.total || 0;
-          const isToday = formattedDate === today;
-          const tooltipLabel = isToday
-            ? `${formattedDate} (today) - ${activityCount} contributions`
-            : `${formattedDate} - ${activityCount} contributions`;
+    <ProtectedPage>
+      <CustomLayout>
+        <VStack spacing={8}>
+          <Heading size="md">Daily Activity</Heading>
+          <Grid templateColumns="repeat(7, 1fr)" gap={1}>
+            {allDays.map((day, index) => {
+              const formattedDate = format(day, 'yyyy-MM-dd');
+              const activityCount =
+                activityData.days[formattedDate]?.total || 0;
+              const isToday = formattedDate === today;
+              const tooltipLabel = isToday
+                ? `${formattedDate} (today) - ${activityCount} contributions`
+                : `${formattedDate} - ${activityCount} contributions`;
 
-          return (
-            <Tooltip
-              label={
-                <>
-                  <Box>{tooltipLabel}</Box>
-                  {selectedDate ? (
-                    <VStack spacing={0} alignItems="flex-start">
-                      <Box>
-                        <strong>Todos:</strong>{' '}
-                        {activityData.days[selectedDate]?.todos}
-                      </Box>
-                      <Box>
-                        <strong>Qaas:</strong>{' '}
-                        {activityData.days[selectedDate]?.qaas}
-                      </Box>
-                      <Box>
-                        <strong>Blogs:</strong>{' '}
-                        {activityData.days[selectedDate]?.blogs}
-                      </Box>
-                      <Box>
-                        <strong>Goals:</strong>{' '}
-                        {activityData.days[selectedDate]?.goals}
-                      </Box>
-                      <Box>
-                        <strong>Habits:</strong>{' '}
-                        {activityData.days[selectedDate]?.habits_trackers}
-                      </Box>
-                      <Box>
-                        <strong>Total:</strong>{' '}
-                        {activityData.days[selectedDate]?.total}
-                      </Box>
-                      <Box>
-                        <strong>GitHub:</strong>{' '}
-                        {activityData.days[selectedDate]?.github}
-                      </Box>
-                    </VStack>
-                  ) : null}
-                </>
-              }
-              key={index}
-              placement="top"
-              hasArrow
-            >
-              <Box
-                width="20px"
-                height="20px"
-                bg={getDayColor(activityCount, isToday)} // Check if it's today
-                borderRadius="md"
-                cursor="pointer" // Indicate that the box is clickable
-                onMouseEnter={() => handleMouseEnter(formattedDate)}
-                onMouseLeave={() => handleMouseLeave()}
-              />
-            </Tooltip>
-          );
-        })}
-      </Grid>
+              return (
+                <Tooltip
+                  label={
+                    <>
+                      <Box>{tooltipLabel}</Box>
+                      {selectedDate ? (
+                        <VStack spacing={0} alignItems="flex-start">
+                          <Box>
+                            <strong>Todos:</strong>{' '}
+                            {activityData.days[selectedDate]?.todos}
+                          </Box>
+                          <Box>
+                            <strong>Qaas:</strong>{' '}
+                            {activityData.days[selectedDate]?.qaas}
+                          </Box>
+                          <Box>
+                            <strong>Blogs:</strong>{' '}
+                            {activityData.days[selectedDate]?.blogs}
+                          </Box>
+                          <Box>
+                            <strong>Goals:</strong>{' '}
+                            {activityData.days[selectedDate]?.goals}
+                          </Box>
+                          <Box>
+                            <strong>Habits:</strong>{' '}
+                            {activityData.days[selectedDate]?.habits_trackers}
+                          </Box>
+                          <Box>
+                            <strong>Total:</strong>{' '}
+                            {activityData.days[selectedDate]?.total}
+                          </Box>
+                          <Box>
+                            <strong>GitHub:</strong>{' '}
+                            {activityData.days[selectedDate]?.github}
+                          </Box>
+                        </VStack>
+                      ) : null}
+                    </>
+                  }
+                  key={index}
+                  placement="top"
+                  hasArrow
+                >
+                  <Box
+                    width="20px"
+                    height="20px"
+                    bg={getDayColor(activityCount, isToday)} // Check if it's today
+                    borderRadius="md"
+                    cursor="pointer" // Indicate that the box is clickable
+                    onMouseEnter={() => handleMouseEnter(formattedDate)}
+                    onMouseLeave={() => handleMouseLeave()}
+                  />
+                </Tooltip>
+              );
+            })}
+          </Grid>
 
-      {/* <Heading size="md">Monthly Activity</Heading>
+          {/* <Heading size="md">Monthly Activity</Heading>
       <Grid templateColumns="repeat(12, 1fr)" gap={2}>
         {allMonths.map((month, index) => {
           const formattedMonth = format(month, 'yyyy-MM');
@@ -239,7 +250,9 @@ const ActivityCalendarPage: React.FC = () => {
           );
         })}
       </Grid> */}
-    </VStack>
+        </VStack>
+      </CustomLayout>
+    </ProtectedPage>
   );
 };
 
