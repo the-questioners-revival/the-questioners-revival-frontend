@@ -10,11 +10,20 @@ import {
 } from 'date-fns';
 import TodosProvider from '../../providers/TodosProvider';
 
-// Type definition for the activity data
+interface Activity {
+  todos: number;
+  qaas: number;
+  blogs: number;
+  goals: number;
+  habits_trackers: number;
+  total: number;
+}
 interface ActivityData {
-  days: { [date: string]: {total:number} } | undefined;
-  months: { [month: string]: number } | undefined;
-  years: { [year: string]: number }| undefined;
+  days: {
+    [date: string]: Activity;
+  };
+  months: { [month: string]: Activity };
+  years: { [year: string]: Activity };
 }
 
 // Function to determine the color based on activity level
@@ -28,7 +37,11 @@ const getDayColor = (activityCount: number, isToday: boolean): string => {
 };
 
 const ActivityCalendarPage: React.FC = () => {
-  const [activityData, setActivityData] = useState<ActivityData>();
+  const [activityData, setActivityData] = useState<ActivityData>({
+    days: {},
+    months: {},
+    years: {},
+  });
   console.log('activityData: ', activityData);
   const {
     getDailyActivityCountsData,
@@ -45,8 +58,8 @@ const ActivityCalendarPage: React.FC = () => {
     if (getDailyActivityCountsData) {
       const data = {
         days: getDailyActivityCountsData,
-        months: undefined,
-        years: undefined,
+        months: {},
+        years: {},
       };
       setActivityData(data);
     }
@@ -76,7 +89,7 @@ const ActivityCalendarPage: React.FC = () => {
       <Grid templateColumns="repeat(7, 1fr)" gap={1}>
         {allDays.map((day, index) => {
           const formattedDate = format(day, 'yyyy-MM-dd');
-          const activityCount = activityData?.days ? activityData?.days[formattedDate]?.total : 0;
+          const activityCount = activityData.days[formattedDate]?.total || 0;
           const isToday = formattedDate === today;
           const tooltipLabel = isToday
             ? `${formattedDate} (today) - ${activityCount} contributions`
