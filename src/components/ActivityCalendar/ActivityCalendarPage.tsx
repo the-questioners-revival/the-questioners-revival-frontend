@@ -130,27 +130,51 @@ const ActivityCalendarPage: React.FC = () => {
     }
   }, [fetchGitHubContributionsData]);
 
-  useEffect(() => {
-    if (contributions) {
-      const newActivityData = { ...activityData };
-      contributions?.forEach((week: any) => {
-        week.contributionDays.forEach((day: any) => {
-          const formattedDate = day.date;
+ 
+useEffect(() => {
+  if (contributions) {
+    // Initialize new aggregation objects
+    const newDays: { [key: string]: Activity } = {...activityData.days};
+    const newMonths: { [key: string]: Activity } = {...activityData.months};
+    const newYears: { [key: string]: Activity } = {...activityData.years};
 
-          if (!newActivityData.days[formattedDate]) {
-            newActivityData.days[formattedDate] = {
-              github: 0,
-            };
-          }
-          newActivityData.days[formattedDate].github = day.contributionCount;
-        });
-        setActivityData((prevData) => ({
-          ...prevData,
-          ...newActivityData,
-        }));
+    contributions.forEach((week: any) => {
+      week.contributionDays.forEach((day: any) => {
+        const formattedDate = day.date; // Full date for daily data
+        const formattedMonth = day.date.slice(0, 7); // 'YYYY-MM' for monthly data
+        const formattedYear = day.date.slice(0, 4); // 'YYYY' for yearly data
+
+        // Daily aggregation
+        newDays[formattedDate] = {
+          ...newDays[formattedDate],
+          github: (newDays[formattedDate]?.github || 0) + (day.contributionCount || 0),
+        };
+
+        // Monthly aggregation
+        newMonths[formattedMonth] = {
+          ...newDays[formattedDate],
+          github: (newMonths[formattedMonth]?.github || 0) + (day.contributionCount || 0),
+        };
+
+        // Yearly aggregation
+        newYears[formattedYear] = {
+          ...newDays[formattedDate],
+          github: (newYears[formattedYear]?.github || 0) + (day.contributionCount || 0),
+        };
       });
-    }
-  }, [contributions]);
+    });
+    // Update the activity data state with new aggregated data
+    setActivityData((prevData) => {
+      console.log('prevData: ', prevData);
+      console.log('newMonths: ', newMonths);
+      return({
+      days: { ...prevData.days, ...newDays },
+      months: { ...prevData.months, ...newMonths },
+      years: { ...prevData.years, ...newYears },
+    })});
+  }
+}, [contributions]);      
+  
 
   const allMonths = eachMonthOfInterval({
     start: startOfYear(new Date()),
