@@ -192,7 +192,7 @@ useEffect(() => {
     timeoutRef.current = setTimeout(() => {
       console.log('Setting selected date');
       setSelectedDate(formattedDate);
-    }, 1000);
+    }, 500);
   };
 
   const handleMouseLeave = () => {
