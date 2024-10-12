@@ -31,8 +31,7 @@ interface ActivityData {
   years: { [year: string]: Activity };
 }
 
-const getDayColor = (activityCount: number, isToday: boolean): string => {
-  if (isToday) return 'blue.400'; // Highlight today in blue
+const getDayColor = (activityCount: number): string => {
   if (activityCount > 20) return 'green.600';
   if (activityCount > 10) return 'green.400';
   if (activityCount > 5) return 'green.200';
@@ -40,8 +39,7 @@ const getDayColor = (activityCount: number, isToday: boolean): string => {
   return 'gray.100';
 };
 
-const getMonthColor = (activityCount: number, isToday: boolean): string => {
-  if (isToday) return 'blue.400'; // Highlight today in blue
+const getMonthColor = (activityCount: number): string => {
   if (activityCount > 250) return 'green.600';
   if (activityCount > 100) return 'green.400';
   if (activityCount > 50) return 'green.200';
@@ -49,11 +47,7 @@ const getMonthColor = (activityCount: number, isToday: boolean): string => {
   return 'gray.100';
 };
 
-const getYearColor = (
-  activityCount: number,
-  isCurrentYear: boolean,
-): string => {
-  if (isCurrentYear) return 'blue.400'; // Highlight the current year in blue
+const getYearColor = (activityCount: number): string => {
   if (activityCount > 1800) return 'green.600'; // Maximum threshold
   if (activityCount > 1000) return 'green.400';
   if (activityCount > 500) return 'green.200';
@@ -252,7 +246,7 @@ const ActivityCalendarPage: React.FC = () => {
                   <Box
                     width="20px"
                     height="20px"
-                    bg={getDayColor(activityCount, isToday)} // Check if it's today
+                    bg={getDayColor(activityCount)} // Check if it's today
                     borderRadius="md"
                     cursor="pointer" // Indicate that the box is clickable
                     onMouseEnter={() => handleMouseEnter(formattedDate)}
@@ -286,7 +280,7 @@ const ActivityCalendarPage: React.FC = () => {
                   <Box
                     width="30px"
                     height="30px"
-                    bg={getMonthColor(activityCount, false)} // No need to check for today here
+                    bg={getMonthColor(activityCount)} // No need to check for today here
                     borderRadius="md"
                     onMouseEnter={() => handleMouseEnter(formattedMonth)}
                     onMouseLeave={() => handleMouseLeave()}
@@ -318,7 +312,7 @@ const ActivityCalendarPage: React.FC = () => {
                   <Box
                     width="30px"
                     height="30px"
-                    bg={getYearColor(activityCount, false)} // Function to determine color for the year
+                    bg={getYearColor(activityCount)} // Function to determine color for the year
                     borderRadius="md"
                     onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
                     onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
