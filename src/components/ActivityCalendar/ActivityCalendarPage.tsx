@@ -28,7 +28,7 @@ interface ActivityData {
 
 // Function to determine the color based on activity level
 const getDayColor = (activityCount: number, isToday: boolean): string => {
-  if (isToday) return 'red.400'; // Highlight today in red
+  if (isToday) return 'blue.400'; // Highlight today in red
   if (activityCount > 20) return 'green.600';
   if (activityCount > 10) return 'green.400';
   if (activityCount > 5) return 'green.200';
