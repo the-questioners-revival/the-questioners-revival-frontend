@@ -49,7 +49,10 @@ const getMonthColor = (activityCount: number, isToday: boolean): string => {
   return 'gray.100';
 };
 
-const getYearColor = (activityCount: number, isCurrentYear: boolean): string => {
+const getYearColor = (
+  activityCount: number,
+  isCurrentYear: boolean,
+): string => {
   if (isCurrentYear) return 'blue.400'; // Highlight the current year in blue
   if (activityCount > 1800) return 'green.600'; // Maximum threshold
   if (activityCount > 1000) return 'green.400';
@@ -72,7 +75,10 @@ const ActivityCalendarPage: React.FC = () => {
     getDailyActivityCounts,
     getMonthlyActivityCountsData,
     getMonthlyActivityCounts,
+    getYearlyActivityCountsData,
+    getYearlyActivityCounts,
   } = ActivityCalendarProvider();
+
   console.log('getMonthlyActivityCountsData: ', getMonthlyActivityCountsData);
 
   const { fetchGitHubContributionsData, fetchGitHubContributions } =
@@ -81,6 +87,7 @@ const ActivityCalendarPage: React.FC = () => {
   useEffect(() => {
     getDailyActivityCounts();
     getMonthlyActivityCounts();
+    getYearlyActivityCounts();
   }, []);
 
   useEffect(() => {
@@ -100,6 +107,15 @@ const ActivityCalendarPage: React.FC = () => {
       }));
     }
   }, [getMonthlyActivityCountsData]);
+
+  useEffect(() => {
+    if (getYearlyActivityCountsData) {
+      setActivityData((prevState) => ({
+        ...prevState,
+        years: getYearlyActivityCountsData,
+      }));
+    }
+  }, [getYearlyActivityCountsData]);
 
   const allDays = eachDayOfInterval({
     start: startOfYear(new Date()),
@@ -149,7 +165,7 @@ const ActivityCalendarPage: React.FC = () => {
   const allYears = Array.from(
     { length: 10 },
     (_, i) => getYear(new Date()) - 9 + i,
-  ); 
+  );
 
   const today = format(new Date(), 'yyyy-MM-dd');
 
@@ -284,8 +300,7 @@ const ActivityCalendarPage: React.FC = () => {
           <Grid templateColumns="repeat(12, 1fr)" gap={2}>
             {allYears.map((year, index) => {
               console.log('year: ', year);
-              const activityCount =
-                activityData?.years[year]?.total || 0; // Get total for the year
+              const activityCount = activityData?.years[year]?.total || 0; // Get total for the year
               const tooltipLabel = `${year} - ${activityCount} contributions`; // Tooltip text
 
               return (
