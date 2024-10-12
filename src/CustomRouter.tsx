@@ -9,6 +9,7 @@ import ReviewsPage from './components/Reviews/ReviewsPage';
 import LoginPage from './components/Login/LoginPage';
 import WelcomePage from './components/Welcome/WelcomePage';
 import SearchPage from './components/Search/SearchPage';
+import ActivityCalendar from './components/ActivityCalendar/ActivityCalendarPage';
 
 const CustomRouter: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const CustomRouter: React.FC = () => {
         <Route path="/reviews" element={<ReviewsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/calendar" element={<ActivityCalendar />} />
       </Routes>
     </Router>
   );
