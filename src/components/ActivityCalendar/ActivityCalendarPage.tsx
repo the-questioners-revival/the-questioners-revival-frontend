@@ -68,18 +68,19 @@ const ActivityCalendarPage: React.FC = () => {
 
   useEffect(() => {
     if (getDailyActivityCountsData) {
-      const newActivityData = { ...activityData };
-      newActivityData.days = newActivityData;
-      setActivityData(newActivityData);
-      setActivityData(newActivityData);
+      setActivityData((prevState) => ({
+        ...prevState,
+        days: getDailyActivityCountsData,
+      }));
     }
   }, [getDailyActivityCountsData]);
 
   useEffect(() => {
     if (getMonthlyActivityCountsData) {
-      const newActivityData = { ...activityData };
-      newActivityData.months = getMonthlyActivityCountsData;
-      setActivityData(newActivityData);
+      setActivityData((prevState) => ({
+        ...prevState,
+        months: getMonthlyActivityCountsData,
+      }));
     }
   }, [getMonthlyActivityCountsData]);
 
