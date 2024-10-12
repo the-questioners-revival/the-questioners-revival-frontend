@@ -61,16 +61,6 @@ export default function TodosProvider() {
     false,
   );
 
-  const {
-    data: getDailyActivityCountsData,
-    refetch: getDailyActivityCounts,
-    loading: getDailyActivityCountsLoading,
-  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
-    TodoApi.getDailyActivityCounts,
-    null,
-    false,
-  );
-
   useEffect(() => {
     console.log('REFETCHING');
     const fetchTodos = async () => {
@@ -109,8 +99,5 @@ export default function TodosProvider() {
     getAllTodosData,
     getAllTodos,
     getAllTodosLoading,
-    getDailyActivityCountsData,
-    getDailyActivityCounts,
-    getDailyActivityCountsLoading,
   };
 }

@@ -8,7 +8,7 @@ import {
   endOfYear,
   getYear,
 } from 'date-fns';
-import TodosProvider from '../../providers/TodosProvider';
+import ActivityCalendarProvider from '../../providers/ActivityCalendarProvider';
 
 interface Activity {
   todos: number;
@@ -43,12 +43,8 @@ const ActivityCalendarPage: React.FC = () => {
     years: {},
   });
   console.log('activityData: ', activityData);
-  const {
-    getDailyActivityCountsData,
-    getDailyActivityCounts,
-    getDailyActivityCountsLoading,
-  } = TodosProvider();
-  console.log('getDailyActivityCountsData: ', getDailyActivityCountsData);
+  const { getDailyActivityCountsData, getDailyActivityCounts } =
+    ActivityCalendarProvider();
 
   useEffect(() => {
     getDailyActivityCounts();

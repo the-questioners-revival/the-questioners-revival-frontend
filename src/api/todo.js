@@ -42,11 +42,6 @@ async function getAllTodosGroupedByDate(data) {
   return res;
 }
 
-async function getDailyActivityCounts() {
-  const res = await API.get(`${BACKEND_URL}/todo/activity/daily`, true);
-  return res;
-}
-
 async function getAllTodos(params) {
   let url = `${BACKEND_URL}/todo`;
 
@@ -96,5 +91,4 @@ export default {
   getAllTodosGroupedByDate,
   getAllTodos,
   editTodo,
-  getDailyActivityCounts,
 };
