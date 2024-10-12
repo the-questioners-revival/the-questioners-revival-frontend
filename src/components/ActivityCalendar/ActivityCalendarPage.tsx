@@ -31,7 +31,6 @@ interface ActivityData {
   years: { [year: string]: Activity };
 }
 
-// Function to determine the color based on activity level
 const getDayColor = (activityCount: number, isToday: boolean): string => {
   if (isToday) return 'blue.400'; // Highlight today in blue
   if (activityCount > 20) return 'green.600';
@@ -41,7 +40,6 @@ const getDayColor = (activityCount: number, isToday: boolean): string => {
   return 'gray.100';
 };
 
-// Function to determine the color based on activity level
 const getMonthColor = (activityCount: number, isToday: boolean): string => {
   if (isToday) return 'blue.400'; // Highlight today in blue
   if (activityCount > 250) return 'green.600';
@@ -49,6 +47,15 @@ const getMonthColor = (activityCount: number, isToday: boolean): string => {
   if (activityCount > 50) return 'green.200';
   if (activityCount > 0) return 'green.100';
   return 'gray.100';
+};
+
+const getYearColor = (activityCount: number, isCurrentYear: boolean): string => {
+  if (isCurrentYear) return 'blue.400'; // Highlight the current year in blue
+  if (activityCount > 1800) return 'green.600'; // Maximum threshold
+  if (activityCount > 1000) return 'green.400';
+  if (activityCount > 500) return 'green.200';
+  if (activityCount > 0) return 'green.100';
+  return 'gray.100'; // No activity
 };
 
 const ActivityCalendarPage: React.FC = () => {
@@ -142,7 +149,7 @@ const ActivityCalendarPage: React.FC = () => {
   const allYears = Array.from(
     { length: 10 },
     (_, i) => getYear(new Date()) - 9 + i,
-  ); // Generate the last 10 years
+  ); 
 
   const today = format(new Date(), 'yyyy-MM-dd');
 
@@ -273,24 +280,38 @@ const ActivityCalendarPage: React.FC = () => {
             })}
           </Grid>
 
-          {/* <Heading size="md">Yearly Activity</Heading>
-      <Grid templateColumns="repeat(10, 1fr)" gap={2}>
-        {allYears.map((year, index) => {
-          const activityCount = activityData?.years[year.toString()] || 0;
-          const tooltipLabel = `${year} - ${activityCount} contributions`;
+          <Heading size="md">Yearly Activity</Heading>
+          <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+            {allYears.map((year, index) => {
+              console.log('year: ', year);
+              const activityCount =
+                activityData?.years[year]?.total || 0; // Get total for the year
+              const tooltipLabel = `${year} - ${activityCount} contributions`; // Tooltip text
 
-          return (
-            <Tooltip label={tooltipLabel} key={index} placement="top">
-              <Box
-                width="40px"
-                height="40px"
-                bg={getDayColor(activityCount, false)} // No need to check for today here
-                borderRadius="md"
-              />
-            </Tooltip>
-          );
-        })}
-      </Grid> */}
+              return (
+                <Tooltip
+                  label={
+                    <>
+                      <Box>{tooltipLabel}</Box>
+                      {renderTooltipDetails('years')}{' '}
+                      {/* Call renderTooltipDetails with 'years' */}
+                    </>
+                  }
+                  key={index}
+                  placement="top"
+                >
+                  <Box
+                    width="30px"
+                    height="30px"
+                    bg={getYearColor(activityCount, false)} // Function to determine color for the year
+                    borderRadius="md"
+                    onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
+                    onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
+                  />
+                </Tooltip>
+              );
+            })}
+          </Grid>
         </VStack>
       </CustomLayout>
     </ProtectedPage>
