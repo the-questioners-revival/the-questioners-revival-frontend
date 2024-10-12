@@ -226,11 +226,11 @@ const ActivityCalendarPage: React.FC = () => {
             })}
           </Grid>
 
-          {/* <Heading size="md">Monthly Activity</Heading>
+          <Heading size="md">Monthly Activity</Heading>
       <Grid templateColumns="repeat(12, 1fr)" gap={2}>
         {allMonths.map((month, index) => {
           const formattedMonth = format(month, 'yyyy-MM');
-          const activityCount = activityData?.months[formattedMonth] || 0;
+          const activityCount = activityData?.months[formattedMonth]?.total || 0;
           const tooltipLabel = `${formattedMonth} - ${activityCount} contributions`;
 
           return (
@@ -246,7 +246,7 @@ const ActivityCalendarPage: React.FC = () => {
         })}
       </Grid>
 
-      <Heading size="md">Yearly Activity</Heading>
+      {/* <Heading size="md">Yearly Activity</Heading>
       <Grid templateColumns="repeat(10, 1fr)" gap={2}>
         {allYears.map((year, index) => {
           const activityCount = activityData?.years[year.toString()] || 0;
