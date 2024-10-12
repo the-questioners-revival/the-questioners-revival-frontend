@@ -163,6 +163,41 @@ const ActivityCalendarPage: React.FC = () => {
     }
   };
 
+  function renderTooltipDetails(type: keyof ActivityData) {
+    if (!selectedDate) {
+      return null; // Return null if no date is selected
+    }
+
+    // Access the appropriate activity data for the selected date
+    const activityForDate = activityData[type][selectedDate]; // Use the type to access the correct data
+
+    return (
+      <VStack spacing={0} alignItems="flex-start">
+        <Box>
+          <strong>Todos:</strong> {activityForDate?.todos || 0}
+        </Box>
+        <Box>
+          <strong>Qaas:</strong> {activityForDate?.qaas || 0}
+        </Box>
+        <Box>
+          <strong>Blogs:</strong> {activityForDate?.blogs || 0}
+        </Box>
+        <Box>
+          <strong>Goals:</strong> {activityForDate?.goals || 0}
+        </Box>
+        <Box>
+          <strong>Habits:</strong> {activityForDate?.habits || 0}
+        </Box>
+        <Box>
+          <strong>Total:</strong> {activityForDate?.total || 0}
+        </Box>
+        <Box>
+          <strong>GitHub:</strong> {activityForDate?.github || 0}
+        </Box>
+      </VStack>
+    );
+  }
+
   return (
     <ProtectedPage>
       <CustomLayout>
@@ -184,38 +219,7 @@ const ActivityCalendarPage: React.FC = () => {
                   label={
                     <>
                       <Box>{tooltipLabel}</Box>
-                      {selectedDate ? (
-                        <VStack spacing={0} alignItems="flex-start">
-                          <Box>
-                            <strong>Todos:</strong>{' '}
-                            {activityData.days[selectedDate]?.todos}
-                          </Box>
-                          <Box>
-                            <strong>Qaas:</strong>{' '}
-                            {activityData.days[selectedDate]?.qaas}
-                          </Box>
-                          <Box>
-                            <strong>Blogs:</strong>{' '}
-                            {activityData.days[selectedDate]?.blogs}
-                          </Box>
-                          <Box>
-                            <strong>Goals:</strong>{' '}
-                            {activityData.days[selectedDate]?.goals}
-                          </Box>
-                          <Box>
-                            <strong>Habits:</strong>{' '}
-                            {activityData.days[selectedDate]?.habits}
-                          </Box>
-                          <Box>
-                            <strong>Total:</strong>{' '}
-                            {activityData.days[selectedDate]?.total}
-                          </Box>
-                          <Box>
-                            <strong>GitHub:</strong>{' '}
-                            {activityData.days[selectedDate]?.github}
-                          </Box>
-                        </VStack>
-                      ) : null}
+                      {renderTooltipDetails('days')}
                     </>
                   }
                   key={index}
