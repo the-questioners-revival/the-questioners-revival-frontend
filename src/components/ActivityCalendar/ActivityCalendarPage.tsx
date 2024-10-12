@@ -18,7 +18,7 @@ interface Activity {
   qaas?: number;
   blogs?: number;
   goals?: number;
-  habits_trackers?: number;
+  habits?: number;
   total?: number;
   github?: number;
 }
@@ -180,7 +180,7 @@ const ActivityCalendarPage: React.FC = () => {
                           </Box>
                           <Box>
                             <strong>Habits:</strong>{' '}
-                            {activityData.days[selectedDate]?.habits_trackers}
+                            {activityData.days[selectedDate]?.habits}
                           </Box>
                           <Box>
                             <strong>Total:</strong>{' '}
