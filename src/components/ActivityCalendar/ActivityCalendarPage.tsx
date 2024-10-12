@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid, VStack, Heading, Tooltip } from '@chakra-ui/react';
-import { eachDayOfInterval, eachMonthOfInterval, format, startOfYear, endOfYear, getYear } from 'date-fns';
+import {
+  eachDayOfInterval,
+  eachMonthOfInterval,
+  format,
+  startOfYear,
+  endOfYear,
+  getYear,
+} from 'date-fns';
+import TodosProvider from '../../providers/TodosProvider';
 
 // Type definition for the activity data
 interface ActivityData {
-  days: { [date: string]: number };
-  months: { [month: string]: number };
-  years: { [year: string]: number };
+  days: { [date: string]: {total:number} } | undefined;
+  months: { [month: string]: number } | undefined;
+  years: { [year: string]: number }| undefined;
 }
 
 // Function to determine the color based on activity level
@@ -20,7 +28,29 @@ const getDayColor = (activityCount: number, isToday: boolean): string => {
 };
 
 const ActivityCalendarPage: React.FC = () => {
-  const [activityData] = useState<ActivityData>(generateMockActivityData());
+  const [activityData, setActivityData] = useState<ActivityData>();
+  console.log('activityData: ', activityData);
+  const {
+    getDailyActivityCountsData,
+    getDailyActivityCounts,
+    getDailyActivityCountsLoading,
+  } = TodosProvider();
+  console.log('getDailyActivityCountsData: ', getDailyActivityCountsData);
+
+  useEffect(() => {
+    getDailyActivityCounts();
+  }, []);
+
+  useEffect(() => {
+    if (getDailyActivityCountsData) {
+      const data = {
+        days: getDailyActivityCountsData,
+        months: undefined,
+        years: undefined,
+      };
+      setActivityData(data);
+    }
+  }, [getDailyActivityCountsData]);
 
   // Generate all days and months of the current year
   const allDays = eachDayOfInterval({
@@ -33,7 +63,10 @@ const ActivityCalendarPage: React.FC = () => {
     end: endOfYear(new Date()),
   });
 
-  const allYears = Array.from({ length: 10 }, (_, i) => getYear(new Date()) - 9 + i); // Generate the last 10 years
+  const allYears = Array.from(
+    { length: 10 },
+    (_, i) => getYear(new Date()) - 9 + i,
+  ); // Generate the last 10 years
 
   const today = format(new Date(), 'yyyy-MM-dd'); // Get today's date in 'yyyy-MM-dd' format
 
@@ -43,7 +76,7 @@ const ActivityCalendarPage: React.FC = () => {
       <Grid templateColumns="repeat(7, 1fr)" gap={1}>
         {allDays.map((day, index) => {
           const formattedDate = format(day, 'yyyy-MM-dd');
-          const activityCount = activityData.days[formattedDate] || 0;
+          const activityCount = activityData?.days ? activityData?.days[formattedDate]?.total : 0;
           const isToday = formattedDate === today;
           const tooltipLabel = isToday
             ? `${formattedDate} (today) - ${activityCount} contributions`
@@ -62,11 +95,11 @@ const ActivityCalendarPage: React.FC = () => {
         })}
       </Grid>
 
-      <Heading size="md">Monthly Activity</Heading>
+      {/* <Heading size="md">Monthly Activity</Heading>
       <Grid templateColumns="repeat(12, 1fr)" gap={2}>
         {allMonths.map((month, index) => {
           const formattedMonth = format(month, 'yyyy-MM');
-          const activityCount = activityData.months[formattedMonth] || 0;
+          const activityCount = activityData?.months[formattedMonth] || 0;
           const tooltipLabel = `${formattedMonth} - ${activityCount} contributions`;
 
           return (
@@ -85,7 +118,7 @@ const ActivityCalendarPage: React.FC = () => {
       <Heading size="md">Yearly Activity</Heading>
       <Grid templateColumns="repeat(10, 1fr)" gap={2}>
         {allYears.map((year, index) => {
-          const activityCount = activityData.years[year.toString()] || 0;
+          const activityCount = activityData?.years[year.toString()] || 0;
           const tooltipLabel = `${year} - ${activityCount} contributions`;
 
           return (
@@ -99,48 +132,48 @@ const ActivityCalendarPage: React.FC = () => {
             </Tooltip>
           );
         })}
-      </Grid>
+      </Grid> */}
     </VStack>
   );
 };
 
-// Mock data generator function with type definitions
-const generateMockActivityData = (): ActivityData => {
-  const randomValue = () => Math.floor(Math.random() * 30); // Random values between 0 and 29
+// // Mock data generator function with type definitions
+// const generateMockActivityData = (): ActivityData => {
+//   const randomValue = () => Math.floor(Math.random() * 30); // Random values between 0 and 29
 
-  const data: ActivityData = {
-    days: {},
-    months: {},
-    years: {},
-  };
+//   const data: ActivityData = {
+//     days: {},
+//     months: {},
+//     years: {},
+//   };
 
-  const currentDate = new Date();
+//   const currentDate = new Date();
 
-  // Generate random daily activity data
-  for (let i = 0; i < 100; i++) {
-    const randomDay = new Date(
-      currentDate.getFullYear(),
-      Math.floor(Math.random() * 12),
-      Math.floor(Math.random() * 28) + 1
-    );
-    const formattedDate = format(randomDay, 'yyyy-MM-dd');
-    data.days[formattedDate] = randomValue();
-  }
+//   // Generate random daily activity data
+//   for (let i = 0; i < 100; i++) {
+//     const randomDay = new Date(
+//       currentDate.getFullYear(),
+//       Math.floor(Math.random() * 12),
+//       Math.floor(Math.random() * 28) + 1,
+//     );
+//     const formattedDate = format(randomDay, 'yyyy-MM-dd');
+//     data.days[formattedDate] = randomValue();
+//   }
 
-  // Generate random monthly activity data
-  for (let i = 0; i < 12; i++) {
-    const randomMonth = new Date(currentDate.getFullYear(), i, 1);
-    const formattedMonth = format(randomMonth, 'yyyy-MM');
-    data.months[formattedMonth] = randomValue();
-  }
+//   // Generate random monthly activity data
+//   for (let i = 0; i < 12; i++) {
+//     const randomMonth = new Date(currentDate.getFullYear(), i, 1);
+//     const formattedMonth = format(randomMonth, 'yyyy-MM');
+//     data.months[formattedMonth] = randomValue();
+//   }
 
-  // Generate random yearly activity data
-  for (let i = 0; i < 10; i++) {
-    const year = getYear(currentDate) - 9 + i;
-    data.years[year.toString()] = randomValue();
-  }
+//   // Generate random yearly activity data
+//   for (let i = 0; i < 10; i++) {
+//     const year = getYear(currentDate) - 9 + i;
+//     data.years[year.toString()] = randomValue();
+//   }
 
-  return data;
-};
+//   return data;
+// };
 
 export default ActivityCalendarPage;
