@@ -12,9 +12,22 @@ export default function ActivityCalendarProvider() {
     false,
   );
 
+  const {
+    data: getMonthlyActivityCountsData,
+    refetch: getMonthlyActivityCounts,
+    loading: getMonthlyActivityCountsLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
+    ActivityCalendarApi.getMonthlyActivityCounts,
+    null,
+    false,
+  );
+
   return {
     getDailyActivityCountsData,
     getDailyActivityCounts,
     getDailyActivityCountsLoading,
+    getMonthlyActivityCountsData,
+    getMonthlyActivityCounts,
+    getMonthlyActivityCountsLoading,
   };
 }
