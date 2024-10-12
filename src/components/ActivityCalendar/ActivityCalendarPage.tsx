@@ -152,13 +152,13 @@ useEffect(() => {
 
         // Monthly aggregation
         newMonths[formattedMonth] = {
-          ...newDays[formattedDate],
+          ...newMonths[formattedMonth],
           github: (newMonths[formattedMonth]?.github || 0) + (day.contributionCount || 0),
         };
 
         // Yearly aggregation
         newYears[formattedYear] = {
-          ...newDays[formattedDate],
+          ...newYears[formattedYear],
           github: (newYears[formattedYear]?.github || 0) + (day.contributionCount || 0),
         };
       });
@@ -166,7 +166,7 @@ useEffect(() => {
     // Update the activity data state with new aggregated data
     setActivityData((prevData) => {
       console.log('prevData: ', prevData);
-      console.log('newMonths: ', newMonths);
+      console.log('newYears: ', newYears);
       return({
       days: { ...prevData.days, ...newDays },
       months: { ...prevData.months, ...newMonths },
