@@ -41,6 +41,16 @@ const getDayColor = (activityCount: number, isToday: boolean): string => {
   return 'gray.100';
 };
 
+// Function to determine the color based on activity level
+const getMonthColor = (activityCount: number, isToday: boolean): string => {
+  if (isToday) return 'blue.400'; // Highlight today in blue
+  if (activityCount > 250) return 'green.600';
+  if (activityCount > 100) return 'green.400';
+  if (activityCount > 50) return 'green.200';
+  if (activityCount > 0) return 'green.100';
+  return 'gray.100';
+};
+
 const ActivityCalendarPage: React.FC = () => {
   const [activityData, setActivityData] = useState<ActivityData>({
     days: {},
@@ -238,7 +248,7 @@ const ActivityCalendarPage: React.FC = () => {
                   <Box
                     width="30px"
                     height="30px"
-                    bg={getDayColor(activityCount, false)} // No need to check for today here
+                    bg={getMonthColor(activityCount, false)} // No need to check for today here
                     borderRadius="md"
                   />
                 </Tooltip>
