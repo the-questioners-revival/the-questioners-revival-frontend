@@ -3,14 +3,14 @@
     margin: 1rem 0rem 0.5rem 0rem;
     overflow:hidden;
     .blockquoteLight {
-      background-color:var(--chakra-colors-green);  
+      background-color:var(--chakra-colors-greenMain);  
       border: solid 2px #fff;
       display: inline-block;
       margin: 0;
       padding: 1em;
       position: relative;
       &:before {
-        background-color:var(--chakra-colors-green);
+        background-color:var(--chakra-colors-greenMain);
         bottom: -10%;
         content: "";
         left: 0;

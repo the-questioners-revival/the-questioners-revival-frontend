@@ -5,7 +5,7 @@ import CustomHeader from './CustomHeader';
 const CustomLayout = ({ children }: { children: any }) => {
   const bgColor = useColorModeValue('white', 'black');
   const color = useColorModeValue('black', 'white');
-  const bgColorBody = useColorModeValue('green', 'purpleDark');
+  const bgColorBody = useColorModeValue('greenMain', 'purpleDark');
 
   return (
     <Grid

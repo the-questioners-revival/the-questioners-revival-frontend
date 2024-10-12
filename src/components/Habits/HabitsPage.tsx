@@ -170,7 +170,7 @@ const HabitsPage = () => {
                 }`}
               >
                 <Checkbox
-                  colorScheme="green"
+                  colorScheme="greenMain"
                   isChecked={foundHabitTracker ? true : false}
                   onChange={(e) => {
                     if (e.target.checked) {
