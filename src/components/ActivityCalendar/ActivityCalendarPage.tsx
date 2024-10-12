@@ -242,8 +242,9 @@ useEffect(() => {
   return (
     <ProtectedPage>
       <CustomLayout>
+        <Box paddingY="20px">
         <VStack spacing={8}>
-          <Heading size="md">Daily Activity</Heading>
+          <Heading size="lg">Daily Activity</Heading>
           <Grid templateColumns="repeat(7, 1fr)" gap={1}>
             {allDays.map((day, index) => {
               const formattedDate = format(day, 'yyyy-MM-dd');
@@ -268,8 +269,8 @@ useEffect(() => {
                   hasArrow
                 >
                   <Box
-                    width="25px"
-                    height="25px"
+                    width="20px"
+                    height="20px"
                     bg={getDayColor(activityCount)} // Check if it's today
                     borderRadius="md"
                     border={isToday ? '2px solid black' : ''}
@@ -282,7 +283,7 @@ useEffect(() => {
             })}
           </Grid>
 
-          <Heading size="md">Monthly Activity</Heading>
+          <Heading size="lg">Monthly Activity</Heading>
           <Grid templateColumns="repeat(12, 1fr)" gap={2}>
             {allMonths.map((month, index) => {
               const formattedMonth = format(month, 'yyyy-MM');
@@ -304,8 +305,8 @@ useEffect(() => {
                   placement="top"
                 >
                   <Box
-                    width="40px"
-                    height="40px"
+                    width="30px"
+                    height="30px"
                     bg={getMonthColor(activityCount)} // No need to check for today here
                     borderRadius="md"
                     border={isMonth ? '2px solid black' : ''}
@@ -317,7 +318,7 @@ useEffect(() => {
             })}
           </Grid>
 
-          <Heading size="md">Yearly Activity</Heading>
+          <Heading size="lg">Yearly Activity</Heading>
           <Grid templateColumns="repeat(10, 1fr)" gap={2}>
             {allYears.map((year, index) => {
               const activityCount = activityData?.years[year]?.total || 0; // Get total for the year
@@ -338,8 +339,8 @@ useEffect(() => {
                   placement="top"
                 >
                   <Box
-                    width="55px"
-                    height="55px"
+                    width="40px"
+                    height="40px"
                     bg={getYearColor(activityCount)} // Function to determine color for the year
                     borderRadius="md"
                     border={isYear ? '2px solid black' : ''}
@@ -351,6 +352,7 @@ useEffect(() => {
             })}
           </Grid>
         </VStack>
+        </Box>
       </CustomLayout>
     </ProtectedPage>
   );
