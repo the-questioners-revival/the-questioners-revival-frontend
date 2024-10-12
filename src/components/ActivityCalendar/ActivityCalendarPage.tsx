@@ -250,12 +250,23 @@ const ActivityCalendarPage: React.FC = () => {
               const tooltipLabel = `${formattedMonthLabel} - ${activityCount} contributions`;
 
               return (
-                <Tooltip label={tooltipLabel} key={index} placement="top">
+                <Tooltip
+                  label={
+                    <>
+                      <Box>{tooltipLabel}</Box>
+                      {renderTooltipDetails('months')}
+                    </>
+                  }
+                  key={index}
+                  placement="top"
+                >
                   <Box
                     width="30px"
                     height="30px"
                     bg={getMonthColor(activityCount, false)} // No need to check for today here
                     borderRadius="md"
+                    onMouseEnter={() => handleMouseEnter(formattedMonth)}
+                    onMouseLeave={() => handleMouseLeave()}
                   />
                 </Tooltip>
               );
