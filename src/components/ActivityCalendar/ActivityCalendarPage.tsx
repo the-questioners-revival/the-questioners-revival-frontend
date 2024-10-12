@@ -268,8 +268,8 @@ useEffect(() => {
                   hasArrow
                 >
                   <Box
-                    width="20px"
-                    height="20px"
+                    width="25px"
+                    height="25px"
                     bg={getDayColor(activityCount)} // Check if it's today
                     borderRadius="md"
                     border={isToday ? '2px solid black' : ''}
@@ -304,8 +304,8 @@ useEffect(() => {
                   placement="top"
                 >
                   <Box
-                    width="30px"
-                    height="30px"
+                    width="40px"
+                    height="40px"
                     bg={getMonthColor(activityCount)} // No need to check for today here
                     borderRadius="md"
                     border={isMonth ? '2px solid black' : ''}
@@ -338,8 +338,8 @@ useEffect(() => {
                   placement="top"
                 >
                   <Box
-                    width="30px"
-                    height="30px"
+                    width="55px"
+                    height="55px"
                     bg={getYearColor(activityCount)} // Function to determine color for the year
                     borderRadius="md"
                     border={isYear ? '2px solid black' : ''}
