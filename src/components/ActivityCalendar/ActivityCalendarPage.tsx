@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Grid, VStack, Heading, Tooltip } from '@chakra-ui/react';
-import { eachDayOfInterval, format, startOfYear, endOfYear } from 'date-fns';
+import { eachDayOfInterval, format, startOfYear, endOfYear, eachMonthOfInterval, getYear } from 'date-fns';
 import ActivityCalendarProvider from '../../providers/ActivityCalendarProvider';
 import GithubProvider from '../../providers/GithubProvider';
 
