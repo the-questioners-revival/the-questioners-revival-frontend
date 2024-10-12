@@ -21,7 +21,7 @@ export const habitRepeatOptions = [
 ];
 
 const CreateHabitForm = ({ createHabit }: { createHabit: Function }) => {
-  const bgColor = useColorModeValue("greenLight", "black");
+  const bgColor = useColorModeValue("green.400", "black");
 
   // Updated component name
   return (

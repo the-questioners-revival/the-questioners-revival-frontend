@@ -76,7 +76,8 @@ const TodoListItem = ({
   createTodoSchedule: Function;
 }) => {
   const bgColor = useColorModeValue('white', 'black');
-  const itemBgColor = useColorModeValue('greenLight', 'black');
+  const color = useColorModeValue('black', 'white');
+  const itemBgColor = useColorModeValue('white', 'black');
   const LEFT_SIDE_WIDTH = 40;
   const RIGHT_SIDE_WIDTH = 80;
   const [startLeftSide, setStartLeftSide] = useState(0);
@@ -198,6 +199,7 @@ const TodoListItem = ({
   return (
     <>
       <Box
+        color={color}
         key={todo.id}
         marginBottom="10px"
         border={`2px solid ${bgColor}`}

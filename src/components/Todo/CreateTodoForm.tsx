@@ -41,7 +41,7 @@ export const todoPriorityOptions = [
 ];
 
 const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
-  const bgColor = useColorModeValue("greenLight", "black");
+  const bgColor = useColorModeValue("green.400", "black");
 
   return (
     <Formik

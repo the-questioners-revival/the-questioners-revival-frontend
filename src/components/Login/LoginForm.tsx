@@ -9,7 +9,7 @@ const LoginForm = ({
   login: Function;
   loginLoading: boolean;
 }) => {
-  const bgColor = useColorModeValue("greenLight", "black");
+  const bgColor = useColorModeValue("green.400", "black");
 
   // Updated component name
   return (

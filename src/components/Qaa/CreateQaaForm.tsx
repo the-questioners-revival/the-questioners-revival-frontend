@@ -34,7 +34,7 @@ export const qaaTypeOptions = [
 ];
 
 const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
-  const bgColor = useColorModeValue("greenLight", "black");
+  const bgColor = useColorModeValue("green.400", "black");
 
   const editor = useEditor({
     extensions: [

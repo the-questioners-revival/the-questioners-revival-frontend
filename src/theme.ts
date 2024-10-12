@@ -7,7 +7,6 @@ const theme = extendTheme({
     black: '#000',
     white: '#fff',
     greenMain: '#21D19F',
-    greenLight: '#4CAF4F',
     purpleDark: '#222A68',
   },
   config: {
