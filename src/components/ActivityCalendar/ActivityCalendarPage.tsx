@@ -7,6 +7,7 @@ import {
   endOfYear,
   eachMonthOfInterval,
   getYear,
+  getMonth,
 } from 'date-fns';
 import ActivityCalendarProvider from '../../providers/ActivityCalendarProvider';
 import GithubProvider from '../../providers/GithubProvider';
@@ -160,7 +161,6 @@ const ActivityCalendarPage: React.FC = () => {
     { length: 10 },
     (_, i) => getYear(new Date()) - 9 + i,
   );
-
   const today = format(new Date(), 'yyyy-MM-dd');
 
   const handleMouseEnter = (formattedDate: any) => {
@@ -248,6 +248,7 @@ const ActivityCalendarPage: React.FC = () => {
                     height="20px"
                     bg={getDayColor(activityCount)} // Check if it's today
                     borderRadius="md"
+                    border={isToday ? '2px solid black' : ''}
                     cursor="pointer" // Indicate that the box is clickable
                     onMouseEnter={() => handleMouseEnter(formattedDate)}
                     onMouseLeave={() => handleMouseLeave()}
@@ -262,6 +263,7 @@ const ActivityCalendarPage: React.FC = () => {
             {allMonths.map((month, index) => {
               const formattedMonth = format(month, 'yyyy-MM');
               const formattedMonthLabel = format(month, 'yyyy MMMM');
+              const isMonth = getMonth(formattedMonth) === getMonth(today);
               const activityCount =
                 activityData?.months[formattedMonth]?.total || 0;
               const tooltipLabel = `${formattedMonthLabel} - ${activityCount} contributions`;
@@ -282,6 +284,7 @@ const ActivityCalendarPage: React.FC = () => {
                     height="30px"
                     bg={getMonthColor(activityCount)} // No need to check for today here
                     borderRadius="md"
+                    border={isMonth ? '2px solid black' : ''}
                     onMouseEnter={() => handleMouseEnter(formattedMonth)}
                     onMouseLeave={() => handleMouseLeave()}
                   />
@@ -293,9 +296,10 @@ const ActivityCalendarPage: React.FC = () => {
           <Heading size="md">Yearly Activity</Heading>
           <Grid templateColumns="repeat(10, 1fr)" gap={2}>
             {allYears.map((year, index) => {
-              console.log('year: ', year);
               const activityCount = activityData?.years[year]?.total || 0; // Get total for the year
               const tooltipLabel = `${year} - ${activityCount} contributions`; // Tooltip text
+              const isYear = year === getYear(today);
+              
 
               return (
                 <Tooltip
@@ -314,6 +318,7 @@ const ActivityCalendarPage: React.FC = () => {
                     height="30px"
                     bg={getYearColor(activityCount)} // Function to determine color for the year
                     borderRadius="md"
+                    border={isYear ? '2px solid black' : ''}
                     onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
                     onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
                   />
