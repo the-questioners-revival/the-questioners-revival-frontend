@@ -229,7 +229,7 @@ const TodoListItem = ({
             width: LEFT_SIDE_WIDTH,
             left: leftSide,
             top: 0,
-            zIndex: 1,
+            zIndex: 2,
           }}
         >
           <CheckIcon />
@@ -296,6 +296,7 @@ const TodoListItem = ({
             height: '100%',
             width: RIGHT_SIDE_WIDTH,
             right: rightSide,
+            zIndex: 2,
             top: 0,
           }}
         >

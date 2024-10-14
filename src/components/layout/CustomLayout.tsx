@@ -31,7 +31,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         overflowX="hidden"
         overflowY="unset"
         position="fixed"
-        zIndex={1}
+        zIndex={3}
         boxShadow="0px 1px 5px rgba(190, 190, 190, 0.46) !important"
       >
         <CustomHeader />
