@@ -29,9 +29,12 @@ const CreateBlogForm = ({
     content: `
     <h3>Morning Gratitude</h3>
     <p></p>
-    <h3>How I feel today</h3>
-    <p></p>
+
     <h3>What I did during the day</h3>
+    <p></p>
+    <h3>I feel...</h3>
+    <p></p>
+    <h3>I ate...</h3>
     <p></p>
     <h3>Goals for tomorrow</h3>
     <p></p>
