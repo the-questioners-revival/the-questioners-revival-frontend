@@ -232,7 +232,7 @@ const TodoListItem = ({
             zIndex: 2,
           }}
         >
-          <CheckIcon />
+          <CheckIcon w={4} h={4} color={bgColor} />
         </Box>
         <Box
           w="100%"
