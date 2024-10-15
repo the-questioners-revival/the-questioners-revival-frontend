@@ -41,11 +41,9 @@ const TodoPage = () => {
   const { createTodoSchedule, createTodoScheduleData } = TodoScheduleProvider();
 
   useEffect(() => {
-    if (type || status || priority) {
       getLatestTodosRefetch({ type, status, priority, limit, offset: 0 });
       setTodos([]);
-      setOffset(0);
-    }
+      setOffset(limit);
   }, [type, status, priority]);
 
   useEffect(() => {

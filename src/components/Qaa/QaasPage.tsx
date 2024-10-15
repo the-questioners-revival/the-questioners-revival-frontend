@@ -31,19 +31,16 @@ const QaaPage = () => {
   const { setLoading } = useFloatingLoader();
 
   useEffect(() => {
-    if(type || showRemoved) {
-      qaasRefetch({ type, showRemoved, limit, offset });
-      setQaas([]);
-      setOffset(0);
-    }
+    qaasRefetch({ type, showRemoved, limit, offset });
+    setQaas([]);
+    setOffset(limit);
   }, [type, showRemoved]);
 
   useEffect(() => {
     if (qaasData) {
       setQaas((prevQaas: any) => [...prevQaas, ...qaasData]);
-    }
-    else {
-      setQaas([])
+    } else {
+      setQaas([]);
     }
   }, [qaasData]);
 
