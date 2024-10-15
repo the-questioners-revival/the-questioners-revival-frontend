@@ -31,7 +31,7 @@ const QaaPage = () => {
   const { setLoading } = useFloatingLoader();
 
   useEffect(() => {
-    if(type && showRemoved) {
+    if(type || showRemoved) {
       qaasRefetch({ type, showRemoved, limit, offset });
       setQaas([]);
       setOffset(0);
