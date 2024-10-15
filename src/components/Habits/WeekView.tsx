@@ -75,11 +75,6 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
       onChange(weeks[selectedWeekNumber - 1]);
     }
   }, [selectedWeekNumber, weeks]);
-  console.log(
-    'weeks: ',
-    selectedWeekNumber && weeks?.length > 0 && weeks[selectedWeekNumber],
-  );
-  console.log('selectedWeekNumber: ', selectedWeekNumber);
 
   return (
     <div>

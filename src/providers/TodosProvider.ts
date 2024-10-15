@@ -62,7 +62,6 @@ export default function TodosProvider() {
   );
 
   useEffect(() => {
-    console.log('REFETCHING');
     const fetchTodos = async () => {
       getAllTodos();
     };
@@ -76,7 +75,6 @@ export default function TodosProvider() {
       value: todo.id,
     }));
   }, [getAllTodosData]);
-  console.log('todoOptions: ', todoOptions);
 
   return {
     todoOptions,

@@ -38,7 +38,6 @@ async function fetchGitHubContributions() {
   }
 
   const data = await response.json();
-  console.log('data: ', data);
   return {
     res: {
       data: data.data.user.contributionsCollection.contributionCalendar.weeks,

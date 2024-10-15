@@ -56,8 +56,8 @@ export function getDayOfWeekString(date: any) {
 }
 
 const HabitsPage = () => {
-  const bgColor = useColorModeValue("white", "black");
-  const color = useColorModeValue("black", "white");
+  const bgColor = useColorModeValue('white', 'black');
+  const color = useColorModeValue('black', 'white');
 
   const [isOpenEditHabitModal, setIsOpenEditHabitModal] = useState(false);
   const [isOpenDeleteHabitModal, setIsOpenDeleteHabitModal] = useState(false);
@@ -136,7 +136,9 @@ const HabitsPage = () => {
         <Tr>
           <Td
             textAlign="center"
-            border={`${isItToday ? '2px solid #FFDF00' : `1px solid ${bgColor}`}`}
+            border={`${
+              isItToday ? '2px solid #FFDF00' : `1px solid ${bgColor}`
+            }`}
             width="50px"
             position="sticky"
             left="0"
@@ -234,7 +236,6 @@ const HabitsPage = () => {
         {viewType === viewTypeOptions[2].value ? (
           <YearView
             onChange={(val: any) => {
-              console.log('val: ', val);
               setStartDate(val?.startDate);
               setEndDate(val?.endDate);
             }}
@@ -248,7 +249,12 @@ const HabitsPage = () => {
           mt="20px"
         >
           <Table variant="simple" position="relative">
-            <Thead position="sticky" top="0" background={bgColor} zIndex="docked">
+            <Thead
+              position="sticky"
+              top="0"
+              background={bgColor}
+              zIndex="docked"
+            >
               <Tr>
                 <Th
                   style={{ writingMode: 'vertical-rl' }}

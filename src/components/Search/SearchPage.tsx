@@ -98,7 +98,6 @@ const SearchPage = () => {
   }, [searchLoading]);
 
   useEffect(() => {
-    console.log('searchData: ', searchData);
     if (searchData) {
       setIsListOpen(true);
     }

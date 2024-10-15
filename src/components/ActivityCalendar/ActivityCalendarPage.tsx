@@ -74,8 +74,6 @@ const ActivityCalendarPage: React.FC = () => {
     getYearlyActivityCounts,
   } = ActivityCalendarProvider();
 
-  console.log('getMonthlyActivityCountsData: ', getMonthlyActivityCountsData);
-
   const { fetchGitHubContributionsData, fetchGitHubContributions } =
     GithubProvider();
 
@@ -124,57 +122,59 @@ const ActivityCalendarPage: React.FC = () => {
   }, [getDailyActivityCountsData]);
 
   useEffect(() => {
-    console.log('fetchGitHubContributionsData: ', fetchGitHubContributionsData);
     if (fetchGitHubContributionsData) {
       setContributions(fetchGitHubContributionsData);
     }
   }, [fetchGitHubContributionsData]);
 
- 
-useEffect(() => {
-  if (contributions) {
-    // Initialize new aggregation objects
-    const newDays: { [key: string]: Activity } = {...activityData.days};
-    const newMonths: { [key: string]: Activity } = {...activityData.months};
-    const newYears: { [key: string]: Activity } = {...activityData.years};
+  useEffect(() => {
+    if (contributions) {
+      // Initialize new aggregation objects
+      const newDays: { [key: string]: Activity } = { ...activityData.days };
+      const newMonths: { [key: string]: Activity } = { ...activityData.months };
+      const newYears: { [key: string]: Activity } = { ...activityData.years };
 
-    contributions.forEach((week: any) => {
-      week.contributionDays.forEach((day: any) => {
-        const formattedDate = day.date; // Full date for daily data
-        const formattedMonth = day.date.slice(0, 7); // 'YYYY-MM' for monthly data
-        const formattedYear = day.date.slice(0, 4); // 'YYYY' for yearly data
+      contributions.forEach((week: any) => {
+        week.contributionDays.forEach((day: any) => {
+          const formattedDate = day.date; // Full date for daily data
+          const formattedMonth = day.date.slice(0, 7); // 'YYYY-MM' for monthly data
+          const formattedYear = day.date.slice(0, 4); // 'YYYY' for yearly data
 
-        // Daily aggregation
-        newDays[formattedDate] = {
-          ...newDays[formattedDate],
-          github: (newDays[formattedDate]?.github || 0) + (day.contributionCount || 0),
-        };
+          // Daily aggregation
+          newDays[formattedDate] = {
+            ...newDays[formattedDate],
+            github:
+              (newDays[formattedDate]?.github || 0) +
+              (day.contributionCount || 0),
+          };
 
-        // Monthly aggregation
-        newMonths[formattedMonth] = {
-          ...newMonths[formattedMonth],
-          github: (newMonths[formattedMonth]?.github || 0) + (day.contributionCount || 0),
-        };
+          // Monthly aggregation
+          newMonths[formattedMonth] = {
+            ...newMonths[formattedMonth],
+            github:
+              (newMonths[formattedMonth]?.github || 0) +
+              (day.contributionCount || 0),
+          };
 
-        // Yearly aggregation
-        newYears[formattedYear] = {
-          ...newYears[formattedYear],
-          github: (newYears[formattedYear]?.github || 0) + (day.contributionCount || 0),
+          // Yearly aggregation
+          newYears[formattedYear] = {
+            ...newYears[formattedYear],
+            github:
+              (newYears[formattedYear]?.github || 0) +
+              (day.contributionCount || 0),
+          };
+        });
+      });
+      // Update the activity data state with new aggregated data
+      setActivityData((prevData) => {
+        return {
+          days: { ...prevData.days, ...newDays },
+          months: { ...prevData.months, ...newMonths },
+          years: { ...prevData.years, ...newYears },
         };
       });
-    });
-    // Update the activity data state with new aggregated data
-    setActivityData((prevData) => {
-      console.log('prevData: ', prevData);
-      console.log('newYears: ', newYears);
-      return({
-      days: { ...prevData.days, ...newDays },
-      months: { ...prevData.months, ...newMonths },
-      years: { ...prevData.years, ...newYears },
-    })});
-  }
-}, [contributions]);      
-  
+    }
+  }, [contributions]);
 
   const allMonths = eachMonthOfInterval({
     start: startOfYear(new Date()),
@@ -188,15 +188,12 @@ useEffect(() => {
   const today = format(new Date(), 'yyyy-MM-dd');
 
   const handleMouseEnter = (formattedDate: any) => {
-    console.log('handleMouseEnter');
     timeoutRef.current = setTimeout(() => {
-      console.log('Setting selected date');
       setSelectedDate(formattedDate);
     }, 500);
   };
 
   const handleMouseLeave = () => {
-    console.log('Removing timeout');
     setSelectedDate(null);
     if (timeoutRef.current !== null) {
       clearTimeout(timeoutRef.current);
@@ -243,115 +240,114 @@ useEffect(() => {
     <ProtectedPage>
       <CustomLayout>
         <Box paddingY="20px">
-        <VStack spacing={8}>
-          <Heading size="lg">Daily Activity</Heading>
-          <Grid templateColumns="repeat(7, 1fr)" gap={1}>
-            {allDays.map((day, index) => {
-              const formattedDate = format(day, 'yyyy-MM-dd');
-              const formattedDateLabel = format(day, 'yyyy MMMM dd');
-              const activityCount =
-                activityData.days[formattedDate]?.total || 0;
-              const isToday = formattedDate === today;
-              const tooltipLabel = isToday
-                ? `${formattedDateLabel} (today) - ${activityCount} contributions`
-                : `${formattedDateLabel} - ${activityCount} contributions`;
+          <VStack spacing={8}>
+            <Heading size="lg">Daily Activity</Heading>
+            <Grid templateColumns="repeat(7, 1fr)" gap={1}>
+              {allDays.map((day, index) => {
+                const formattedDate = format(day, 'yyyy-MM-dd');
+                const formattedDateLabel = format(day, 'yyyy MMMM dd');
+                const activityCount =
+                  activityData.days[formattedDate]?.total || 0;
+                const isToday = formattedDate === today;
+                const tooltipLabel = isToday
+                  ? `${formattedDateLabel} (today) - ${activityCount} contributions`
+                  : `${formattedDateLabel} - ${activityCount} contributions`;
 
-              return (
-                <Tooltip
-                  label={
-                    <>
-                      <Box>{tooltipLabel}</Box>
-                      {renderTooltipDetails('days')}
-                    </>
-                  }
-                  key={index}
-                  placement="top"
-                  hasArrow
-                >
-                  <Box
-                    width="20px"
-                    height="20px"
-                    bg={getDayColor(activityCount)} // Check if it's today
-                    borderRadius="md"
-                    border={isToday ? '2px solid black' : ''}
-                    cursor="pointer" // Indicate that the box is clickable
-                    onMouseEnter={() => handleMouseEnter(formattedDate)}
-                    onMouseLeave={() => handleMouseLeave()}
-                  />
-                </Tooltip>
-              );
-            })}
-          </Grid>
+                return (
+                  <Tooltip
+                    label={
+                      <>
+                        <Box>{tooltipLabel}</Box>
+                        {renderTooltipDetails('days')}
+                      </>
+                    }
+                    key={index}
+                    placement="top"
+                    hasArrow
+                  >
+                    <Box
+                      width="20px"
+                      height="20px"
+                      bg={getDayColor(activityCount)} // Check if it's today
+                      borderRadius="md"
+                      border={isToday ? '2px solid black' : ''}
+                      cursor="pointer" // Indicate that the box is clickable
+                      onMouseEnter={() => handleMouseEnter(formattedDate)}
+                      onMouseLeave={() => handleMouseLeave()}
+                    />
+                  </Tooltip>
+                );
+              })}
+            </Grid>
 
-          <Heading size="lg">Monthly Activity</Heading>
-          <Grid templateColumns="repeat(12, 1fr)" gap={2}>
-            {allMonths.map((month, index) => {
-              const formattedMonth = format(month, 'yyyy-MM');
-              const formattedMonthLabel = format(month, 'yyyy MMMM');
-              const isMonth = getMonth(formattedMonth) === getMonth(today);
-              const activityCount =
-                activityData?.months[formattedMonth]?.total || 0;
-              const tooltipLabel = `${formattedMonthLabel} - ${activityCount} contributions`;
+            <Heading size="lg">Monthly Activity</Heading>
+            <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+              {allMonths.map((month, index) => {
+                const formattedMonth = format(month, 'yyyy-MM');
+                const formattedMonthLabel = format(month, 'yyyy MMMM');
+                const isMonth = getMonth(formattedMonth) === getMonth(today);
+                const activityCount =
+                  activityData?.months[formattedMonth]?.total || 0;
+                const tooltipLabel = `${formattedMonthLabel} - ${activityCount} contributions`;
 
-              return (
-                <Tooltip
-                  label={
-                    <>
-                      <Box>{tooltipLabel}</Box>
-                      {renderTooltipDetails('months')}
-                    </>
-                  }
-                  key={index}
-                  placement="top"
-                >
-                  <Box
-                    width="30px"
-                    height="30px"
-                    bg={getMonthColor(activityCount)} // No need to check for today here
-                    borderRadius="md"
-                    border={isMonth ? '2px solid black' : ''}
-                    onMouseEnter={() => handleMouseEnter(formattedMonth)}
-                    onMouseLeave={() => handleMouseLeave()}
-                  />
-                </Tooltip>
-              );
-            })}
-          </Grid>
+                return (
+                  <Tooltip
+                    label={
+                      <>
+                        <Box>{tooltipLabel}</Box>
+                        {renderTooltipDetails('months')}
+                      </>
+                    }
+                    key={index}
+                    placement="top"
+                  >
+                    <Box
+                      width="30px"
+                      height="30px"
+                      bg={getMonthColor(activityCount)} // No need to check for today here
+                      borderRadius="md"
+                      border={isMonth ? '2px solid black' : ''}
+                      onMouseEnter={() => handleMouseEnter(formattedMonth)}
+                      onMouseLeave={() => handleMouseLeave()}
+                    />
+                  </Tooltip>
+                );
+              })}
+            </Grid>
 
-          <Heading size="lg">Yearly Activity</Heading>
-          <Grid templateColumns="repeat(10, 1fr)" gap={2}>
-            {allYears.map((year, index) => {
-              const activityCount = activityData?.years[year]?.total || 0; // Get total for the year
-              const tooltipLabel = `${year} - ${activityCount} contributions`; // Tooltip text
-              const isYear = year === getYear(today);
-              
+            <Heading size="lg">Yearly Activity</Heading>
+            <Grid templateColumns="repeat(10, 1fr)" gap={2}>
+              {allYears.map((year, index) => {
+                const activityCount = activityData?.years[year]?.total || 0; // Get total for the year
+                const tooltipLabel = `${year} - ${activityCount} contributions`; // Tooltip text
+                const isYear = year === getYear(today);
 
-              return (
-                <Tooltip
-                  label={
-                    <>
-                      <Box>{tooltipLabel}</Box>
-                      {renderTooltipDetails('years')}{' '}
-                      {/* Call renderTooltipDetails with 'years' */}
-                    </>
-                  }
-                  key={index}
-                  placement="top"
-                >
-                  <Box
-                    width="40px"
-                    height="40px"
-                    bg={getYearColor(activityCount)} // Function to determine color for the year
-                    borderRadius="md"
-                    border={isYear ? '2px solid black' : ''}
-                    onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
-                    onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
-                  />
-                </Tooltip>
-              );
-            })}
-          </Grid>
-        </VStack>
+                return (
+                  <Tooltip
+                    label={
+                      <>
+                        <Box>{tooltipLabel}</Box>
+                        {renderTooltipDetails('years')}{' '}
+                        {/* Call renderTooltipDetails with 'years' */}
+                      </>
+                    }
+                    key={index}
+                    placement="top"
+                  >
+                    <Box
+                      width="40px"
+                      height="40px"
+                      bg={getYearColor(activityCount)} // Function to determine color for the year
+                      borderRadius="md"
+                      border={isYear ? '2px solid black' : ''}
+                      onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
+                      onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
+                    />
+                  </Tooltip>
+                );
+              })}
+            </Grid>
+          </VStack>
         </Box>
       </CustomLayout>
     </ProtectedPage>

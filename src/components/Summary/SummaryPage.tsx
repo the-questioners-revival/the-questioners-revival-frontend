@@ -25,7 +25,6 @@ const SummaryPage = () => {
   const [data, setData] = useState();
   const { getDailyHabitsData } = HabitsProvider();
   const { setLoading } = useFloatingLoader();
-  console.log('data: ', data);
 
   const {
     getDailyHabitsTrackers,
@@ -48,7 +47,6 @@ const SummaryPage = () => {
     getAllGoalsGroupedByDate,
     getAllGoalsGroupedByDateLoading,
   } = GoalsProvider();
-  console.log('getAllGoalsGroupedByDateData: ', getAllGoalsGroupedByDateData);
 
   const {
     getAllQaasGroupedByDateData,
@@ -61,11 +59,6 @@ const SummaryPage = () => {
     getAllTodoSchedulesGroupedByDate,
     getAllTodoSchedulesGroupedByDateLoading,
   } = TodoScheduleProvider();
-
-  console.log(
-    'getAllTodoSchedulesGroupedByDateData: ',
-    getAllTodoSchedulesGroupedByDateData,
-  );
 
   const {
     getAllBlogsGroupedByDateData,
@@ -149,7 +142,7 @@ const SummaryPage = () => {
           todos: [],
           goals: [],
           qaas: [],
-          todoSchedules: []
+          todoSchedules: [],
         });
         weekStart = weekStart.clone().add(1, 'day');
       }
@@ -228,7 +221,8 @@ const SummaryPage = () => {
 
         if (existingDateIndex !== -1) {
           // Date already exists, add the qaa to the existing array
-          combinedData[existingDateIndex].todoSchedules = todoScheduleItem.todoSchedules;
+          combinedData[existingDateIndex].todoSchedules =
+            todoScheduleItem.todoSchedules;
         } else {
           // Date doesn't exist, create a new entry
           combinedData.push({
@@ -265,7 +259,6 @@ const SummaryPage = () => {
         return bDate + aDate;
       });
 
-      console.log('combinedDataSortedByDate: ', combinedDataSortedByDate);
       setData(combinedDataSortedByDate);
       // Now, combinedData contains the merged data grouped by date
     }
@@ -325,7 +318,6 @@ const SummaryPage = () => {
           {viewType === viewTypeOptions[2].value ? (
             <YearView
               onChange={(val: any) => {
-                console.log('val: ', val);
                 setStartDate(val?.startDate);
                 setEndDate(val?.endDate);
               }}

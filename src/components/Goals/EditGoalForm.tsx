@@ -10,8 +10,6 @@ const EditGoalForm = ({
   editGoal: Function;
   goal: any;
 }) => {
-  console.log('goal: ', goal);
-  // Updated component name
   return (
     <Formik
       initialValues={{ title: goal.title, type: goal.type }}

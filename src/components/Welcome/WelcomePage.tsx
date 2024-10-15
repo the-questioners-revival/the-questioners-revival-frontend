@@ -74,8 +74,6 @@ const TodoPage = () => {
   }, [getRandomQuoteData]);
 
   useEffect(() => {
-    console.log('type changed');
-
     getRandomQuote(type);
   }, [type]);
 

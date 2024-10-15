@@ -1,13 +1,9 @@
 // src/Tiptap.jsx
-import {
-  EditorContent,
-} from '@tiptap/react';
-import './styles.css'
+import { EditorContent } from '@tiptap/react';
+import './styles.css';
 import { useCallback } from 'react';
 
-
-
-const MenuBar = ({ editor,setLink }: { editor: any,setLink:any }) => {
+const MenuBar = ({ editor, setLink }: { editor: any; setLink: any }) => {
   if (!editor) {
     return null;
   }
@@ -214,7 +210,10 @@ const MenuBar = ({ editor,setLink }: { editor: any,setLink:any }) => {
       >
         purple
       </button>
-      <button onClick={setLink} className={editor.isActive('link') ? 'is-active' : ''}>
+      <button
+        onClick={setLink}
+        className={editor.isActive('link') ? 'is-active' : ''}
+      >
         setLink
       </button>
       <button
@@ -227,38 +226,40 @@ const MenuBar = ({ editor,setLink }: { editor: any,setLink:any }) => {
   );
 };
 
-const HtmlEditor = ({editor}:{editor:any}) => {
-  console.log('editor: ', editor);
-  console.log('editor: ', editor?.getHTML());
+const HtmlEditor = ({ editor }: { editor: any }) => {
+  const setLink = useCallback(
+    (e: any) => {
+      e.preventDefault();
 
-  const setLink = useCallback((e:any) => {
-    e.preventDefault();
+      const previousUrl = editor.getAttributes('link').href;
+      const url = window.prompt('URL', previousUrl);
 
-    const previousUrl = editor.getAttributes('link').href
-    const url = window.prompt('URL', previousUrl)
+      // cancelled
+      if (url === null) {
+        return;
+      }
 
-    // cancelled
-    if (url === null) {
-      return
-    }
+      // empty
+      if (url === '') {
+        editor.chain().focus().extendMarkRange('link').unsetLink().run();
 
-    // empty
-    if (url === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink()
-        .run()
+        return;
+      }
 
-      return
-    }
-
-    // update link
-    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
-      .run()
-  }, [editor])
-
+      // update link
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange('link')
+        .setLink({ href: url })
+        .run();
+    },
+    [editor],
+  );
 
   return (
     <>
-      <MenuBar editor={editor} setLink={setLink}/>
+      <MenuBar editor={editor} setLink={setLink} />
       <EditorContent editor={editor} />
     </>
   );

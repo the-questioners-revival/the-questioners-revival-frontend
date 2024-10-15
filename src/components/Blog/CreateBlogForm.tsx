@@ -40,7 +40,7 @@ const CreateBlogForm = ({
     <p></p>
     `,
   });
-  console.log('editor: ', editor?.getHTML());
+
   // Updated component name
   return (
     <Formik
