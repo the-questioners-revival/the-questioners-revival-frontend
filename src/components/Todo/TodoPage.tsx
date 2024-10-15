@@ -14,10 +14,14 @@ const TodoPage = () => {
   const [priority, setPriority] = useState();
   const [type, setType] = useState();
   const { setLoading } = useFloatingLoader();
+  const [offset, setOffset] = useState(0);
+  const [todos, setTodos] = useState<any>([]);
+  const limit = 10;
+  console.log('offset: ', offset);
 
   const {
-    todoData,
-    todoRefetch,
+    getLatestTodosData,
+    getLatestTodosRefetch,
     getLatestTodosLoading,
     createTodo,
     createTodoData,
@@ -37,8 +41,18 @@ const TodoPage = () => {
   const { createTodoSchedule, createTodoScheduleData } = TodoScheduleProvider();
 
   useEffect(() => {
-    todoRefetch({ type, status, priority });
+    if (type || status || priority) {
+      getLatestTodosRefetch({ type, status, priority, limit, offset: 0 });
+      setTodos([]);
+      setOffset(0);
+    }
   }, [type, status, priority]);
+
+  useEffect(() => {
+    if (getLatestTodosData) {
+      setTodos((prevTodos: any) => [...prevTodos, ...getLatestTodosData]);
+    }
+  }, [getLatestTodosData]);
 
   useEffect(() => {
     if (
@@ -50,7 +64,8 @@ const TodoPage = () => {
       createBlogData ||
       editBlogData
     ) {
-      todoRefetch({ type, status, priority });
+      getLatestTodosRefetch({ type, status, priority, limit, offset });
+      setOffset((prevOffset) => prevOffset + limit);
     }
   }, [
     completeTodoData,
@@ -67,13 +82,30 @@ const TodoPage = () => {
     setLoading(getLatestTodosLoading);
   }, [getLatestTodosLoading]);
 
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight ||
+      getLatestTodosLoading
+    ) {
+      return;
+    }
+    getLatestTodosRefetch({ type, status, priority, limit, offset });
+    setOffset((prevOffset) => prevOffset + limit);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [getLatestTodosLoading]);
+
   return (
     <ProtectedPage>
       <CustomLayout>
         <Box paddingTop="20px">
           <CreateTodoForm createTodo={createTodo} />
           <TodoList
-            todos={todoData}
+            todos={todos}
             completeTodo={completeTodo}
             inprogressTodo={inprogressTodo}
             removeTodo={removeTodo}

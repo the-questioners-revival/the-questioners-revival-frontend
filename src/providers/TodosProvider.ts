@@ -5,8 +5,8 @@ import useAbstractProvider from './AbstractProvider';
 
 export default function TodosProvider() {
   const {
-    data: todoData,
-    refetch: todoRefetch,
+    data: getLatestTodosData,
+    refetch: getLatestTodosRefetch,
     loading: getLatestTodosLoading,
   }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
     TodoApi.getLatestTodos,
@@ -78,8 +78,8 @@ export default function TodosProvider() {
 
   return {
     todoOptions,
-    todoData,
-    todoRefetch,
+    getLatestTodosData,
+    getLatestTodosRefetch,
     getLatestTodosLoading,
     createTodo,
     createTodoData,

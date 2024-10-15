@@ -5,29 +5,19 @@ const API = Api();
 
 async function getLatestTodos(params) {
   let url = `${BACKEND_URL}/todo/latest`;
+  const queryParams = [];
 
-  // Add type parameter if not null
-  if (params && params.type !== null && params.type !== undefined) {
-    url += `?type=${params.type}`;
+  if (params) {
+    if (params.type) queryParams.push(`type=${params.type}`);
+    if (params.status) queryParams.push(`status=${params.status}`);
+    if (params.priority) queryParams.push(`priority=${params.priority}`);
+    if (params.limit) queryParams.push(`limit=${params.limit}`);
+    if (params.offset) queryParams.push(`offset=${params.offset}`);
   }
 
-  // Add status parameter if not null
-  if (params && params.status !== null && params.status !== undefined) {
-    // If type is already present, use "&" to add the status parameter
-    url +=
-      params.type !== null && params.type !== undefined
-        ? `&status=${params.status}`
-        : `?status=${params.status}`;
-  }
-
-  // Add priority parameter if not null
-  if (params && params.priority !== null && params.priority !== undefined) {
-    // If type or status is already present, use "&" to add the priority parameter
-    url +=
-      (params.type !== null && params.type !== undefined) ||
-      (params.status !== null && params.status !== undefined)
-        ? `&priority=${params.priority}`
-        : `?priority=${params.priority}`;
+  // Join the query parameters with '&' and append to the URL
+  if (queryParams.length > 0) {
+    url += `?${queryParams.join('&')}`;
   }
 
   const res = await API.get(url, true);

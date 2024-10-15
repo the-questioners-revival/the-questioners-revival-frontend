@@ -129,9 +129,9 @@ const TodoList = ({
         </Flex>
       </Flex>
       <Text>Number of todos: {todos?.length}</Text>
-      {todos?.map((todo: any) => (
+      {todos?.map((todo: any, index:number) => (
         <TodoListItem
-          key={todo.id}
+          key={"todo"+index}
           todo={todo}
           completeTodo={completeTodo}
           inprogressTodo={inprogressTodo}
