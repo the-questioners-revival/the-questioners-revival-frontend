@@ -14,6 +14,7 @@ import EditQaaForm from './EditQaaForm';
 import CustomConfirmationModal from '../custom/CustomConfirmationModal';
 import QaaListItem from './QaaListItem';
 import { qaaTypeOptions } from './CreateQaaForm';
+import { limitOptions } from '../Todo/TodoList';
 
 const showOptions = [
   {
@@ -26,7 +27,6 @@ const showOptions = [
   },
 ];
 
-
 const QaaList = ({
   qaas,
   removeQaa,
@@ -35,6 +35,8 @@ const QaaList = ({
   showRemoved,
   setShowRemoved,
   editQaa,
+  limit,
+  setLimit,
 }: {
   qaas: any;
   removeQaa: Function;
@@ -43,6 +45,8 @@ const QaaList = ({
   showRemoved?: string;
   setShowRemoved?: Function;
   editQaa: Function;
+  limit?: number;
+  setLimit?: Function;
 }) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
   const [isOpenDeleteQaaModal, setIsOpenDeleteQaaModal] = useState(false);
@@ -90,8 +94,22 @@ const QaaList = ({
             placeholder="Type"
             color="black"
             bg="white"
+            marginRight="10px"
           >
             {qaaTypeOptions?.map((option) => (
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </Select>
+          <Select
+            value={limit}
+            onChange={(evt) => setLimit && setLimit(evt.target.value)}
+            placeholder="Per page"
+            color="black"
+            bg="white"
+          >
+            {limitOptions?.map((option) => (
               <option key={option.name} value={option.value}>
                 {option.name}
               </option>
