@@ -30,6 +30,21 @@ const statusOptions = [
   },
 ];
 
+export const limitOptions = [
+  {
+    name: '10',
+    value: 10,
+  },
+  {
+    name: '50',
+    value: 50,
+  },
+  {
+    name: '100',
+    value: 100,
+  },
+];
+
 const TodoList = ({
   todos,
   completeTodo,
@@ -45,6 +60,8 @@ const TodoList = ({
   createBlog,
   editBlog,
   createTodoSchedule,
+  limit,
+  setLimit,
 }: {
   todos: any;
   completeTodo: Function;
@@ -60,6 +77,8 @@ const TodoList = ({
   createBlog: Function;
   editBlog: Function;
   createTodoSchedule: Function;
+  limit?: number;
+  setLimit?: Function;
 }) => {
   const [selectedItemIds, setSelectedItemIds] = useState<[Number?]>([]);
   const [todoSelected, setTodoSelected] = useState<any>();
@@ -119,8 +138,22 @@ const TodoList = ({
             placeholder="Type"
             color="black"
             bg="white"
+            marginRight="10px"
           >
             {todoTypeOptions?.map((option) => (
+              <option key={option.name} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </Select>
+          <Select
+            value={limit}
+            onChange={(evt) => setLimit && setLimit(evt.target.value)}
+            placeholder="Per page"
+            color="black"
+            bg="white"
+          >
+            {limitOptions?.map((option) => (
               <option key={option.name} value={option.value}>
                 {option.name}
               </option>
@@ -129,9 +162,10 @@ const TodoList = ({
         </Flex>
       </Flex>
       <Text>Number of todos: {todos?.length}</Text>
-      {todos?.map((todo: any, index:number) => (
+
+      {todos?.map((todo: any, index: number) => (
         <TodoListItem
-          key={"todo"+index}
+          key={'todo' + index}
           todo={todo}
           completeTodo={completeTodo}
           inprogressTodo={inprogressTodo}
