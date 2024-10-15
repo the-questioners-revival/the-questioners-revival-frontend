@@ -1,7 +1,7 @@
 import CreateTodoForm from './CreateTodoForm';
 import { Box } from '@chakra-ui/react';
 import TodoList from './TodoList';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import CustomLayout from '../layout/CustomLayout';
 import ProtectedPage from '../ProtectedPage';
 import TodosProvider from '../../providers/TodosProvider';
@@ -13,10 +13,15 @@ const TodoPage = () => {
   const [status, setStatus] = useState('inprogress');
   const [priority, setPriority] = useState();
   const [type, setType] = useState();
-  const { setLoading } = useFloatingLoader();
+  const [limit, setLimit] = useState<any>('');
+  console.log('limit: ', limit);
   const [offset, setOffset] = useState(0);
   const [todos, setTodos] = useState<any>([]);
-  const limit = 10;
+  const [loading, setLoading] = useState(false);
+  const { setLoading: setGlobalLoading } = useFloatingLoader();
+
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   console.log('offset: ', offset);
 
   const {
@@ -35,20 +40,38 @@ const TodoPage = () => {
     completeTodo,
   } = TodosProvider();
 
+  const fetchTodos = useCallback(
+    (reset: boolean = false) => {
+      if (!loading) {
+        setLoading(true);
+        console.log('offset: ', offset);
+        getLatestTodosRefetch({
+          type,
+          status,
+          priority,
+          limit,
+          offset: reset ? 0 : offset,
+        });
+        setOffset(reset ? parseInt(limit,10) : parseInt(limit,10) + offset);
+      }
+    },
+    [type, status, priority, limit, offset, getLatestTodosRefetch, loading],
+  );
+
   const { createBlog, editBlog, createBlogData, editBlogData } =
     BlogsProvider();
 
   const { createTodoSchedule, createTodoScheduleData } = TodoScheduleProvider();
 
   useEffect(() => {
-      getLatestTodosRefetch({ type, status, priority, limit, offset: 0 });
-      setTodos([]);
-      setOffset(limit);
-  }, [type, status, priority]);
+    fetchTodos(true);
+    setTodos([]);
+  }, [type, status, priority, limit]);
 
   useEffect(() => {
     if (getLatestTodosData) {
       setTodos((prevTodos: any) => [...prevTodos, ...getLatestTodosData]);
+      setLoading(false);
     }
   }, [getLatestTodosData]);
 
@@ -62,8 +85,8 @@ const TodoPage = () => {
       createBlogData ||
       editBlogData
     ) {
-      getLatestTodosRefetch({ type, status, priority, limit, offset });
-      setOffset((prevOffset) => prevOffset + limit);
+      fetchTodos(true);
+      setTodos([]);
     }
   }, [
     completeTodoData,
@@ -77,25 +100,39 @@ const TodoPage = () => {
   ]);
 
   useEffect(() => {
-    setLoading(getLatestTodosLoading);
-  }, [getLatestTodosLoading]);
+    setGlobalLoading(getLatestTodosLoading);
+  }, [getLatestTodosLoading, setGlobalLoading]);
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      getLatestTodosLoading
-    ) {
-      return;
+  const handleScroll = useCallback(() => {
+    if (limit === '') return;
+    if (todos.length === 0 || loading) return;
+
+    const isBottomOfPage =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.offsetHeight - 50;
+
+    if (isBottomOfPage) {
+      setOffset((prevOffset) => prevOffset + parseInt(limit, 10));
+      fetchTodos();
     }
-    getLatestTodosRefetch({ type, status, priority, limit, offset });
-    setOffset((prevOffset) => prevOffset + limit);
-  };
+  }, [todos.length, fetchTodos, limit, loading]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [getLatestTodosLoading]);
+    const debouncedScrollHandler = () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(handleScroll, 200);
+    };
+
+    window.addEventListener('scroll', debouncedScrollHandler);
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      window.removeEventListener('scroll', debouncedScrollHandler);
+    };
+  }, [handleScroll]);
 
   return (
     <ProtectedPage>
@@ -117,6 +154,8 @@ const TodoPage = () => {
             createBlog={createBlog}
             editBlog={editBlog}
             createTodoSchedule={createTodoSchedule}
+            limit={limit}
+            setLimit={setLimit}
           ></TodoList>
         </Box>
       </CustomLayout>

@@ -1,21 +1,21 @@
-import useAbstractProvider from '../../providers/AbstractProvider';
-import QaaList from './QaaList'; // Updated import
-import useAbstractMutator from '../../providers/AbstractMutator';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { Box } from '@chakra-ui/react';
+import QaaList from './QaaList';
 import CustomLayout from '../layout/CustomLayout';
 import CreateQaaForm from './CreateQaaForm';
-import { Box } from '@chakra-ui/react';
 import ProtectedPage from '../ProtectedPage';
 import QaasProvider from '../../providers/QaasProvider';
 import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
 
 const QaaPage = () => {
-  const [showRemoved, setShowRemoved] = useState<string>('false');
+  const [showRemoved, setShowRemoved] = useState('false');
   const [type, setType] = useState<string>();
   const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState<any>('');
+
   const [qaas, setQaas] = useState<any>([]);
-  const limit = 10;
-  console.log('offset: ', offset);
+  const [loading, setLoading] = useState(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref for scroll timeout
 
   const {
     qaasData,
@@ -28,55 +28,80 @@ const QaaPage = () => {
     editQaaData,
     editQaa,
   } = QaasProvider();
-  const { setLoading } = useFloatingLoader();
+  const { setLoading: setGlobalLoading } = useFloatingLoader();
+
+  // Function to refetch Qaa data with current parameters
+  const fetchQaas = useCallback(
+    (reset: boolean = false) => {
+      console.log('offset: ', offset);
+      if (!loading) {
+        setLoading(true);
+        qaasRefetch({ type, showRemoved, limit, offset: reset ? 0 : offset });
+        setOffset(reset ? parseInt(limit, 10) : parseInt(limit, 10) + offset);
+      }
+    },
+    [type, showRemoved, limit, offset, qaasRefetch, loading],
+  );
 
   useEffect(() => {
-    qaasRefetch({ type, showRemoved, limit, offset });
+    fetchQaas(true);
     setQaas([]);
-    setOffset(limit);
-  }, [type, showRemoved]);
+  }, [type, showRemoved, limit]);
 
   useEffect(() => {
     if (qaasData) {
       setQaas((prevQaas: any) => [...prevQaas, ...qaasData]);
-    } else {
-      setQaas([]);
+      setLoading(false);
     }
   }, [qaasData]);
 
   useEffect(() => {
     if (createQaaData || removeQaaData || editQaaData) {
-      qaasRefetch({ type, showRemoved, limit, offset });
-      setOffset((prevOffset) => prevOffset + limit);
+      fetchQaas(true);
+      setQaas([]);
     }
   }, [createQaaData, removeQaaData, editQaaData]);
 
   useEffect(() => {
-    setLoading(getLatestQaasLoading);
-  }, [getLatestQaasLoading]);
+    setGlobalLoading(getLatestQaasLoading);
+  }, [getLatestQaasLoading, setGlobalLoading]);
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      getLatestQaasLoading
-    ) {
-      return;
+  const handleScroll = useCallback(() => {
+    if (limit === '') return;
+    if (qaas.length === 0 || loading) return;
+
+    const isBottomOfPage =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.offsetHeight - 50;
+
+    if (isBottomOfPage) {
+      setOffset((prevOffset) => prevOffset + parseInt(limit, 10));
+      fetchQaas();
     }
-    qaasRefetch({ type, showRemoved, limit, offset });
-    setOffset((prevOffset) => prevOffset + limit);
-  };
+  }, [qaas.length, fetchQaas, limit, loading]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [getLatestQaasLoading]);
+    const debouncedScrollHandler = () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(handleScroll, 200);
+    };
+
+    window.addEventListener('scroll', debouncedScrollHandler);
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      window.removeEventListener('scroll', debouncedScrollHandler);
+    };
+  }, [handleScroll]);
 
   return (
     <ProtectedPage>
       <CustomLayout>
         <Box paddingTop="20px">
-          <CreateQaaForm createQaa={createQaa} />{' '}
+          <CreateQaaForm createQaa={createQaa} />
           <QaaList
             qaas={qaas}
             removeQaa={removeQaa}
@@ -85,11 +110,13 @@ const QaaPage = () => {
             showRemoved={showRemoved}
             setShowRemoved={setShowRemoved}
             editQaa={editQaa}
-          ></QaaList>
+            limit={limit}
+            setLimit={setLimit}
+          />
         </Box>
       </CustomLayout>
     </ProtectedPage>
   );
 };
 
-export default QaaPage; // Updated component name
+export default QaaPage;
