@@ -4,27 +4,23 @@ import Api from '.';
 const API = Api();
 
 async function getLatestQaas(params) {
-  // Updated function name
-
+  console.log('params: ', params);
   let url = `${BACKEND_URL}/qaa/latest`;
+  const queryParams = [];
 
-  // Add type parameter if not null
-  if (params && params.type !== null && params.type !== undefined) {
-    url += `?type=${params.type}`;
+  if (params) {
+    if (params.type) queryParams.push(`type=${params.type}`);
+    if (params.showRemoved)
+      queryParams.push(`showRemoved=${params.showRemoved}`);
+    if (params.limit) queryParams.push(`limit=${params.limit}`);
+    if (params.offset) queryParams.push(`offset=${params.offset}`);
   }
 
-  // Add showRemoved parameter if not null
-  if (
-    params &&
-    params.showRemoved !== null &&
-    params.showRemoved !== undefined
-  ) {
-    // If type is already present, use "&" to add the showRemoved parameter
-    url +=
-      params.type !== null && params.type !== undefined
-        ? `&showRemoved=${params.showRemoved}`
-        : `?showRemoved=${params.showRemoved}`;
+  // Join the query parameters with '&' and append to the URL
+  if (queryParams.length > 0) {
+    url += `?${queryParams.join('&')}`;
   }
+
   const res = await API.get(url, true);
   return res;
 }
