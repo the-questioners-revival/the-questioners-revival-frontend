@@ -80,8 +80,18 @@ const TodoPage = () => {
   }, [type]);
 
   useEffect(() => {
-    console.log('on load');
-  }, []);
+    window.addEventListener('keydown', handleSpacebar);
+
+    return () => {
+      window.removeEventListener('keydown', handleSpacebar);
+    };
+  }, [type]);
+
+  const handleSpacebar = (event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      getRandomQuote(type);
+    }
+  };
 
   return (
     <ProtectedPage>
