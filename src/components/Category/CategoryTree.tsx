@@ -81,7 +81,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
 
   return (
     <Flex>
-      <Box flex="1" p={4}>
+      <Box flex="1" p={3} pl={0}>
         <CategoryAccordion
           categories={categories}
           addCategory={addCategory}
@@ -93,7 +93,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
         />
       </Box>
 
-      <Box flex="2" p={4}>
+      <Box flex="3" p={3} pr={0}>
         <EditableItemDetails
           selectedItem={selectedItem}
           editedItem={editedItem}

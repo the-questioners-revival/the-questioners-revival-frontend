@@ -36,7 +36,7 @@ const CategoriesPage = () => {
 
   return (
     <ProtectedPage>
-      <CustomLayout>
+      <CustomLayout maxWidth={false}>
         <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
           Categories
         </Heading>
