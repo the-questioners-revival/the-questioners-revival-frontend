@@ -31,7 +31,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
 
   const renderCategories = (categories: Category[]) => {
     return categories?.map((category) => (
-      <AccordionItem key={category.id} border={'0px'} mb="10px">
+      <AccordionItem key={category.id} border={'0px'}>
         {({ isExpanded }) => (
           <>
             <h2>
@@ -60,13 +60,13 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                 </Box>
               </AccordionButton>
             </h2>
-            <AccordionPanel pb={4}>
+            <AccordionPanel pb={4} pt={0}>
               {/* Render child categories */}
               {category.children && renderCategories(category.children)}
 
               {/* Render todos */}
               {category.todos && category.todos.length > 0 && (
-                <Box mt={2}>
+                <Box>
                   {category.todos.map((todo) => (
                     <Box
                       key={todo.id}
@@ -75,6 +75,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       display="flex"
                       justifyContent="space-between"
                       paddingLeft="20px"
+                      mt={3}
                     >
                       {todo.title}{' '}
                       <Box>
@@ -87,7 +88,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
 
               {/* Render qaas */}
               {category.qaas && category.qaas.length > 0 && (
-                <Box mt={2}>
+                <Box>
                   {category.qaas.map((qaa) => (
                     <Box
                       key={qaa.id}
@@ -96,6 +97,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       display="flex"
                       justifyContent="space-between"
                       paddingLeft="20px"
+                      mt={3}
                     >
                       {qaa.question}
                       <Box>
@@ -108,7 +110,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
 
               {/* Render blogs */}
               {category.blogs && category.blogs.length > 0 && (
-                <Box mt={2}>
+                <Box>
                   {category.blogs.map((blog) => (
                     <Box
                       key={blog.id}
@@ -117,6 +119,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       display="flex"
                       justifyContent="space-between"
                       paddingLeft="20px"
+                      mt={3}
                     >
                       <div
                         className="tiptap"
