@@ -42,6 +42,10 @@ export const HEADER = [
     name: 'Calendar',
     link: '/calendar',
   },
+  {
+    name: 'Category',
+    link: '/category',
+  },
 ];
 
 const CustomHeader = () => {
