@@ -6,8 +6,11 @@ import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import { useCategoryContext } from '../Category/CategoriesContext';
 
 const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
+  const { categoriesOptions } = useCategoryContext();
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -31,6 +34,7 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
         answer: qaa.answer,
         link: qaa.link,
         type: qaa.type,
+        category_id: qaa.category_id,
       }}
       onSubmit={(values, actions) => {
         editQaa({ ...qaa, ...values, answer: editor?.getHTML() }); // Updated function name
@@ -48,6 +52,12 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
               </Box>
               <CustomField name="link" type="input" required={false} />
               <CustomField name="type" type="select" options={qaaTypeOptions} />
+              <CustomField
+                required={false}
+                name="category_id"
+                type="select"
+                options={categoriesOptions}
+              />
 
               <Button
                 mt={4}

@@ -5,8 +5,9 @@ import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import StarterKit from '@tiptap/starter-kit';
 import { useEditor } from '@tiptap/react';
 import Link from '@tiptap/extension-link';
-import {  useState } from 'react';
+import { useState } from 'react';
 import TodosProvider from '../../providers/TodosProvider';
+import { useCategoryContext } from '../Category/CategoriesContext';
 
 const EditBlogForm = ({
   editBlog,
@@ -15,6 +16,7 @@ const EditBlogForm = ({
   editBlog: Function;
   blog: any;
 }) => {
+  const { categoriesOptions } = useCategoryContext();
   const [assignTodo, setAssignTodo] = useState(false);
   const { todoOptions } = TodosProvider();
 
@@ -36,7 +38,11 @@ const EditBlogForm = ({
   // Updated component name
   return (
     <Formik
-      initialValues={{ text: blog.text, todo_id: blog.todo_id }}
+      initialValues={{
+        text: blog.text,
+        todo_id: blog.todo_id,
+        category_id: blog.category_id,
+      }}
       onSubmit={(values, actions) => {
         editBlog({
           ...blog,
@@ -64,6 +70,12 @@ const EditBlogForm = ({
                   assign todo
                 </Text>
               )}
+              <CustomField
+                required={false}
+                name="category_id"
+                type="select"
+                options={categoriesOptions}
+              />
 
               <Button
                 mt={4}

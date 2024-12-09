@@ -2,21 +2,7 @@ import { Box, Button, Container } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import { todoPriorityOptions, todoTypeOptions } from './CreateTodoForm';
-
-const options = [
-  {
-    name: 'Personal',
-    value: 'personal',
-  },
-  {
-    name: 'Work',
-    value: 'work',
-  },
-  {
-    name: 'Project',
-    value: 'project',
-  },
-];
+import { useCategoryContext } from '../Category/CategoriesContext';
 
 const EditTodoForm = ({
   editTodo,
@@ -25,12 +11,15 @@ const EditTodoForm = ({
   editTodo: Function;
   todo: any;
 }) => {
+  const { categoriesOptions } = useCategoryContext();
+
   return (
     <Formik
       initialValues={{
         title: todo.title,
         type: todo.type,
         priority: todo.priority,
+        category_id: todo.category_id,
       }}
       onSubmit={(values, actions) => {
         editTodo({ ...todo, ...values });
@@ -53,6 +42,12 @@ const EditTodoForm = ({
                 type="select"
                 required={false}
                 options={todoPriorityOptions}
+              />
+              <CustomField
+                required={false}
+                name="category_id"
+                type="select"
+                options={categoriesOptions}
               />
 
               <Button

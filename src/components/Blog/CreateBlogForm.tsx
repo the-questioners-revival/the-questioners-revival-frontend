@@ -5,6 +5,7 @@ import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { useEditor } from '@tiptap/react';
+import { useCategoryContext } from '../Category/CategoriesContext';
 
 const CreateBlogForm = ({
   createBlog,
@@ -13,6 +14,8 @@ const CreateBlogForm = ({
   createBlog: Function;
   date: any;
 }) => {
+  const { categoriesOptions } = useCategoryContext();
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -46,9 +49,10 @@ const CreateBlogForm = ({
     <Formik
       initialValues={{
         text: 'Morning Gratitude\n\n\nHow I feel today\n\n\nWhat I did during the day\n\n\nGoals for tomorrow\n',
+        category_id: null,
       }}
       onSubmit={(values, actions) => {
-        createBlog({ text: editor?.getHTML(), given_at: date }); // Updated function name
+        createBlog({ text: editor?.getHTML(), category_id: values.category_id, given_at: date }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
       }}
@@ -59,6 +63,13 @@ const CreateBlogForm = ({
             <Box color="black">
               <HtmlEditor editor={editor} />
             </Box>
+            <CustomField
+              required={false}
+              name="category_id"
+              type="select"
+              options={categoriesOptions}
+            />
+
             <Button
               mt={4}
               display="flex"

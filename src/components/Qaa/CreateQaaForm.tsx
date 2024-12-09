@@ -1,10 +1,19 @@
-import { Box, Button, Container, Flex, FormLabel, Heading, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  FormLabel,
+  Heading,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
+import { useCategoryContext } from '../Category/CategoriesContext';
 
 export const qaaTypeOptions = [
   {
@@ -34,7 +43,8 @@ export const qaaTypeOptions = [
 ];
 
 const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
-  const bgColor = useColorModeValue("green.400", "black");
+  const { categoriesOptions } = useCategoryContext();
+  const bgColor = useColorModeValue('green.400', 'black');
 
   const editor = useEditor({
     extensions: [
@@ -54,7 +64,13 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
   // Updated component name
   return (
     <Formik
-      initialValues={{ question: '', answer: '', link: '', type: '' }}
+      initialValues={{
+        question: '',
+        answer: '',
+        link: '',
+        type: '',
+        category_id: null,
+      }}
       onSubmit={(values, actions) => {
         createQaa({ ...values, answer: editor?.getHTML() }); // Updated function name
         actions.setSubmitting(false);
@@ -84,6 +100,12 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
               </Box>
               <CustomField name="link" type="input" required={false} />
               <CustomField name="type" type="select" options={qaaTypeOptions} />
+              <CustomField
+                required={false}
+                name="category_id"
+                type="select"
+                options={categoriesOptions}
+              />
 
               <Button
                 mt={4}

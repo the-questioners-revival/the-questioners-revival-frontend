@@ -1,6 +1,13 @@
-import { Box, Button, Container, Heading, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
+import { useCategoryContext } from '../Category/CategoriesContext';
 
 export const todoTypeOptions = [
   {
@@ -41,11 +48,12 @@ export const todoPriorityOptions = [
 ];
 
 const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
-  const bgColor = useColorModeValue("green.400", "black");
+  const { categoriesOptions } = useCategoryContext();
+  const bgColor = useColorModeValue('green.400', 'black');
 
   return (
     <Formik
-      initialValues={{ title: '', type: '', priority: '' }}
+      initialValues={{ title: '', type: '', priority: '', category_id: null }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
           createTodo(values);
@@ -80,6 +88,12 @@ const CreateTodoForm = ({ createTodo }: { createTodo: Function }) => {
                 type="select"
                 required={false}
                 options={todoPriorityOptions}
+              />
+              <CustomField
+                required={false}
+                name="category_id"
+                type="select"
+                options={categoriesOptions}
               />
 
               <Button
