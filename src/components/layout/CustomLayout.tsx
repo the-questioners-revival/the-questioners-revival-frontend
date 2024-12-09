@@ -2,7 +2,7 @@ import { Box, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
 import Footer from './CustomFooter';
 import CustomHeader from './CustomHeader';
 
-const CustomLayout = ({ children }: { children: any }) => {
+const CustomLayout = ({ children, maxWidth = true }: { children: any, maxWidth?:boolean }) => {
   const bgColor = useColorModeValue('white', 'black');
   const color = useColorModeValue('black', 'white');
   const bgColorBody = useColorModeValue('greenMain', 'purpleDark');
@@ -46,7 +46,7 @@ const CustomLayout = ({ children }: { children: any }) => {
         overflowY="hidden"
         paddingX={{ base: '10px', md: '150px' }}
       >
-        <Box maxW="760px" margin="auto" h="100%">
+        <Box maxW={maxWidth? "760px": ""} margin="auto" h="100%">
           {children}
         </Box>
       </GridItem>
