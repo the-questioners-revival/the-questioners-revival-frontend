@@ -7,6 +7,7 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { useCategoryContext } from '../Category/CategoriesContext';
+import { useEffect } from 'react';
 
 const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
   const { categoriesOptions } = useCategoryContext();
@@ -26,6 +27,15 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
     },
     content: qaa.answer,
   });
+
+  useEffect(() => {
+    if (editor) {
+      if (qaa?.answer) {
+        editor.commands.setContent(qaa.answer);
+      }
+    }
+  }, [qaa, editor]);
+
   return (
     <Formik
       enableReinitialize

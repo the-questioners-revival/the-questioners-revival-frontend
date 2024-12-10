@@ -5,7 +5,7 @@ import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import StarterKit from '@tiptap/starter-kit';
 import { useEditor } from '@tiptap/react';
 import Link from '@tiptap/extension-link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TodosProvider from '../../providers/TodosProvider';
 import { useCategoryContext } from '../Category/CategoriesContext';
 
@@ -35,7 +35,15 @@ const EditBlogForm = ({
     },
     content: blog.text,
   });
-  // Updated component name
+
+  useEffect(() => {
+    if (editor) {
+      if (blog?.text) {
+        editor.commands.setContent(blog.text);
+      }
+    }
+  }, [blog, editor]);
+
   return (
     <Formik
       enableReinitialize
