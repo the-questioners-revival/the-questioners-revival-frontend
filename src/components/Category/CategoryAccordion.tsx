@@ -45,8 +45,8 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                   as="h2"
                   flex="1"
                   textAlign="left"
-                  fontSize="lg"
                   fontWeight={800}
+                  fontSize="xs"
                 >
                   {category.name}
                 </Text>
