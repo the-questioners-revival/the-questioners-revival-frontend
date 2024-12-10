@@ -76,6 +76,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       justifyContent="space-between"
                       paddingLeft="20px"
                       mt={3}
+                      fontSize="xs"
                     >
                       {todo.title}{' '}
                       <Box>
@@ -98,6 +99,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       justifyContent="space-between"
                       paddingLeft="20px"
                       mt={3}
+                      fontSize="xs"
                     >
                       {qaa.question}
                       <Box>
@@ -120,6 +122,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       justifyContent="space-between"
                       paddingLeft="20px"
                       mt={3}
+                      fontSize="xs"
                     >
                       <div
                         className="tiptap"
