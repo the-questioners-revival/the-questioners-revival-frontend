@@ -5,12 +5,15 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
+import EditQaaForm from '../Qaa/EditQaaForm';
+import EditBlogForm from '../Blog/EditBlogForm';
+import EditTodoForm from '../Todo/EditTodoForm';
 
 interface EditableItemDetailsProps {
   selectedItem: any;
   editedItem: any;
   setEditedItem: (item: any) => void;
-  saveChanges: () => void;
+  saveChanges: (type: string, updatedValues?: any) => void;
   handleCancelClick: () => void;
 }
 
@@ -60,67 +63,24 @@ const EditableItemDetails: React.FC<EditableItemDetailsProps> = ({
   if (!selectedItem) return null;
 
   const renderTodo = (todo: Todo) => (
-    <Box backgroundColor='white' color='black' borderRadius="5px" padding="15px">
-      <Text>
-        <strong>Title:</strong>
-      </Text>
-      <Input
-        value={editedItem?.title}
-        onChange={(e) => handleChange(e, 'title')}
-      />
-      <Text>
-        <strong>Priority:</strong>
-      </Text>
-      <Input
-        value={editedItem?.priority}
-        onChange={(e) => handleChange(e, 'priority')}
-      />
-      <Text>
-        <strong>Status:</strong>
-      </Text>
-      <Input
-        value={editedItem?.status}
-        onChange={(e) => handleChange(e, 'status')}
-      />
-      <Button onClick={saveChanges}>Save</Button>
-      <Button onClick={handleCancelClick} ml={2}>
-        Cancel
-      </Button>
-    </Box>
+    <EditTodoForm
+      todo={todo}
+      editTodo={(updatedTodo: any) => saveChanges('todo', updatedTodo)}
+    ></EditTodoForm>
   );
 
   const renderQaa = (qaa: Qaa) => (
-    <Box backgroundColor='white' color='black' borderRadius="5px" padding="15px">
-      <Text>
-        <strong>Question:</strong>
-      </Text>
-      <Input
-        value={editedItem?.question}
-        onChange={(e) => handleChange(e, 'question')}
-      />
-      <Text>
-        <strong>Answer:</strong>
-      </Text>
-      <HtmlEditor editor={editor} />
-      <Button onClick={saveChanges}>Save</Button>
-      <Button onClick={handleCancelClick} ml={2}>
-        Cancel
-      </Button>
-    </Box>
+    <EditQaaForm
+      qaa={qaa}
+      editQaa={(updatedQaa: any) => saveChanges('qaa', updatedQaa)}
+    ></EditQaaForm>
   );
 
   const renderBlog = (blog: Blog) => (
-    <Box backgroundColor='white' color='black' borderRadius="5px" padding="15px">
-      <Text>
-        <strong>Text:</strong>
-      </Text>
-      <HtmlEditor editor={editor} />
-
-      <Button onClick={saveChanges}>Save</Button>
-      <Button onClick={handleCancelClick} ml={2}>
-        Cancel
-      </Button>
-    </Box>
+    <EditBlogForm
+      blog={blog}
+      editBlog={(updatedBlog: any) => saveChanges('blog', updatedBlog)}
+    ></EditBlogForm>
   );
 
   if ('title' in selectedItem) return renderTodo(selectedItem as Todo);

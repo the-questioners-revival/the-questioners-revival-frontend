@@ -26,9 +26,9 @@ const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
     },
     content: qaa.answer,
   });
-  // Updated component name
   return (
     <Formik
+      enableReinitialize
       initialValues={{
         question: qaa.question,
         answer: qaa.answer,

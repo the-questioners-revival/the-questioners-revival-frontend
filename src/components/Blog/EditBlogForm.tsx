@@ -38,6 +38,7 @@ const EditBlogForm = ({
   // Updated component name
   return (
     <Formik
+      enableReinitialize
       initialValues={{
         text: blog.text,
         todo_id: blog.todo_id,
@@ -57,7 +58,9 @@ const EditBlogForm = ({
         <Form>
           <Container p={0} maxW="100%">
             <Box color="black">
-              <HtmlEditor editor={editor} />
+              <Box background="white">
+                <HtmlEditor editor={editor} />
+              </Box>
               {assignTodo ? (
                 <CustomField
                   name="todo_id"

@@ -43,6 +43,7 @@ const CategoriesPage = () => {
         <Box>
           <CategoryTree
             categories={getLatestCategoriesData}
+            getLatestCategories={getLatestCategories}
             addCategory={(parentCategoryId, categoryName) => {
               console.log('categoryName: ', categoryName);
               console.log('parentCategoryId: ', parentCategoryId);

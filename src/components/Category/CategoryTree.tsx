@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  Text,
   Flex,
-  Input,
-  Textarea,
-  Button,
 } from '@chakra-ui/react';
 import CategoryAccordion from './CategoryAccordion';
 import EditableItemDetails from './EditableItemDetails';
+import TodosProvider from '../../providers/TodosProvider';
+import QaasProvider from '../../providers/QaasProvider';
+import BlogsProvider from '../../providers/BlogsProvider';
 
 interface Todo {
   id: number;
@@ -58,20 +53,44 @@ interface Category {
 
 interface CategoryTreeProps {
   categories: Category[];
+  getLatestCategories: Function;
   addCategory: (parentId: number, name: string) => void;
 }
 
 const CategoryTree: React.FC<CategoryTreeProps> = ({
   categories,
+  getLatestCategories,
   addCategory,
 }) => {
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   console.log('selectedItem: ', selectedItem);
   const [editedItem, setEditedItem] = useState<any | null>(null);
-  const saveChanges = () => {
+
+  const { editTodoData, editTodo } = TodosProvider();
+
+  const { editQaaData, editQaa } = QaasProvider();
+
+  const { editBlogData, editBlog } = BlogsProvider();
+
+  useEffect(() => {
+    if (editTodoData || editQaaData || editBlogData) {
+      getLatestCategories();
+    }
+  }, [editTodoData, editQaaData, editBlogData]);
+
+  const saveChanges = (type: string, updatedValues: any) => {
+    console.log('type: ', type);
+    console.log('updatedValues: ', updatedValues);
     if (editedItem) {
-      setSelectedItem(editedItem);
-      setEditedItem(null);
+      if (type === 'todo') {
+        editTodo({ ...updatedValues });
+      } else if (type === 'qaa') {
+        editQaa({ ...updatedValues });
+      } else if (type === 'blog') {
+        editBlog({ ...updatedValues });
+      }
+      setSelectedItem(updatedValues);
+      setEditedItem(updatedValues);
     }
   };
 

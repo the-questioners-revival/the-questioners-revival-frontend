@@ -15,6 +15,7 @@ const EditTodoForm = ({
 
   return (
     <Formik
+      enableReinitialize
       initialValues={{
         title: todo.title,
         type: todo.type,
