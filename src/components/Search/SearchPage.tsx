@@ -150,14 +150,18 @@ const SearchPage = () => {
     if (item.table_name === 'todos') {
       return (
         <Tooltip label={item.title} placement="top" hasArrow>
-          {item.title}
+          <Box className="searchText" whiteSpace="break-spaces">
+            {item.title}
+          </Box>
         </Tooltip>
       );
     }
     if (item.table_name === 'qaas') {
       return (
         <Tooltip label={item.question} placement="top" hasArrow>
-          {item.question}
+          <Box className="searchText" whiteSpace="break-spaces">
+            {item.question}
+          </Box>
         </Tooltip>
       );
     }
@@ -185,7 +189,9 @@ const SearchPage = () => {
     if (item.table_name === 'reviews' || item.table_name === 'goals') {
       return (
         <Tooltip label={item.text} placement="top" hasArrow>
-          {item.text}
+          <Box className="searchText" whiteSpace="break-spaces">
+            {item.text}
+          </Box>
         </Tooltip>
       );
     }
@@ -274,9 +280,7 @@ const SearchPage = () => {
                           >
                             <Box display="flex">
                               <Box
-                              flex={1}
-                                className="searchText"
-                                whiteSpace="break-spaces"
+                                flex={1}
                               >
                                 {renderTitle(item)}
                               </Box>
