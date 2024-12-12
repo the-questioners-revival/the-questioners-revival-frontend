@@ -8,6 +8,7 @@ import {
   Button,
   Text,
   Tag,
+  Tooltip,
 } from '@chakra-ui/react';
 import { Category } from '../../types';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
@@ -79,7 +80,9 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       fontSize="xs"
                       alignItems="center"
                     >
-                      {todo.title}{' '}
+                      <Tooltip label={todo.title} placement="top" hasArrow>
+                        {todo.title.slice(0, 30)}
+                      </Tooltip>
                       <Box>
                         <Tag fontSize="xs">todo</Tag>
                       </Box>
@@ -103,7 +106,9 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       fontSize="xs"
                       alignItems="center"
                     >
-                      {qaa.question}
+                      <Tooltip label={qaa.question} placement="top" hasArrow>
+                        {qaa.question.slice(0, 30)}
+                      </Tooltip>
                       <Box>
                         <Tag fontSize="xs">qaa</Tag>
                       </Box>
@@ -127,12 +132,23 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       fontSize="xs"
                       alignItems="center"
                     >
-                      <div
-                        className="tiptap"
-                        dangerouslySetInnerHTML={{
-                          __html: `${sanitize(blog?.text.slice(0, 15))}...`,
-                        }}
-                      ></div>
+                      <Tooltip
+                        label={
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: sanitize(blog?.text),
+                            }}
+                          />
+                        }
+                        placement="top"
+                        hasArrow
+                      >
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: sanitize(blog?.text.slice(0, 30)),
+                          }}
+                        />
+                      </Tooltip>
                       <Box>
                         <Tag fontSize="xs">blog</Tag>
                       </Box>
