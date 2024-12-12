@@ -198,6 +198,10 @@ const SearchPage = () => {
     }
   }
 
+  function renderType(item: any) {
+    return item.table_name;
+  }
+
   return (
     <ProtectedPage>
       <CustomLayout maxWidth={false}>
@@ -282,7 +286,7 @@ const SearchPage = () => {
                             <Box display="flex">
                               <Box flex={1}>{renderTitle(item)}</Box>
                               <Box>
-                                <Tag fontSize="xs">todo</Tag>
+                                <Tag fontSize="xs">{renderType(item)}</Tag>
                               </Box>
                             </Box>
                             <Text>
