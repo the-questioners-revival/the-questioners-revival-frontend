@@ -147,79 +147,46 @@ const SearchPage = () => {
   };
 
   function renderTitle(item: any) {
-    console.log('item: ', item);
     if (item.table_name === 'todos') {
       return (
-        <>
-          <Tooltip label={item.title} placement="top" hasArrow>
-            {item.title.slice(0, 30)}
-          </Tooltip>
-          <Box>
-            <Tag fontSize="xs">todo</Tag>
-          </Box>
-        </>
+        <Tooltip label={item.title} placement="top" hasArrow>
+          {item.title}
+        </Tooltip>
       );
     }
     if (item.table_name === 'qaas') {
       return (
-        <>
-          <Tooltip label={item.question} placement="top" hasArrow>
-            {item.question.slice(0, 30)}
-          </Tooltip>
-          <Box>
-            <Tag fontSize="xs">qaa</Tag>
-          </Box>
-        </>
+        <Tooltip label={item.question} placement="top" hasArrow>
+          {item.question}
+        </Tooltip>
       );
     }
     if (item.table_name === 'blogs') {
       return (
-        <>
-          <Tooltip
-            label={
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: sanitize(item?.text),
-                }}
-              />
-            }
-            placement="top"
-            hasArrow
-          >
+        <Tooltip
+          label={
             <div
               dangerouslySetInnerHTML={{
-                __html: sanitize(item?.text.slice(0, 30)),
+                __html: sanitize(item?.text),
               }}
             />
-          </Tooltip>
-          <Box>
-            <Tag fontSize="xs">blog</Tag>
-          </Box>
-        </>
+          }
+          placement="top"
+          hasArrow
+        >
+          <div
+            dangerouslySetInnerHTML={{
+              __html: sanitize(item?.text),
+            }}
+          />
+        </Tooltip>
       );
     }
-    if (item.table_name === 'reviews') {
+    if (item.table_name === 'reviews' || item.table_name === 'goals') {
       return (
-        <>
-          <Tooltip label={item.text} placement="top" hasArrow>
-            {item.text.slice(0, 30)}
-          </Tooltip>
-          <Box>
-            <Tag fontSize="xs">review</Tag>
-          </Box>
-        </>
-      );
-    }
-    if (item.table_name === 'goals') {
-      return (
-        <>
-          <Tooltip label={item.text} placement="top" hasArrow>
-            {item.text.slice(0, 30)}
-          </Tooltip>
-          <Box>
-            <Tag fontSize="xs">goal</Tag>
-          </Box>
-        </>
+        <Tooltip label={item.text} placement="top" hasArrow>
+          {item.text}
+        </Tooltip>
       );
     }
   }
@@ -305,13 +272,17 @@ const SearchPage = () => {
                                 : ''
                             }
                           >
-                            <Box
-                              className="searchText"
-                              whiteSpace="break-spaces"
-                              display="flex"
-                              justifyContent="space-between"
-                            >
-                              {renderTitle(item)}
+                            <Box display="flex">
+                              <Box
+                              flex={1}
+                                className="searchText"
+                                whiteSpace="break-spaces"
+                              >
+                                {renderTitle(item)}
+                              </Box>
+                              <Box>
+                                <Tag fontSize="xs">todo</Tag>
+                              </Box>
                             </Box>
                             <Text>
                               {moment
