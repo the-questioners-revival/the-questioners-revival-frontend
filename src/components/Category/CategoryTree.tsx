@@ -91,9 +91,6 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
     }
   };
 
-  const handleCancelClick = () => {
-    setEditedItem(null);
-  };
 
   return (
     <Flex>
@@ -115,10 +112,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
 
         <EditableItemDetails
           selectedItem={selectedItem}
-          editedItem={editedItem}
-          setEditedItem={setEditedItem}
           saveChanges={saveChanges}
-          handleCancelClick={handleCancelClick}
         />
         </Box>
       :null}
