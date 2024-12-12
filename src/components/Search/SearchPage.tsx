@@ -9,7 +9,9 @@ import {
   GridItem,
   Input,
   InputGroup,
+  Tag,
   Text,
+  Tooltip,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
@@ -29,6 +31,7 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import EditableItemDetails from '../Category/EditableItemDetails';
+import { sanitize } from 'dompurify';
 
 const SearchPage = () => {
   const isMobile = useBreakpointValue({ base: true, sm: false });
@@ -144,26 +147,80 @@ const SearchPage = () => {
   };
 
   function renderTitle(item: any) {
+    console.log('item: ', item);
     if (item.table_name === 'todos') {
-      return `${item.table_name} - ${item.title}`;
+      return (
+        <>
+          <Tooltip label={item.title} placement="top" hasArrow>
+            {item.title.slice(0, 30)}
+          </Tooltip>
+          <Box>
+            <Tag fontSize="xs">todo</Tag>
+          </Box>
+        </>
+      );
     }
     if (item.table_name === 'qaas') {
-      return `${item.table_name} - ${item.question}`;
+      return (
+        <>
+          <Tooltip label={item.question} placement="top" hasArrow>
+            {item.question.slice(0, 30)}
+          </Tooltip>
+          <Box>
+            <Tag fontSize="xs">qaa</Tag>
+          </Box>
+        </>
+      );
     }
     if (item.table_name === 'blogs') {
       return (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `${item.table_name} - ${item.text}`,
-          }}
-        ></div>
+        <>
+          <Tooltip
+            label={
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: sanitize(item?.text),
+                }}
+              />
+            }
+            placement="top"
+            hasArrow
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: sanitize(item?.text.slice(0, 30)),
+              }}
+            />
+          </Tooltip>
+          <Box>
+            <Tag fontSize="xs">blog</Tag>
+          </Box>
+        </>
       );
     }
     if (item.table_name === 'reviews') {
-      return `${item.table_name} - ${item.text}`;
+      return (
+        <>
+          <Tooltip label={item.text} placement="top" hasArrow>
+            {item.text.slice(0, 30)}
+          </Tooltip>
+          <Box>
+            <Tag fontSize="xs">review</Tag>
+          </Box>
+        </>
+      );
     }
     if (item.table_name === 'goals') {
-      return `${item.table_name} - ${item.title}`;
+      return (
+        <>
+          <Tooltip label={item.text} placement="top" hasArrow>
+            {item.text.slice(0, 30)}
+          </Tooltip>
+          <Box>
+            <Tag fontSize="xs">goal</Tag>
+          </Box>
+        </>
+      );
     }
   }
 
@@ -251,6 +308,8 @@ const SearchPage = () => {
                             <Box
                               className="searchText"
                               whiteSpace="break-spaces"
+                              display="flex"
+                              justifyContent="space-between"
                             >
                               {renderTitle(item)}
                             </Box>
