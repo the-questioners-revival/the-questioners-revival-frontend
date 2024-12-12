@@ -77,10 +77,11 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       paddingLeft="20px"
                       mt={3}
                       fontSize="xs"
+                      alignItems="center"
                     >
                       {todo.title}{' '}
                       <Box>
-                        <Tag>todo</Tag>
+                        <Tag fontSize="xs">todo</Tag>
                       </Box>
                     </Box>
                   ))}
@@ -100,10 +101,11 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       paddingLeft="20px"
                       mt={3}
                       fontSize="xs"
+                      alignItems="center"
                     >
                       {qaa.question}
                       <Box>
-                        <Tag>qaa</Tag>
+                        <Tag fontSize="xs">qaa</Tag>
                       </Box>
                     </Box>
                   ))}
@@ -123,6 +125,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                       paddingLeft="20px"
                       mt={3}
                       fontSize="xs"
+                      alignItems="center"
                     >
                       <div
                         className="tiptap"
@@ -131,7 +134,7 @@ const CategoryAccordion: React.FC<CategoryAccordionProps> = ({
                         }}
                       ></div>
                       <Box>
-                        <Tag>blog</Tag>
+                        <Tag fontSize="xs">blog</Tag>
                       </Box>
                     </Box>
                   ))}

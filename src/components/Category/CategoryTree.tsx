@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Flex,
-} from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import CategoryAccordion from './CategoryAccordion';
 import EditableItemDetails from './EditableItemDetails';
 import TodosProvider from '../../providers/TodosProvider';
@@ -100,7 +97,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
 
   return (
     <Flex>
-      <Box flex="1" p={3} pl={0}>
+      <Box flex="1" p={3} pl={0} pt={0}>
         <CategoryAccordion
           categories={categories}
           addCategory={addCategory}
@@ -112,7 +109,10 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
         />
       </Box>
 
-      <Box flex="3" p={3} pr={0}>
+      <Box flex="3"  backgroundColor="white" borderRadius="5px" height='fit-content'>
+      {selectedItem ?
+        <Box p={3} pr={0} >
+
         <EditableItemDetails
           selectedItem={selectedItem}
           editedItem={editedItem}
@@ -120,6 +120,9 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
           saveChanges={saveChanges}
           handleCancelClick={handleCancelClick}
         />
+        </Box>
+      :null}
+
       </Box>
     </Flex>
   );
