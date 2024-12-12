@@ -1,28 +1,18 @@
 import React from 'react';
 import { Todo, Qaa, Blog } from '../../types';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
 import EditQaaForm from '../Qaa/EditQaaForm';
 import EditBlogForm from '../Blog/EditBlogForm';
 import EditTodoForm from '../Todo/EditTodoForm';
 
 interface EditableItemDetailsProps {
   selectedItem: any;
-  editedItem: any;
-  setEditedItem: (item: any) => void;
   saveChanges: (type: string, updatedValues?: any) => void;
-  handleCancelClick: () => void;
 }
 
 const EditableItemDetails: React.FC<EditableItemDetailsProps> = ({
   selectedItem,
-  editedItem,
-  setEditedItem,
   saveChanges,
-  handleCancelClick,
 }) => {
-
   if (!selectedItem) return null;
 
   const renderTodo = (todo: Todo) => (
@@ -46,9 +36,11 @@ const EditableItemDetails: React.FC<EditableItemDetailsProps> = ({
     ></EditBlogForm>
   );
 
-  if ('title' in selectedItem) return renderTodo(selectedItem as Todo);
-  if ('question' in selectedItem) return renderQaa(selectedItem as Qaa);
-  if ('text' in selectedItem) return renderBlog(selectedItem as Blog);
+  if (selectedItem.table_name === 'todos')
+    return renderTodo(selectedItem as Todo);
+  if (selectedItem.table_name === 'qaas') return renderQaa(selectedItem as Qaa);
+  if (selectedItem.table_name === 'blogs')
+    return renderBlog(selectedItem as Blog);
 
   return null;
 };
