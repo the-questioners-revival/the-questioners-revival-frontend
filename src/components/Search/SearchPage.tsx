@@ -176,13 +176,14 @@ const SearchPage = () => {
             />
           }
           placement="top"
-          hasArrow
         >
-          <div
-            dangerouslySetInnerHTML={{
-              __html: sanitize(item?.text),
-            }}
-          />
+          <Box className="searchText" whiteSpace="break-spaces">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: sanitize(item?.text),
+              }}
+            />
+          </Box>
         </Tooltip>
       );
     }
@@ -279,11 +280,7 @@ const SearchPage = () => {
                             }
                           >
                             <Box display="flex">
-                              <Box
-                                flex={1}
-                              >
-                                {renderTitle(item)}
-                              </Box>
+                              <Box flex={1}>{renderTitle(item)}</Box>
                               <Box>
                                 <Tag fontSize="xs">todo</Tag>
                               </Box>
