@@ -5,15 +5,11 @@ import {
   AccordionPanel,
   Box,
   Button,
-  Flex,
-  FormLabel,
   Grid,
   GridItem,
   Input,
   InputGroup,
-  SkeletonText,
   Text,
-  Textarea,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
@@ -29,10 +25,10 @@ import BlogsProvider from '../../providers/BlogsProvider';
 import GoalsProvider from '../../providers/GoalsProvider';
 import ReviewsProvider from '../../providers/ReviewsProvider';
 import { useFloatingLoader } from '../../providers/FloatingLoaderProvider';
-import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import EditableItemDetails from '../Category/EditableItemDetails';
 
 const SearchPage = () => {
   const isMobile = useBreakpointValue({ base: true, sm: false });
@@ -103,19 +99,16 @@ const SearchPage = () => {
     }
   }, [searchData]);
 
-  const editItem = () => {
-    if (!selectedItem) return;
-    const { id, table_name, column_name } = selectedItem;
-    if (table_name === 'todos') {
-      editTodo({ id, [column_name]: text });
-    } else if (table_name === 'qaas') {
-      editQaa({ id, [column_name]: text, answer: editor?.getHTML(), link });
-    } else if (table_name === 'blogs') {
-      editBlog({ id, [column_name]: editor?.getHTML() });
-    } else if (table_name === 'goals') {
-      editGoal({ id, [column_name]: text });
-    } else if (table_name === 'reviews') {
-      editReview({ id, [column_name]: editor?.getHTML() });
+  const editItem = (type: string, updatedValues: any) => {
+    if (selectedItem) {
+      if (type === 'todo') {
+        editTodo({ ...updatedValues });
+      } else if (type === 'qaa') {
+        editQaa({ ...updatedValues });
+      } else if (type === 'blog') {
+        editBlog({ ...updatedValues });
+      }
+      setSelectedItem(updatedValues);
     }
   };
 
@@ -150,9 +143,33 @@ const SearchPage = () => {
     }
   };
 
+  function renderTitle(item: any) {
+    if (item.table_name === 'todos') {
+      return `${item.table_name} - ${item.title}`;
+    }
+    if (item.table_name === 'qaas') {
+      return `${item.table_name} - ${item.question}`;
+    }
+    if (item.table_name === 'blogs') {
+      return (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `${item.table_name} - ${item.text}`,
+          }}
+        ></div>
+      );
+    }
+    if (item.table_name === 'reviews') {
+      return `${item.table_name} - ${item.text}`;
+    }
+    if (item.table_name === 'goals') {
+      return `${item.table_name} - ${item.title}`;
+    }
+  }
+
   return (
     <ProtectedPage>
-      <CustomLayout>
+      <CustomLayout maxWidth={false}>
         <Box mt="20px">
           <InputGroup>
             <Input
@@ -162,8 +179,8 @@ const SearchPage = () => {
               border="2px solid white"
               fontWeight="600"
               fontSize="lg"
-              textColor="white"
-              color="white"
+              color="black"
+              backgroundColor="white"
               onKeyDown={handleKeyPress}
               onChange={(evt) => setSearch(evt.target.value)}
               value={search}
@@ -191,7 +208,13 @@ const SearchPage = () => {
                 height="100%"
               >
                 <GridItem>
-                  <Accordion allowToggle index={isListOpen ? 0 : -1}>
+                  <Accordion
+                    allowToggle
+                    index={isListOpen ? 0 : -1}
+                    backgroundColor="white"
+                    color="black"
+                    borderRadius="5px"
+                  >
                     <AccordionItem border="none">
                       <h2>
                         <AccordionButton
@@ -229,7 +252,7 @@ const SearchPage = () => {
                               className="searchText"
                               whiteSpace="break-spaces"
                             >
-                              {item.table_name} - {item.text}
+                              {renderTitle(item)}
                             </Box>
                             <Text>
                               {moment
@@ -242,77 +265,19 @@ const SearchPage = () => {
                     </AccordionItem>
                   </Accordion>
                 </GridItem>
-                <GridItem>
-                  {selectedItem?.table_name === 'qaas' ? (
-                    <>
-                      <FormLabel>Question</FormLabel>
-                      <Input
-                        className="input"
-                        placeholder="Question"
-                        border="2px solid white"
-                        fontWeight="600"
-                        fontSize="lg"
-                        textColor="black"
-                        mb="10px"
-                        color="black"
-                        background="white"
-                        onChange={(evt) => setText(evt.target.value)}
-                        value={text}
-                      />
-                      <FormLabel>Answer</FormLabel>
-                      <Box background="white" color="black">
-                        <HtmlEditor editor={editor} />
-                      </Box>
-                      <FormLabel>Link</FormLabel>
-                      <Input
-                        className="input"
-                        placeholder="Link"
-                        border="2px solid white"
-                        fontWeight="600"
-                        fontSize="lg"
-                        textColor="black"
-                        mb="10px"
-                        color="black"
-                        background="white"
-                        onChange={(evt) => setLink(evt.target.value)}
-                        value={link}
-                      />
-                    </>
-                  ) : selectedItem?.table_name !== 'blogs' &&
-                    selectedItem?.table_name !== 'reviews' ? (
-                    <>
-                      <FormLabel>Text</FormLabel>
-                      <Textarea
-                        className="input"
-                        placeholder="text"
-                        rows={15}
-                        textColor="black"
-                        color="black"
-                        background="white"
-                        fontWeight="600"
-                        border="2px solid white"
-                        value={text}
-                        onChange={(evt) => setText(evt.target.value)}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <FormLabel>Text</FormLabel>
-                      <Box background="white" color="black">
-                        <HtmlEditor editor={editor} />
-                      </Box>
-                    </>
-                  )}
-
-                  <Button
-                    display="flex"
-                    colorScheme="teal"
-                    type="submit"
-                    onClick={() => editItem()}
-                    mt="10px"
-                  >
-                    Submit
-                  </Button>
+                <GridItem
+                  backgroundColor="white"
+                  borderRadius="5px"
+                  height="fit-content"
+                >
+                  {selectedItem ? (
+                    <Box p={3}>
+                      <EditableItemDetails
+                        selectedItem={selectedItem}
+                        saveChanges={editItem}
+                      ></EditableItemDetails>
+                    </Box>
+                  ) : null}
                 </GridItem>
               </Grid>
             ) : (
