@@ -12,7 +12,3 @@ code {
     monospace;
 }
 
-.input::placeholder {
-  color: white !important; /* Placeholder color */
-  font-weight: 600;
-}
