@@ -1,12 +1,29 @@
-// src/Tiptap.jsx
 import { EditorContent } from '@tiptap/react';
 import './styles.css';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { BACKEND_URL } from '../../helpers/configuration';
+import useAbstractMutator from '../../providers/AbstractMutator';
+import ImagesApi from '../../api/images';
 
-const MenuBar = ({ editor, setLink }: { editor: any; setLink: any }) => {
+const MenuBar = ({
+  editor,
+  setLink,
+  setImage,
+}: {
+  editor: any;
+  setLink: any;
+  setImage: any;
+}) => {
+  const fileInputRef = useRef<any>(null); 
   if (!editor) {
     return null;
   }
+
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   return (
     <div className="tiptapMenu">
@@ -222,11 +239,35 @@ const MenuBar = ({ editor, setLink }: { editor: any; setLink: any }) => {
       >
         unsetLink
       </button>
+      <div className="file-input-container">
+      <button 
+        type="button" 
+        onClick={triggerFileInput} 
+        className="custom-file-button"
+      >
+        upload image
+      </button>
+
+      <input 
+      ref={fileInputRef} 
+        id="hiddenFileInput" 
+        type="file" 
+        onChange={setImage} 
+        className="hidden-file-input" 
+      />
+    </div>
     </div>
   );
 };
 
 const HtmlEditor = ({ editor }: { editor: any }) => {
+  const {
+    data: uploadImageData,
+    mutate: uploadImage,
+  }: { data: any; mutate: Function } = useAbstractMutator(
+    ImagesApi.uploadImage,
+  );
+
   const setLink = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -257,9 +298,30 @@ const HtmlEditor = ({ editor }: { editor: any }) => {
     [editor],
   );
 
+  const setImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      uploadImage(formData);
+    }
+  };
+
+  useEffect(() => {
+    if (uploadImageData?.file_path) {
+      const imageNode = {
+        src: `${BACKEND_URL}/${uploadImageData.file_path}`,
+        id: uploadImageData.id,
+      };
+
+      editor.chain().focus().setImage(imageNode).run();
+    }
+  }, [uploadImageData]);
+
   return (
     <>
-      <MenuBar editor={editor} setLink={setLink} />
+      <MenuBar editor={editor} setLink={setLink} setImage={setImage} />
       <EditorContent editor={editor} />
     </>
   );
