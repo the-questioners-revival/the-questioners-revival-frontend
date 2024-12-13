@@ -6,6 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { useEditor } from '@tiptap/react';
 import { useCategoryContext } from '../Category/CategoriesContext';
+import Image from '@tiptap/extension-image';
 
 const CreateBlogForm = ({
   createBlog,
@@ -23,6 +24,7 @@ const CreateBlogForm = ({
         openOnClick: false,
         autolink: true,
       }),
+      Image,
     ],
     editorProps: {
       attributes: {

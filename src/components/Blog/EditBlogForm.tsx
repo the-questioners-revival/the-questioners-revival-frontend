@@ -8,6 +8,7 @@ import Link from '@tiptap/extension-link';
 import { useEffect, useState } from 'react';
 import TodosProvider from '../../providers/TodosProvider';
 import { useCategoryContext } from '../Category/CategoriesContext';
+import Image from '@tiptap/extension-image';
 
 const EditBlogForm = ({
   editBlog,
@@ -27,6 +28,7 @@ const EditBlogForm = ({
         openOnClick: false,
         autolink: true,
       }),
+      Image,
     ],
     editorProps: {
       attributes: {
