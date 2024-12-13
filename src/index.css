@@ -12,3 +12,45 @@ code {
     monospace;
 }
 
+.file-input-container {
+  display: inline-block;
+  align-items: center;
+}
+
+.custom-file-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.custom-file-button:hover {
+  background-color: white;
+}
+
+.file-name {
+  margin-left: 10px;
+  color: #555;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Control how much of the filename is shown */
+}
+
+.hidden-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  opacity: 0;
+}
