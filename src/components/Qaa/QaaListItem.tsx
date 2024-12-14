@@ -4,8 +4,6 @@ import { TODO_STATUS } from '../../enums/todo-status';
 import { useState } from 'react';
 import moment from 'moment-timezone';
 import { sanitize } from 'dompurify';
-import HtmlEditor from '../HtmlEditor/HtmlEditor';
-import useEditorSettings from '../HtmlEditor/settings';
 
 const QaaListItem = ({
   qaa,
@@ -26,8 +24,6 @@ const QaaListItem = ({
   isOpenAnswer: boolean;
   openAnswer: Function;
 }) => {
-  const editor = useEditorSettings(qaa?.answer, false);
-
   const bgColor = useColorModeValue("white", "black");
   const color = useColorModeValue("black", "white");
   const RIGHT_SIDE_WIDTH = 80;
@@ -173,14 +169,12 @@ const QaaListItem = ({
         </Flex>
       </Box>
       <Box display={isOpenAnswer ? 'block' : 'none'} padding="5px 10px">
-      <HtmlEditor editor={editor} hideMenu/>
-
-        {/* <div
+        <div
           className="tiptap"
           dangerouslySetInnerHTML={{
             __html: sanitize(qaa?.answer),
           }}
-        ></div> */}
+        ></div>
         {qaa.link ? (
           <Flex>
             <Text fontSize="lg" paddingRight="7px">

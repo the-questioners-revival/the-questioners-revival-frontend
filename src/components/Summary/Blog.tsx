@@ -1,8 +1,7 @@
 import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
-import HtmlEditor from '../HtmlEditor/HtmlEditor';
-import useEditorSettings from '../HtmlEditor/settings';
+import { sanitize } from 'dompurify';
 
 const Blog = ({
   blog,
@@ -15,11 +14,9 @@ const Blog = ({
   setIsOpenDeleteBlogModal: Function;
   setSelectedItem: Function;
 }) => {
-  const bgColor = useColorModeValue('white', 'black');
-  const color = useColorModeValue('black', 'white');
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
   const [showBlogText, setShowBlogText] = useState(false);
-
-  const editor = useEditorSettings(blog.text, false);
 
   return (
     <Flex justifyContent="space-between" position="relative" marginBottom={2}>
@@ -27,9 +24,10 @@ const Blog = ({
         <div
           className={showBlogText ? 'tiptap' : 'tiptap blogText'}
           onClick={() => setShowBlogText(!showBlogText)}
-        >
-          <HtmlEditor editor={editor} hideMenu={true} />
-        </div>
+          dangerouslySetInnerHTML={{
+            __html: sanitize(blog?.text),
+          }}
+        ></div>
       </Box>
       <Flex position="absolute" right="0px">
         <Flex
