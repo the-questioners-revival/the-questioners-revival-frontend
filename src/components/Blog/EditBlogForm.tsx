@@ -2,13 +2,10 @@ import { Box, Button, Container, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
-import StarterKit from '@tiptap/starter-kit';
-import { useEditor } from '@tiptap/react';
-import Link from '@tiptap/extension-link';
 import { useEffect, useState } from 'react';
 import TodosProvider from '../../providers/TodosProvider';
 import { useCategoryContext } from '../Category/CategoriesContext';
-import Image from '@tiptap/extension-image';
+import useEditorSettings from '../HtmlEditor/settings';
 
 const EditBlogForm = ({
   editBlog,
@@ -20,23 +17,7 @@ const EditBlogForm = ({
   const { categoriesOptions } = useCategoryContext();
   const [assignTodo, setAssignTodo] = useState(false);
   const { todoOptions } = TodosProvider();
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-      Image,
-    ],
-    editorProps: {
-      attributes: {
-        class: 'Editor',
-      },
-    },
-    content: blog.text,
-  });
+  const editor = useEditorSettings(blog.text, true);
 
   useEffect(() => {
     if (editor) {

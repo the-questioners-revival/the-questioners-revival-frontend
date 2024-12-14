@@ -3,9 +3,7 @@ import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import { reviewOptions } from './CreateReviewForm';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
+import useEditorSettings from '../HtmlEditor/settings';
 
 const EditReviewForm = ({
   review,
@@ -14,22 +12,8 @@ const EditReviewForm = ({
   editReview: Function;
   review: any;
 }) => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class: 'Editor',
-      },
-    },
-    content: review?.text,
-  });
-  // Updated component name
+  const editor = useEditorSettings(review?.text, true);
+
   return (
     <Formik
       initialValues={{ text: review.text, type: review.type }}

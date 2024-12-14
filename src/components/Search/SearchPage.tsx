@@ -32,6 +32,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import EditableItemDetails from '../Category/EditableItemDetails';
 import { sanitize } from 'dompurify';
+import useEditorSettings from '../HtmlEditor/settings';
 
 const SearchPage = () => {
   const isMobile = useBreakpointValue({ base: true, sm: false });
@@ -42,21 +43,8 @@ const SearchPage = () => {
   const [link, setLink] = useState<string>();
   const [isListOpen, setIsListOpen] = useState(false);
   const inputRef = useRef<any>(null);
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class: 'Editor',
-      },
-    },
-    content: answer,
-  });
+
+  const editor = useEditorSettings(answer, true);
 
   useEffect(() => {
     // When the component mounts, select the text inside the input

@@ -3,9 +3,7 @@ import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import moment from 'moment';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
-import { useEditor } from '@tiptap/react';
+import useEditorSettings from '../HtmlEditor/settings';
 
 export const reviewOptions = [
   {
@@ -29,22 +27,12 @@ const CreateReviewForm = ({
   createReview: Function;
   date: any;
 }) => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class: 'Editor',
-      },
-    },
-    content: '<p><br><br><br></p>',
-  });
-  // Updated component name
+  const editor = useEditorSettings(
+    `
+    <p><br><br><br></p>`,
+    true,
+  );
+
   return (
     <Formik
       initialValues={{
