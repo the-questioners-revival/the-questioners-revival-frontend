@@ -172,7 +172,6 @@ const HabitsPage = () => {
                 }`}
               >
                 <Checkbox
-                  colorScheme="greenMain"
                   isChecked={foundHabitTracker ? true : false}
                   onChange={(e) => {
                     if (e.target.checked) {
@@ -183,6 +182,20 @@ const HabitsPage = () => {
                     } else {
                       deleteHabitsTracker(foundHabitTracker?.id);
                     }
+                  }}
+                  sx={{
+                    '.chakra-checkbox__control': {
+                                bg: 'white',
+                      borderColor: 'white',
+                      _checked: {
+                        bg: 'white', // Background when checked
+                        borderColor: 'white', // Border when checked
+                        color: 'black', // Stroke color for the checkmark
+                      },
+                    },
+                    '.chakra-checkbox__icon': {
+                      color: 'black', // This controls the stroke color of the checkmark
+                    },
                   }}
                 />
               </Td>
