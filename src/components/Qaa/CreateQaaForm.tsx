@@ -9,11 +9,9 @@ import {
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
 import { useCategoryContext } from '../Category/CategoriesContext';
+import useEditorSettings from '../HtmlEditor/settings';
 
 export const qaaTypeOptions = [
   {
@@ -46,22 +44,12 @@ const CreateQaaForm = ({ createQaa }: { createQaa: Function }) => {
   const { categoriesOptions } = useCategoryContext();
   const bgColor = useColorModeValue('green.400', 'black');
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class: 'Editor',
-      },
-    },
-    content: '<p><br><br><br></p>',
-  });
-  // Updated component name
+  const editor = useEditorSettings(
+    `
+   <p><br><br><br></p>`,
+    true,
+  );
+
   return (
     <Formik
       initialValues={{

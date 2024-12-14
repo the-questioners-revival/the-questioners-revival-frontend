@@ -3,30 +3,14 @@ import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import { qaaTypeOptions } from './CreateQaaForm';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
 import { useCategoryContext } from '../Category/CategoriesContext';
 import { useEffect } from 'react';
+import useEditorSettings from '../HtmlEditor/settings';
 
 const EditQaaForm = ({ editQaa, qaa }: { editQaa: Function; qaa: any }) => {
   const { categoriesOptions } = useCategoryContext();
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class: 'Editor',
-      },
-    },
-    content: qaa.answer,
-  });
+  const editor = useEditorSettings(qaa.answer, true);
 
   useEffect(() => {
     if (editor) {

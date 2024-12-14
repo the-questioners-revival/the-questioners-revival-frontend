@@ -14,7 +14,7 @@ const MenuBar = ({
   setLink: any;
   setImage: any;
 }) => {
-  const fileInputRef = useRef<any>(null); 
+  const fileInputRef = useRef<any>(null);
   if (!editor) {
     return null;
   }
@@ -240,27 +240,33 @@ const MenuBar = ({
         unsetLink
       </button>
       <div className="file-input-container">
-      <button 
-        type="button" 
-        onClick={triggerFileInput} 
-        className="custom-file-button"
-      >
-        upload image
-      </button>
+        <button
+          type="button"
+          onClick={triggerFileInput}
+          className="custom-file-button"
+        >
+          upload image
+        </button>
 
-      <input 
-      ref={fileInputRef} 
-        id="hiddenFileInput" 
-        type="file" 
-        onChange={setImage} 
-        className="hidden-file-input" 
-      />
-    </div>
+        <input
+          ref={fileInputRef}
+          id="hiddenFileInput"
+          type="file"
+          onChange={setImage}
+          className="hidden-file-input"
+        />
+      </div>
     </div>
   );
 };
 
-const HtmlEditor = ({ editor }: { editor: any }) => {
+const HtmlEditor = ({
+  editor,
+  hideMenu = false,
+}: {
+  editor: any;
+  hideMenu?: boolean;
+}) => {
   const {
     data: uploadImageData,
     mutate: uploadImage,
@@ -321,7 +327,9 @@ const HtmlEditor = ({ editor }: { editor: any }) => {
 
   return (
     <>
-      <MenuBar editor={editor} setLink={setLink} setImage={setImage} />
+      {!hideMenu ? (
+        <MenuBar editor={editor} setLink={setLink} setImage={setImage} />
+      ) : null}
       <EditorContent editor={editor} />
     </>
   );

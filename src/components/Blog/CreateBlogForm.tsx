@@ -2,11 +2,8 @@ import { Box, Button, Container } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import CustomField from '../custom/CustomField';
 import HtmlEditor from '../HtmlEditor/HtmlEditor';
-import StarterKit from '@tiptap/starter-kit';
-import Link from '@tiptap/extension-link';
-import { useEditor } from '@tiptap/react';
 import { useCategoryContext } from '../Category/CategoriesContext';
-import Image from '@tiptap/extension-image';
+import useEditorSettings from '../HtmlEditor/settings';
 
 const CreateBlogForm = ({
   createBlog,
@@ -16,22 +13,8 @@ const CreateBlogForm = ({
   date: any;
 }) => {
   const { categoriesOptions } = useCategoryContext();
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-      }),
-      Image,
-    ],
-    editorProps: {
-      attributes: {
-        class: 'Editor',
-      },
-    },
-    content: `
+  const editor = useEditorSettings(
+    `
     <h3>Morning Gratitude</h3>
     <p></p>
 
@@ -42,9 +25,9 @@ const CreateBlogForm = ({
     <h3>I ate...</h3>
     <p></p>
     <h3>Goals for tomorrow</h3>
-    <p></p>
-    `,
-  });
+    <p></p>`,
+    true,
+  );
 
   // Updated component name
   return (
@@ -54,7 +37,11 @@ const CreateBlogForm = ({
         category_id: null,
       }}
       onSubmit={(values, actions) => {
-        createBlog({ text: editor?.getHTML(), category_id: values.category_id, given_at: date }); // Updated function name
+        createBlog({
+          text: editor?.getHTML(),
+          category_id: values.category_id,
+          given_at: date,
+        }); // Updated function name
         actions.setSubmitting(false);
         actions.resetForm();
       }}
