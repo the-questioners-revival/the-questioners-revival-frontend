@@ -14,6 +14,16 @@ export default function QaasProvider() {
   );
 
   const {
+    data: getQaaByIdData,
+    refetch: getQaaByIdRefetch,
+    loading: getQaaByIdLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
+    QaaApi.getQaaById,
+    null,
+    false,
+  );
+
+  const {
     data: createQaaData,
     mutate: createQaa,
   }: { data: any; mutate: Function } = useAbstractMutator(QaaApi.createQaa);
@@ -42,6 +52,9 @@ export default function QaasProvider() {
     qaasData,
     qaasRefetch,
     getLatestQaasLoading,
+    getQaaByIdData,
+    getQaaByIdLoading,
+    getQaaByIdRefetch,
     createQaaData,
     createQaa,
     removeQaaData,

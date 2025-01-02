@@ -33,6 +33,14 @@ async function getAllQaasGroupedByDate(data) {
   return res;
 }
 
+async function getQaaById(id) {
+  const res = await API.get(
+    `${BACKEND_URL}/qaa/${id}`,
+    true,
+  );
+  return res;
+}
+
 async function removeQaa(id) {
   // Updated function name and endpoint
   const res = await API.post(`${BACKEND_URL}/qaa/remove/${id}`, null, true);
@@ -53,6 +61,7 @@ async function editQaa(data) {
 
 export default {
   getLatestQaas,
+  getQaaById,
   getAllQaasGroupedByDate,
   removeQaa,
   createQaa,
