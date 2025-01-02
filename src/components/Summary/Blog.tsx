@@ -1,7 +1,9 @@
 import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { CloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { sanitize } from 'dompurify';
+import { FRONTEND_URL } from '../../helpers/configuration';
+import { copyToClipBoard } from '../../helpers';
 
 const Blog = ({
   blog,
@@ -29,7 +31,17 @@ const Blog = ({
           }}
         ></div>
       </Box>
-      <Flex position="absolute" right="0px">
+      <Flex flexDirection="column" position="absolute" right="0px" gap="10px">
+        <Flex
+          w="100%"
+          h="100%"
+          cursor="pointer"
+          onClick={() => {
+              copyToClipBoard(`${FRONTEND_URL}/blogs/${blog.id}`);
+          }}
+        >
+          <LinkIcon w={4} h={4} color={color} />
+        </Flex>
         <Flex
           w="100%"
           h="100%"

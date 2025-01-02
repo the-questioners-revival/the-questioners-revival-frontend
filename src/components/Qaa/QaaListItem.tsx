@@ -1,9 +1,11 @@
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { CloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import { Box, Flex, Link, Tag, Text, useColorModeValue } from '@chakra-ui/react';
 import { TODO_STATUS } from '../../enums/todo-status';
 import { useState } from 'react';
 import moment from 'moment-timezone';
 import { sanitize } from 'dompurify';
+import { copyToClipBoard } from '../../helpers';
+import { FRONTEND_URL } from '../../helpers/configuration';
 
 const QaaListItem = ({
   qaa,
@@ -120,9 +122,8 @@ const QaaListItem = ({
         <Text
           fontSize="lg"
           paddingRight="7px"
-          textDecorationLine={`${
-            qaa.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
-          }`}
+          textDecorationLine={`${qaa.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
+            }`}
         >
           {qaa.question}
         </Text>
@@ -143,6 +144,18 @@ const QaaListItem = ({
           top: 0,
         }}
       >
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          w="100%"
+          h="100%"
+          cursor="pointer"
+          onClick={() => {
+            copyToClipBoard(`${FRONTEND_URL}/qaas/${qaa.id}`);
+          }}
+        >
+          <LinkIcon w={4} h={4} color={bgColor} />
+        </Flex>
         <Flex
           alignItems="center"
           justifyContent="center"

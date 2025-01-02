@@ -1,4 +1,4 @@
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -19,6 +19,8 @@ import CreateBlogForm from '../Blog/CreateBlogForm';
 import BlogsProvider from '../../providers/BlogsProvider';
 import EditBlogForm from '../Blog/EditBlogForm';
 import DatePicker from '../DatePicker/DatePicker';
+import { FRONTEND_URL } from '../../helpers/configuration';
+import { copyToClipBoard } from '../../helpers';
 
 const defaultTodo: Todo = {
   id: 0,
@@ -251,27 +253,26 @@ const TodoListItem = ({
               <Text
                 fontSize="lg"
                 paddingRight="7px"
-                textDecorationLine={`${
-                  todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
-                }`}
+                textDecorationLine={`${todo.status === TODO_STATUS.COMPLETED ? 'line-through' : ''
+                  }`}
                 dangerouslySetInnerHTML={{
                   __html: renderTodoTitle(todo.title),
                 }}
               ></Text>
               {todo?.blogs?.length > 0
                 ? todo?.blogs?.map((blog: any) => (
-                    <Box
-                      marginRight="2"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsOpenEditNoteModal(!isOpenEditNoteModal);
-                        setSelectedTodo(todo);
-                        setSelectedBlog(blog);
-                      }}
-                    >
-                      📝
-                    </Box>
-                  ))
+                  <Box
+                    marginRight="2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsOpenEditNoteModal(!isOpenEditNoteModal);
+                      setSelectedTodo(todo);
+                      setSelectedBlog(blog);
+                    }}
+                  >
+                    📝
+                  </Box>
+                ))
                 : null}
             </Box>
             <Flex>
@@ -300,6 +301,18 @@ const TodoListItem = ({
             top: 0,
           }}
         >
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            w="100%"
+            h="100%"
+            cursor="pointer"
+            onClick={() => {
+              copyToClipBoard(`${FRONTEND_URL}/todos/${todo.id}`);
+            }}
+          >
+            <LinkIcon w={4} h={4} color={bgColor} />
+          </Flex>
           <Flex
             alignItems="center"
             justifyContent="center"
@@ -361,18 +374,18 @@ const TodoListItem = ({
           {todo.schedules.length > 0 ? (
             <Box display="flex">
               <Text fontSize="sm">Scheduled:{' '}
-              {todo.schedules.map((schedule: any, index: number) => (
-                <>
-                  {moment
-                    .tz(schedule.scheduled_date, 'Asia/Manila')
-                    .format('DD.MM.YYYY')}
-                  <Box marginLeft={2} as="span">
-                    {index < todo.schedules.length - 1 ? '-> ' : ''}
-                  </Box>
-                </>
-              ))}
+                {todo.schedules.map((schedule: any, index: number) => (
+                  <>
+                    {moment
+                      .tz(schedule.scheduled_date, 'Asia/Manila')
+                      .format('DD.MM.YYYY')}
+                    <Box marginLeft={2} as="span">
+                      {index < todo.schedules.length - 1 ? '-> ' : ''}
+                    </Box>
+                  </>
+                ))}
               </Text>
-              
+
             </Box>
           ) : null}
           <Text fontSize="sm" paddingRight="7px">
