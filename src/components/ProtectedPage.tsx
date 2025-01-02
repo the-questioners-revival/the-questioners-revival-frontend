@@ -4,14 +4,18 @@ import { useUser } from '../providers/UserProvider';
 
 function ProtectedPage(props: any) {
   const navigate = useNavigate();
-  const { user } = useUser();
-  const match = useMatch('*');
+  const { user, getUserStatus } = useUser();
 
   useEffect(() => {
-    if (!user) {
+    console.log("getUserLoading, user: ", getUserStatus, user)
+    if(getUserStatus === null ) {
+      return
+    }
+      console.log("what")
+    if (getUserStatus !== 200) {
       navigate('/login');
     }
-  }, [user]);
+  }, [user, getUserStatus]);
 
   return props.children;
 }

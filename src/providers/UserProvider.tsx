@@ -15,6 +15,7 @@ export const UserProvider = (props: any) => {
   const {
     data: getCurrentlyLoggedInUserData,
     refetch: getCurrentlyLoggedInUser,
+    status: getUserStatus,
   } = useAbstractProvider(UserApi.getCurrentlyLoggedInUser, null);
   const [user, setUser] = useState(null);
 
@@ -37,7 +38,7 @@ export const UserProvider = (props: any) => {
   }, [getCurrentlyLoggedInUserData]);
 
   return (
-    <UserContext.Provider value={{ user, login, logout, loginLoading }}>
+    <UserContext.Provider value={{ user, getUserStatus, login, logout, loginLoading }}>
       {props.children}
     </UserContext.Provider>
   );
