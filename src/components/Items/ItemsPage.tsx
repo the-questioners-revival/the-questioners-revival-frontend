@@ -73,11 +73,13 @@ const ItemsPage = () => {
         <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
           Item
         </Heading>
-        <Box>
-          <EditableItemDetails
-            selectedItem={selectedItem}
-            saveChanges={saveChanges}
-          />
+        <Box flex="3" backgroundColor="white" borderRadius="5px" height='fit-content'>
+          <Box p={3}>
+           <EditableItemDetails
+              selectedItem={selectedItem}
+              saveChanges={saveChanges}
+            />
+          </Box>
         </Box>
       </CustomLayout>
     </ProtectedPage>
