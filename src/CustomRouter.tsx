@@ -11,6 +11,7 @@ import WelcomePage from './components/Welcome/WelcomePage';
 import SearchPage from './components/Search/SearchPage';
 import ActivityCalendar from './components/ActivityCalendar/ActivityCalendarPage';
 import CategoriesPage from './components/Category/CategoriesPage';
+import ItemsPage from './components/Items/ItemsPage';
 
 const CustomRouter: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const CustomRouter: React.FC = () => {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/todos" element={<TodoPage />} />
+        <Route path="/:category/:id" element={<ItemsPage />} />
         <Route path="/qaas" element={<QaasPage />} />
         <Route path="/summary" element={<SummaryPage />} />
         <Route path="/habits" element={<HabitsPage />} />
