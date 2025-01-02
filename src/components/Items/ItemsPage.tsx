@@ -1,10 +1,7 @@
-import { Text, Heading, Select, Box } from '@chakra-ui/react';
+import { Heading, Box } from '@chakra-ui/react';
 import CustomLayout from '../layout/CustomLayout';
 import { useEffect, useState } from 'react';
 import ProtectedPage from '../ProtectedPage';
-import CategoryApi from '../../api/category';
-import useAbstractProvider from '../../providers/AbstractProvider';
-import useAbstractMutator from '../../providers/AbstractMutator';
 import EditableItemDetails from '../Category/EditableItemDetails';
 import TodosProvider from '../../providers/TodosProvider';
 import QaasProvider from '../../providers/QaasProvider';
@@ -13,17 +10,13 @@ import { useParams } from 'react-router-dom';
 
 const ItemsPage = () => {
   const { category, id } = useParams();
-  console.log('category: ', category)
-  console.log('id: ', id)
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
-  console.log('selectedItem: ', selectedItem);
-  const [editedItem, setEditedItem] = useState<any | null>(null);
 
   const { editTodoData, editTodo, getTodoByIdData, getTodoByIdRefetch } = TodosProvider();
 
   const { editQaaData, editQaa, getQaaByIdData, getQaaByIdRefetch } = QaasProvider();
 
-  const { editBlogData, editBlog } = BlogsProvider();
+  const { editBlogData, editBlog, getBlogByIdData, getBlogByIdRefetch, } = BlogsProvider();
 
   useEffect(() => {
     if (editTodoData || editQaaData || editBlogData) {
@@ -38,6 +31,9 @@ const ItemsPage = () => {
       }
       if (category === 'qaas') {
         getQaaByIdRefetch(id)
+      }
+      if (category === 'blogs') {
+        getBlogByIdRefetch(id)
       }
     }
   }, [id, category])
@@ -54,9 +50,13 @@ const ItemsPage = () => {
     }
   }, [getQaaByIdData])
 
+  useEffect(() => {
+    if (getBlogByIdData) {
+      setSelectedItem({ ...getBlogByIdData, table_name: 'blogs' })
+    }
+  }, [getBlogByIdData])
+
   const saveChanges = (type: string, updatedValues: any) => {
-    console.log('type: ', type);
-    console.log('updatedValues: ', updatedValues);
     if (type === 'todo') {
       editTodo({ ...updatedValues });
     } else if (type === 'qaa') {
@@ -66,13 +66,6 @@ const ItemsPage = () => {
     }
     setSelectedItem(updatedValues);
   };
-
-
-
-
-
-
-
 
   return (
     <ProtectedPage>
