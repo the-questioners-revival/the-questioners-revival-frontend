@@ -12,6 +12,7 @@ export default function BlogsProvider() {
     null,
     false,
   );
+
   const {
     data: getBlogByTodoIdData,
     refetch: getBlogByTodoId,
@@ -21,7 +22,16 @@ export default function BlogsProvider() {
     null,
     false,
   );
-  
+
+  const {
+    data: getBlogByIdData,
+    refetch: getBlogByIdRefetch,
+    loading: getBlogByIdLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
+    BlogApi.getBlogById,
+    null,
+    false,
+  );
 
   const {
     data: createBlogData,
@@ -37,10 +47,14 @@ export default function BlogsProvider() {
     data: removeBlogData,
     mutate: removeBlog,
   }: { data: any; mutate: Function } = useAbstractMutator(BlogApi.removeBlog);
+
   return {
     getBlogByTodoIdData,
     getBlogByTodoId,
     getBlogByTodoIdLoading,
+    getBlogByIdRefetch,
+    getBlogByIdData,
+    getBlogByIdLoading,
     getAllBlogsGroupedByDateData,
     getAllBlogsGroupedByDate,
     getAllBlogsGroupedByDateDataLoading,

@@ -8,6 +8,14 @@ async function getBlogByTodoId(id) {
   return res
 }
 
+async function getBlogById(id) {
+  const res = await API.get(
+    `${BACKEND_URL}/blog/${id}`,
+    true,
+  );
+  return res;
+}
+
 async function getLatestBlogs() {
   const res = await API.get(`${BACKEND_URL}/blog/latest`, true);
   return res;
@@ -38,6 +46,7 @@ async function editBlog(data) {
 
 export default {
   getBlogByTodoId,
+  getBlogById,
   getLatestBlogs,
   getAllBlogsGroupedByDate,
   removeBlog,
