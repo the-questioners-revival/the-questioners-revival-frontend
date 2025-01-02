@@ -15,6 +15,16 @@ export default function TodosProvider() {
   );
 
   const {
+    data: getTodoByIdData,
+    refetch: getTodoByIdRefetch,
+    loading: getTodoByIdLoading,
+  }: { data: any; refetch: Function; loading: boolean } = useAbstractProvider(
+    TodoApi.getTodoById,
+    null,
+    false,
+  );
+
+  const {
     data: getAllTodosData,
     refetch: getAllTodos,
     loading: getAllTodosLoading,
@@ -79,6 +89,9 @@ export default function TodosProvider() {
   return {
     todoOptions,
     getLatestTodosData,
+    getTodoByIdData,
+    getTodoByIdRefetch,
+    getTodoByIdLoading,
     getLatestTodosRefetch,
     getLatestTodosLoading,
     createTodo,
