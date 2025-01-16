@@ -8,6 +8,11 @@ async function getDailyActivityCounts() {
   return res;
 }
 
+async function getWeeklyActivityCounts() {
+  const res = await API.get(`${BACKEND_URL}/activity-calendar/weekly`, true);
+  return res;
+}
+
 async function getMonthlyActivityCounts() {
   const res = await API.get(`${BACKEND_URL}/activity-calendar/monthly`, true);
   return res;
@@ -20,6 +25,7 @@ async function getYearlyActivityCounts() {
 
 export default {
   getDailyActivityCounts,
+  getWeeklyActivityCounts,
   getMonthlyActivityCounts,
   getYearlyActivityCounts
 };
