@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Grid, VStack, Heading, Tooltip } from '@chakra-ui/react';
 import {
   eachDayOfInterval,
@@ -8,6 +8,9 @@ import {
   eachMonthOfInterval,
   getYear,
   getMonth,
+  eachWeekOfInterval,
+  getISOWeek,
+  addDays,
 } from 'date-fns';
 import ActivityCalendarProvider from '../../providers/ActivityCalendarProvider';
 import GithubProvider from '../../providers/GithubProvider';
@@ -28,6 +31,7 @@ interface ActivityData {
   days: {
     [date: string]: Activity;
   };
+  weeks: { [week: string]: Activity };
   months: { [month: string]: Activity };
   years: { [year: string]: Activity };
 }
@@ -38,6 +42,14 @@ const getDayColor = (activityCount: number): string => {
   if (activityCount > 5) return 'green.200';
   if (activityCount > 0) return 'green.100';
   return 'gray.100';
+};
+
+const getWeekColor = (activityCount: number): string => {
+  if (activityCount > 50) return 'green.600'; // High activity
+  if (activityCount > 20) return 'green.400'; // Moderate activity
+  if (activityCount > 10) return 'green.200'; // Low activity
+  if (activityCount > 0) return 'green.100'; // Very low activity
+  return 'gray.100'; // No activity
 };
 
 const getMonthColor = (activityCount: number): string => {
@@ -59,6 +71,7 @@ const getYearColor = (activityCount: number): string => {
 const ActivityCalendarPage: React.FC = () => {
   const [activityData, setActivityData] = useState<ActivityData>({
     days: {},
+    weeks: {},
     months: {},
     years: {},
   });
@@ -68,6 +81,8 @@ const ActivityCalendarPage: React.FC = () => {
   const {
     getDailyActivityCountsData,
     getDailyActivityCounts,
+    getWeeklyActivityCountsData,
+    getWeeklyActivityCounts,
     getMonthlyActivityCountsData,
     getMonthlyActivityCounts,
     getYearlyActivityCountsData,
@@ -79,6 +94,7 @@ const ActivityCalendarPage: React.FC = () => {
 
   useEffect(() => {
     getDailyActivityCounts();
+    getWeeklyActivityCounts();
     getMonthlyActivityCounts();
     getYearlyActivityCounts();
   }, []);
@@ -91,6 +107,15 @@ const ActivityCalendarPage: React.FC = () => {
       }));
     }
   }, [getDailyActivityCountsData]);
+
+  useEffect(() => {
+    if (getWeeklyActivityCountsData) {
+      setActivityData((prevState) => ({
+        ...prevState,
+        weeks: getWeeklyActivityCountsData,
+      }));
+    }
+  }, [getWeeklyActivityCountsData]);
 
   useEffect(() => {
     if (getMonthlyActivityCountsData) {
@@ -110,11 +135,6 @@ const ActivityCalendarPage: React.FC = () => {
     }
   }, [getYearlyActivityCountsData]);
 
-  const allDays = eachDayOfInterval({
-    start: startOfYear(new Date()),
-    end: endOfYear(new Date()),
-  });
-
   useEffect(() => {
     if (getDailyActivityCountsData) {
       fetchGitHubContributions();
@@ -131,12 +151,23 @@ const ActivityCalendarPage: React.FC = () => {
     if (contributions) {
       // Initialize new aggregation objects
       const newDays: { [key: string]: Activity } = { ...activityData.days };
+      const newWeeks: { [key: string]: Activity } = { ...activityData.weeks };
       const newMonths: { [key: string]: Activity } = { ...activityData.months };
       const newYears: { [key: string]: Activity } = { ...activityData.years };
+
+      const currentYear = new Date().getFullYear();
+
+      contributions.forEach((week: any) => {
+        week.contributionDays = week.contributionDays.filter((day: any) => {
+          const year = new Date(day.date).getFullYear();
+          return year === currentYear;
+        });
+      });
 
       contributions.forEach((week: any) => {
         week.contributionDays.forEach((day: any) => {
           const formattedDate = day.date; // Full date for daily data
+          const formattedWeek = `${format(day.date, 'yyyy')}-${format(day.date, 'ww')}`;
           const formattedMonth = day.date.slice(0, 7); // 'YYYY-MM' for monthly data
           const formattedYear = day.date.slice(0, 4); // 'YYYY' for yearly data
 
@@ -145,6 +176,14 @@ const ActivityCalendarPage: React.FC = () => {
             ...newDays[formattedDate],
             github:
               (newDays[formattedDate]?.github || 0) +
+              (day.contributionCount || 0),
+          };
+
+          // Weekly aggregation
+          newWeeks[formattedWeek] = {
+            ...newWeeks[formattedWeek],
+            github:
+              (newWeeks[formattedWeek]?.github || 0) +
               (day.contributionCount || 0),
           };
 
@@ -169,6 +208,7 @@ const ActivityCalendarPage: React.FC = () => {
       setActivityData((prevData) => {
         return {
           days: { ...prevData.days, ...newDays },
+          weeks: { ...prevData.weeks, ...newWeeks },
           months: { ...prevData.months, ...newMonths },
           years: { ...prevData.years, ...newYears },
         };
@@ -176,15 +216,42 @@ const ActivityCalendarPage: React.FC = () => {
     }
   }, [contributions]);
 
-  const allMonths = eachMonthOfInterval({
-    start: startOfYear(new Date()),
-    end: endOfYear(new Date()),
-  });
-
-  const allYears = Array.from(
-    { length: 10 },
-    (_, i) => getYear(new Date()) - 9 + i,
+  const allDays = useMemo(() =>
+    eachDayOfInterval({
+      start: startOfYear(new Date()),
+      end: endOfYear(new Date()),
+    }),
+    []
   );
+
+  const allWeeks = useMemo(() => {
+    const startOfWeek2025 = addDays(
+      startOfYear(new Date(2025, 0, 1)),
+      (1 - startOfYear(new Date(2025, 0, 1)).getDay() + 7) % 7
+    );
+
+    const weeks = eachWeekOfInterval(
+      {
+        start: startOfWeek2025,
+        end: endOfYear(new Date(2025, 0, 1)),
+      },
+      { weekStartsOn: 1 }
+    );
+
+    weeks.sort((a, b) => getISOWeek(a) - getISOWeek(b));
+    return weeks;
+  }, []);
+
+  const allMonths = useMemo(() => {
+    return eachMonthOfInterval({
+      start: startOfYear(new Date()),
+      end: endOfYear(new Date()),
+    });
+  }, []);
+
+  const allYears = useMemo(() => {
+    return Array.from({ length: 10 }, (_, i) => getYear(new Date()) - 9 + i);
+  }, []);
   const today = format(new Date(), 'yyyy-MM-dd');
 
   const handleMouseEnter = (formattedDate: any) => {
@@ -279,6 +346,41 @@ const ActivityCalendarPage: React.FC = () => {
                 );
               })}
             </Grid>
+            <Heading size="lg">Weekly Activity</Heading>
+            <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+              {allWeeks.map((week, index) => {
+                const formattedWeek = format(week, 'yyyy-ww'); // Format as 'year-week'
+                const formattedWeekLabel = `Week ${getISOWeek(week)} - ${format(week, 'yyyy')}`;
+                const isThisWeek = getISOWeek(week) === getISOWeek(today) && getYear(week) === getYear(today);
+                const activityCount =
+                  activityData?.weeks[formattedWeek]?.total || 0;
+                const tooltipLabel = `${formattedWeekLabel} - ${activityCount} contributions`;
+
+                return (
+                  <Tooltip
+                    label={
+                      <>
+                        <Box>{tooltipLabel}</Box>
+                        {renderTooltipDetails('weeks')}
+                      </>
+                    }
+                    key={index}
+                    placement="top"
+                  >
+                    <Box
+                      width="30px"
+                      height="30px"
+                      bg={getWeekColor(activityCount)} // Function to determine color based on activity
+                      borderRadius="md"
+                      border={isThisWeek ? '2px solid black' : ''}
+                      onMouseEnter={() => handleMouseEnter(formattedWeek)}
+                      onMouseLeave={() => handleMouseLeave()}
+                    />
+                  </Tooltip>
+                );
+              })}
+            </Grid>
+
 
             <Heading size="lg">Monthly Activity</Heading>
             <Grid templateColumns="repeat(12, 1fr)" gap={2}>
