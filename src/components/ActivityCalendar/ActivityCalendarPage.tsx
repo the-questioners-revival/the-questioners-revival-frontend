@@ -502,43 +502,4 @@ const ActivityCalendarPage: React.FC = () => {
   );
 };
 
-// // Mock data generator function with type definitions
-// const generateMockActivityData = (): ActivityData => {
-//   const randomValue = () => Math.floor(Math.random() * 30); // Random values between 0 and 29
-
-//   const data: ActivityData = {
-//     days: {},
-//     months: {},
-//     years: {},
-//   };
-
-//   const currentDate = new Date();
-
-//   // Generate random daily activity data
-//   for (let i = 0; i < 100; i++) {
-//     const randomDay = new Date(
-//       currentDate.getFullYear(),
-//       Math.floor(Math.random() * 12),
-//       Math.floor(Math.random() * 28) + 1,
-//     );
-//     const formattedDate = format(randomDay, 'yyyy-MM-dd');
-//     data.days[formattedDate] = randomValue();
-//   }
-
-//   // Generate random monthly activity data
-//   for (let i = 0; i < 12; i++) {
-//     const randomMonth = new Date(currentDate.getFullYear(), i, 1);
-//     const formattedMonth = format(randomMonth, 'yyyy-MM');
-//     data.months[formattedMonth] = randomValue();
-//   }
-
-//   // Generate random yearly activity data
-//   for (let i = 0; i < 10; i++) {
-//     const year = getYear(currentDate) - 9 + i;
-//     data.years[year.toString()] = randomValue();
-//   }
-
-//   return data;
-// };
-
 export default ActivityCalendarPage;
