@@ -304,7 +304,7 @@ const ActivityCalendarPage: React.FC = () => {
     const activityForDate = activityData[type][selectedDate]; // Use the type to access the correct data
 
     return (
-      <VStack spacing={0} alignItems="flex-start">
+      <VStack mt="10px" spacing={0} alignItems="flex-start">
         <Box>
           <strong>Todos:</strong> {activityForDate?.todos || 0}
         </Box>
@@ -319,9 +319,6 @@ const ActivityCalendarPage: React.FC = () => {
         </Box>
         <Box>
           <strong>Habits:</strong> {activityForDate?.habits || 0}
-        </Box>
-        <Box>
-          <strong>Total:</strong> {activityForDate?.total || 0}
         </Box>
         <Box>
           <strong>GitHub:</strong> {activityForDate?.github || 0}
@@ -372,21 +369,33 @@ const ActivityCalendarPage: React.FC = () => {
             <Grid templateColumns="repeat(7, 1fr)" gap={1}>
               {allDays.map((day, index) => {
                 const formattedDate = format(day, "yyyy-MM-dd");
+                const isPaddingDay = day < startOfYear(new Date(year, 0, 1)); // Check if it's a padding day
+                const dayOfWeek = DAY_NAMES[getDay(day)];
+
+                // Skip rendering for padding days
+                if (isPaddingDay) return <Box
+                  width="20px"
+                  height="20px"
+                  bg="transparent" borderRadius="md"
+                />
+
                 const formattedDateLabel = format(day, "yyyy MMMM dd");
                 const activityCount =
                   activityData.days[formattedDate]?.total || 0;
                 const isToday = formattedDate === today;
                 const tooltipLabel = isToday
-                  ? `${formattedDateLabel} (today) - ${activityCount} contributions`
-                  : `${formattedDateLabel} - ${activityCount} contributions`;
+                  ? `${formattedDateLabel} (today)`
+                  : `${formattedDateLabel}`;
 
                 return (
                   <Tooltip
                     label={
-                      <>
+                      <Box p="5px 5px">
                         <Box>{tooltipLabel}</Box>
+                        <Box>{dayOfWeek}</Box>
+                        <Box>{activityCount} contributions</Box>
                         {renderTooltipDetails("days")}
-                      </>
+                      </Box>
                     }
                     key={index}
                     placement="top"
