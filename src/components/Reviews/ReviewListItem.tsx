@@ -14,11 +14,14 @@ const ReviewListItem = ({
   setIsOpenEditReviewModal: Function;
   setIsOpenDeleteReviewModal: Function;
 }) => {
-  const [showReviewText, setShowReviewText] = useState(false);
 
   return (
-    <Flex justifyContent="space-between">
-      <Flex>
+    <Flex justifyContent="space-between" bgColor="white" color="black"
+      border="2px solid white"
+      borderRadius="10"
+      padding="5px 10px"
+    >
+      <Box w="100%">
         <Box marginRight="10px">
           <div
             dangerouslySetInnerHTML={{
@@ -30,7 +33,7 @@ const ReviewListItem = ({
         <Box>
           <Tag>{review.type}</Tag>
         </Box>
-      </Flex>
+      </Box>
       <Flex>
         <Flex
           w="100%"
@@ -42,7 +45,7 @@ const ReviewListItem = ({
           }}
           paddingRight="15px"
         >
-          <EditIcon w={4} h={4} color="white" />
+          <EditIcon w={4} h={4} color="black" />
         </Flex>
         <Flex
           w="100%"
@@ -53,7 +56,7 @@ const ReviewListItem = ({
             setIsOpenDeleteReviewModal(true);
           }}
         >
-          <CloseIcon w={4} h={4} color="white" />
+          <CloseIcon w={4} h={4} color="black" />
         </Flex>
       </Flex>
     </Flex>
