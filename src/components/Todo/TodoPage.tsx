@@ -62,6 +62,7 @@ const TodoPage = () => {
     BlogsProvider();
 
   const { createTodoSchedule, createTodoScheduleData } = TodoScheduleProvider();
+  console.log("createTodoScheduleData", createTodoScheduleData);
 
   useEffect(() => {
     fetchTodos(true);
@@ -83,7 +84,8 @@ const TodoPage = () => {
       removeTodoData ||
       editTodoData ||
       createBlogData ||
-      editBlogData
+      editBlogData ||
+    createTodoScheduleData
     ) {
       fetchTodos(true);
       setTodos([]);
