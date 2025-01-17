@@ -18,6 +18,7 @@ const ReviewListItemSimple = ({
       border="2px solid white"
       borderRadius="10"
       padding="5px 10px"
+bgColor='white' color='black'
     >
       <Box>
         <div
