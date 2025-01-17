@@ -347,7 +347,7 @@ const ActivityCalendarPage: React.FC = () => {
               })}
             </Grid>
             <Heading size="lg">Weekly Activity</Heading>
-            <Grid templateColumns="repeat(12, 1fr)" gap={2}>
+            <Grid templateColumns="repeat(8, 1fr)" gap={2}>
               {allWeeks.map((week, index) => {
                 const formattedWeek = format(week, 'yyyy-ww'); // Format as 'year-week'
                 const formattedWeekLabel = `Week ${getISOWeek(week)} - ${format(week, 'yyyy')}`;
