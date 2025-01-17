@@ -1,5 +1,5 @@
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, Flex, Switch, Tag, Text } from '@chakra-ui/react';
+import { CloseIcon, EditIcon } from "@chakra-ui/icons";
+import { Box, Flex, Switch, Tag, Text } from "@chakra-ui/react";
 
 const GoalListItem = ({
   goal,
@@ -15,15 +15,23 @@ const GoalListItem = ({
   editGoal: Function;
 }) => {
   return (
-    <Flex justifyContent="space-between">
+    <Flex
+      justifyContent="space-between"
+      bgColor="white"
+      color="black"
+      border="2px solid white"
+      borderRadius="10"
+      padding="5px 10px"
+    >
       <Flex>
         <Text marginRight="10px">{goal.title}</Text>
         <Box>
           <Tag>{goal.type}</Tag>
         </Box>
       </Flex>
-      <Flex>
+      <Flex alignItems="center">
         <Switch
+          paddingRight="15px"
           isChecked={goal.completed_at}
           onChange={(e) =>
             e.target.checked === true
@@ -46,19 +54,21 @@ const GoalListItem = ({
             setIsOpenEditGoalModal(true);
           }}
           paddingRight="15px"
+          maxH="16px"
         >
-          <EditIcon w={4} h={4} color="white" />
+          <EditIcon w={4} h={4} color="black" />
         </Flex>
         <Flex
           w="100%"
           h="100%"
           cursor="pointer"
+          maxH="16px"
           onClick={() => {
             setSelectedItem(goal);
             setIsOpenDeleteGoalModal(true);
           }}
         >
-          <CloseIcon w={4} h={4} color="white" />
+          <CloseIcon w={4} h={4} color="black" />
         </Flex>
       </Flex>
     </Flex>
