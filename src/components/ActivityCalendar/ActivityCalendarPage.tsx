@@ -1,5 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Grid, VStack, Heading, Tooltip } from '@chakra-ui/react';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Box,
+  Grid,
+  VStack,
+  Heading,
+  Tooltip,
+  Button,
+  Text,
+} from "@chakra-ui/react";
 import {
   eachDayOfInterval,
   format,
@@ -11,11 +19,11 @@ import {
   eachWeekOfInterval,
   getISOWeek,
   addDays,
-} from 'date-fns';
-import ActivityCalendarProvider from '../../providers/ActivityCalendarProvider';
-import GithubProvider from '../../providers/GithubProvider';
-import ProtectedPage from '../ProtectedPage';
-import CustomLayout from '../layout/CustomLayout';
+} from "date-fns";
+import ActivityCalendarProvider from "../../providers/ActivityCalendarProvider";
+import GithubProvider from "../../providers/GithubProvider";
+import ProtectedPage from "../ProtectedPage";
+import CustomLayout from "../layout/CustomLayout";
 
 interface Activity {
   todos?: number;
@@ -37,35 +45,35 @@ interface ActivityData {
 }
 
 const getDayColor = (activityCount: number): string => {
-  if (activityCount > 20) return 'green.600';
-  if (activityCount > 10) return 'green.400';
-  if (activityCount > 5) return 'green.200';
-  if (activityCount > 0) return 'green.100';
-  return 'gray.100';
+  if (activityCount > 20) return "green.600";
+  if (activityCount > 10) return "green.400";
+  if (activityCount > 5) return "green.200";
+  if (activityCount > 0) return "green.100";
+  return "gray.100";
 };
 
 const getWeekColor = (activityCount: number): string => {
-  if (activityCount > 50) return 'green.600'; // High activity
-  if (activityCount > 20) return 'green.400'; // Moderate activity
-  if (activityCount > 10) return 'green.200'; // Low activity
-  if (activityCount > 0) return 'green.100'; // Very low activity
-  return 'gray.100'; // No activity
+  if (activityCount > 50) return "green.600"; // High activity
+  if (activityCount > 20) return "green.400"; // Moderate activity
+  if (activityCount > 10) return "green.200"; // Low activity
+  if (activityCount > 0) return "green.100"; // Very low activity
+  return "gray.100"; // No activity
 };
 
 const getMonthColor = (activityCount: number): string => {
-  if (activityCount > 250) return 'green.600';
-  if (activityCount > 100) return 'green.400';
-  if (activityCount > 50) return 'green.200';
-  if (activityCount > 0) return 'green.100';
-  return 'gray.100';
+  if (activityCount > 250) return "green.600";
+  if (activityCount > 100) return "green.400";
+  if (activityCount > 50) return "green.200";
+  if (activityCount > 0) return "green.100";
+  return "gray.100";
 };
 
 const getYearColor = (activityCount: number): string => {
-  if (activityCount > 1800) return 'green.600'; // Maximum threshold
-  if (activityCount > 1000) return 'green.400';
-  if (activityCount > 500) return 'green.200';
-  if (activityCount > 0) return 'green.100';
-  return 'gray.100'; // No activity
+  if (activityCount > 1800) return "green.600"; // Maximum threshold
+  if (activityCount > 1000) return "green.400";
+  if (activityCount > 500) return "green.200";
+  if (activityCount > 0) return "green.100";
+  return "gray.100"; // No activity
 };
 
 const ActivityCalendarPage: React.FC = () => {
@@ -78,6 +86,8 @@ const ActivityCalendarPage: React.FC = () => {
   const [contributions, setContributions] = useState<[] | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null); // State for the selected date
+  const [year, setYear] = useState(getYear(new Date()));
+
   const {
     getDailyActivityCountsData,
     getDailyActivityCounts,
@@ -167,7 +177,7 @@ const ActivityCalendarPage: React.FC = () => {
       contributions.forEach((week: any) => {
         week.contributionDays.forEach((day: any) => {
           const formattedDate = day.date; // Full date for daily data
-          const formattedWeek = `${format(day.date, 'yyyy')}-${format(day.date, 'ww')}`;
+          const formattedWeek = `${format(day.date, "yyyy")}-${format(day.date, "ww")}`;
           const formattedMonth = day.date.slice(0, 7); // 'YYYY-MM' for monthly data
           const formattedYear = day.date.slice(0, 4); // 'YYYY' for yearly data
 
@@ -216,43 +226,45 @@ const ActivityCalendarPage: React.FC = () => {
     }
   }, [contributions]);
 
-  const allDays = useMemo(() =>
-    eachDayOfInterval({
-      start: startOfYear(new Date()),
-      end: endOfYear(new Date()),
-    }),
-    []
+  const allDays = useMemo(
+    () =>
+      eachDayOfInterval({
+        start: startOfYear(new Date(year, 0, 1)),
+        end: endOfYear(new Date(year, 11, 31)),
+      }),
+    [year],
   );
 
   const allWeeks = useMemo(() => {
-    const startOfWeek2025 = addDays(
-      startOfYear(new Date(2025, 0, 1)),
-      (1 - startOfYear(new Date(2025, 0, 1)).getDay() + 7) % 7
+    const startOfWeek = addDays(
+      startOfYear(new Date(year, 0, 1)),
+      (1 - startOfYear(new Date(year, 0, 1)).getDay() + 7) % 7,
     );
 
     const weeks = eachWeekOfInterval(
       {
-        start: startOfWeek2025,
-        end: endOfYear(new Date(2025, 0, 1)),
+        start: startOfWeek,
+        end: endOfYear(new Date(year, 0, 1)),
       },
-      { weekStartsOn: 1 }
+      { weekStartsOn: 1 },
     );
 
     weeks.sort((a, b) => getISOWeek(a) - getISOWeek(b));
     return weeks;
-  }, []);
+  }, [year]);
 
   const allMonths = useMemo(() => {
     return eachMonthOfInterval({
-      start: startOfYear(new Date()),
-      end: endOfYear(new Date()),
+      start: startOfYear(new Date(year, 0, 1)),
+      end: endOfYear(new Date(year, 0, 1)),
     });
-  }, []);
+  }, [year]);
 
   const allYears = useMemo(() => {
     return Array.from({ length: 10 }, (_, i) => getYear(new Date()) - 9 + i);
   }, []);
-  const today = format(new Date(), 'yyyy-MM-dd');
+
+  const today = format(new Date(), "yyyy-MM-dd");
 
   const handleMouseEnter = (formattedDate: any) => {
     timeoutRef.current = setTimeout(() => {
@@ -308,11 +320,44 @@ const ActivityCalendarPage: React.FC = () => {
       <CustomLayout>
         <Box paddingY="20px">
           <VStack spacing={8}>
+            <Box display="flex" alignItems="center">
+              <Button
+                display="flex"
+                colorScheme="teal"
+                type="submit"
+                onClick={() => {
+                  // limit the year to ten years in the past
+                  const currentYear = getYear(new Date());
+                  const newYear =
+                    year - 1 <= currentYear - 10 ? year : year - 1;
+                  setYear(newYear);
+                }}
+              >
+                Previous
+              </Button>
+              <Text fontSize="lg" paddingX="10px">
+                Year {year}
+              </Text>
+              <Button
+                display="flex"
+                colorScheme="teal"
+                type="submit"
+                onClick={() => {
+                  // limit the year to current year, no point in going in the future
+                  const currentYear = getYear(new Date());
+                  const newYear =
+                    year + 1 > currentYear ? currentYear : year + 1;
+                  setYear(newYear);
+                }}
+              >
+                Next
+              </Button>
+            </Box>
             <Heading size="lg">Daily Activity</Heading>
             <Grid templateColumns="repeat(7, 1fr)" gap={1}>
               {allDays.map((day, index) => {
-                const formattedDate = format(day, 'yyyy-MM-dd');
-                const formattedDateLabel = format(day, 'yyyy MMMM dd');
+                const formattedDate = format(day, "yyyy-MM-dd");
+                const formattedDateLabel = format(day, "yyyy MMMM dd");
                 const activityCount =
                   activityData.days[formattedDate]?.total || 0;
                 const isToday = formattedDate === today;
@@ -325,7 +370,7 @@ const ActivityCalendarPage: React.FC = () => {
                     label={
                       <>
                         <Box>{tooltipLabel}</Box>
-                        {renderTooltipDetails('days')}
+                        {renderTooltipDetails("days")}
                       </>
                     }
                     key={index}
@@ -337,7 +382,7 @@ const ActivityCalendarPage: React.FC = () => {
                       height="20px"
                       bg={getDayColor(activityCount)} // Check if it's today
                       borderRadius="md"
-                      border={isToday ? '2px solid black' : ''}
+                      border={isToday ? "2px solid black" : ""}
                       cursor="pointer" // Indicate that the box is clickable
                       onMouseEnter={() => handleMouseEnter(formattedDate)}
                       onMouseLeave={() => handleMouseLeave()}
@@ -349,9 +394,11 @@ const ActivityCalendarPage: React.FC = () => {
             <Heading size="lg">Weekly Activity</Heading>
             <Grid templateColumns="repeat(8, 1fr)" gap={2}>
               {allWeeks.map((week, index) => {
-                const formattedWeek = format(week, 'yyyy-ww'); // Format as 'year-week'
-                const formattedWeekLabel = `Week ${getISOWeek(week)} - ${format(week, 'yyyy')}`;
-                const isThisWeek = getISOWeek(week) === getISOWeek(today) && getYear(week) === getYear(today);
+                const formattedWeek = format(week, "yyyy-ww"); // Format as 'year-week'
+                const formattedWeekLabel = `Week ${getISOWeek(week)} - ${format(week, "yyyy")}`;
+                const isThisWeek =
+                  getISOWeek(week) === getISOWeek(today) &&
+                  getYear(week) === getYear(today);
                 const activityCount =
                   activityData?.weeks[formattedWeek]?.total || 0;
                 const tooltipLabel = `${formattedWeekLabel} - ${activityCount} contributions`;
@@ -361,7 +408,7 @@ const ActivityCalendarPage: React.FC = () => {
                     label={
                       <>
                         <Box>{tooltipLabel}</Box>
-                        {renderTooltipDetails('weeks')}
+                        {renderTooltipDetails("weeks")}
                       </>
                     }
                     key={index}
@@ -372,7 +419,7 @@ const ActivityCalendarPage: React.FC = () => {
                       height="30px"
                       bg={getWeekColor(activityCount)} // Function to determine color based on activity
                       borderRadius="md"
-                      border={isThisWeek ? '2px solid black' : ''}
+                      border={isThisWeek ? "2px solid black" : ""}
                       onMouseEnter={() => handleMouseEnter(formattedWeek)}
                       onMouseLeave={() => handleMouseLeave()}
                     />
@@ -381,12 +428,11 @@ const ActivityCalendarPage: React.FC = () => {
               })}
             </Grid>
 
-
             <Heading size="lg">Monthly Activity</Heading>
             <Grid templateColumns="repeat(12, 1fr)" gap={2}>
               {allMonths.map((month, index) => {
-                const formattedMonth = format(month, 'yyyy-MM');
-                const formattedMonthLabel = format(month, 'yyyy MMMM');
+                const formattedMonth = format(month, "yyyy-MM");
+                const formattedMonthLabel = format(month, "yyyy MMMM");
                 const isMonth = getMonth(formattedMonth) === getMonth(today);
                 const activityCount =
                   activityData?.months[formattedMonth]?.total || 0;
@@ -397,7 +443,7 @@ const ActivityCalendarPage: React.FC = () => {
                     label={
                       <>
                         <Box>{tooltipLabel}</Box>
-                        {renderTooltipDetails('months')}
+                        {renderTooltipDetails("months")}
                       </>
                     }
                     key={index}
@@ -408,7 +454,7 @@ const ActivityCalendarPage: React.FC = () => {
                       height="30px"
                       bg={getMonthColor(activityCount)} // No need to check for today here
                       borderRadius="md"
-                      border={isMonth ? '2px solid black' : ''}
+                      border={isMonth ? "2px solid black" : ""}
                       onMouseEnter={() => handleMouseEnter(formattedMonth)}
                       onMouseLeave={() => handleMouseLeave()}
                     />
@@ -429,7 +475,7 @@ const ActivityCalendarPage: React.FC = () => {
                     label={
                       <>
                         <Box>{tooltipLabel}</Box>
-                        {renderTooltipDetails('years')}{' '}
+                        {renderTooltipDetails("years")}{" "}
                         {/* Call renderTooltipDetails with 'years' */}
                       </>
                     }
@@ -441,7 +487,7 @@ const ActivityCalendarPage: React.FC = () => {
                       height="40px"
                       bg={getYearColor(activityCount)} // Function to determine color for the year
                       borderRadius="md"
-                      border={isYear ? '2px solid black' : ''}
+                      border={isYear ? "2px solid black" : ""}
                       onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
                       onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
                     />
