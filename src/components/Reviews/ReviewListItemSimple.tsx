@@ -1,6 +1,13 @@
-import { Box, Flex, Switch, Tag, Text } from '@chakra-ui/react';
-import { sanitize } from 'dompurify';
-import { useState } from 'react';
+import {
+  Box,
+  Flex,
+  Switch,
+  Tag,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { sanitize } from "dompurify";
+import { useState } from "react";
 
 const ReviewListItemSimple = ({
   review,
@@ -10,6 +17,8 @@ const ReviewListItemSimple = ({
   editReview: Function;
 }) => {
   const [showReviewText, setShowReviewText] = useState(false);
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
 
   return (
     <Flex
@@ -18,11 +27,12 @@ const ReviewListItemSimple = ({
       border="2px solid white"
       borderRadius="10"
       padding="5px 10px"
-bgColor='white' color='black'
+      bgColor={bgColor}
+      color={color}
     >
       <Box>
         <div
-          className={showReviewText ? 'tiptap' : 'tiptap blogText'}
+          className={showReviewText ? "tiptap" : "tiptap blogText"}
           onClick={() => setShowReviewText(!showReviewText)}
           dangerouslySetInnerHTML={{
             __html: sanitize(review?.text),

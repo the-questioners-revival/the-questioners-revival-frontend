@@ -1,7 +1,7 @@
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, Flex, Tag, Text } from '@chakra-ui/react';
-import { sanitize } from 'dompurify';
-import { useState } from 'react';
+import { CloseIcon, EditIcon } from "@chakra-ui/icons";
+import { Box, Flex, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { sanitize } from "dompurify";
+import { useState } from "react";
 
 const ReviewListItem = ({
   review,
@@ -14,9 +14,14 @@ const ReviewListItem = ({
   setIsOpenEditReviewModal: Function;
   setIsOpenDeleteReviewModal: Function;
 }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
 
   return (
-    <Flex justifyContent="space-between" bgColor="white" color="black"
+    <Flex
+      justifyContent="space-between"
+      bgColor={bgColor}
+      color={color}
       border="2px solid white"
       borderRadius="10"
       padding="5px 10px"
@@ -45,7 +50,7 @@ const ReviewListItem = ({
           }}
           paddingRight="15px"
         >
-          <EditIcon w={4} h={4} color="black" />
+          <EditIcon w={4} h={4} color={color} />
         </Flex>
         <Flex
           w="100%"
@@ -56,7 +61,7 @@ const ReviewListItem = ({
             setIsOpenDeleteReviewModal(true);
           }}
         >
-          <CloseIcon w={4} h={4} color="black" />
+          <CloseIcon w={4} h={4} color={color} />
         </Flex>
       </Flex>
     </Flex>

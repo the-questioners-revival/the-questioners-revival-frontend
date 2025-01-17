@@ -1,4 +1,11 @@
-import { Box, Flex, Switch, Tag, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Switch,
+  Tag,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 const GoalListItemSimple = ({
   goal,
@@ -7,6 +14,9 @@ const GoalListItemSimple = ({
   goal: any;
   editGoal: Function;
 }) => {
+  const bgColor = useColorModeValue("white", "black");
+  const color = useColorModeValue("black", "white");
+
   return (
     <Flex
       justifyContent="space-between"
@@ -14,7 +24,8 @@ const GoalListItemSimple = ({
       border="2px solid white"
       borderRadius="10"
       padding="5px 10px"
-      bgColor='white' color='black'
+      bgColor={bgColor}
+      color={color}
     >
       <Flex>
         <Text marginRight="10px">{goal.title}</Text>

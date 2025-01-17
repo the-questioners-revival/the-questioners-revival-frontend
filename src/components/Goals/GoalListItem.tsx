@@ -1,5 +1,5 @@
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
-import { Box, Flex, Switch, Tag, Text } from "@chakra-ui/react";
+import { Box, Flex, Switch, Tag, Text, useColorModeValue } from "@chakra-ui/react";
 
 const GoalListItem = ({
   goal,
@@ -14,11 +14,14 @@ const GoalListItem = ({
   setIsOpenDeleteGoalModal: Function;
   editGoal: Function;
 }) => {
+  const bgColor = useColorModeValue('white', 'black');
+  const color = useColorModeValue('black', 'white');
+
   return (
     <Flex
       justifyContent="space-between"
-      bgColor="white"
-      color="black"
+      bgColor={bgColor}
+      color={color}
       border="2px solid white"
       borderRadius="10"
       padding="5px 10px"
@@ -56,7 +59,7 @@ const GoalListItem = ({
           paddingRight="15px"
           maxH="16px"
         >
-          <EditIcon w={4} h={4} color="black" />
+          <EditIcon w={4} h={4} color={color} />
         </Flex>
         <Flex
           w="100%"
@@ -68,7 +71,7 @@ const GoalListItem = ({
             setIsOpenDeleteGoalModal(true);
           }}
         >
-          <CloseIcon w={4} h={4} color="black" />
+          <CloseIcon w={4} h={4} color={color} />
         </Flex>
       </Flex>
     </Flex>
