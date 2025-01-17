@@ -554,6 +554,7 @@ const ActivityCalendarPage: React.FC = () => {
                       bg={getWeekColor(activityCount)} // Function to determine color based on activity
                       borderRadius="md"
                       border={isThisWeek ? "2px solid black" : ""}
+                      cursor="pointer" // Indicate that the box is clickable
                       onMouseEnter={() => handleMouseEnter(formattedWeek)}
                       onMouseLeave={() => handleMouseLeave()}
                     />
@@ -589,6 +590,7 @@ const ActivityCalendarPage: React.FC = () => {
                       bg={getMonthColor(activityCount)} // No need to check for today here
                       borderRadius="md"
                       border={isMonth ? "2px solid black" : ""}
+                      cursor="pointer" // Indicate that the box is clickable
                       onMouseEnter={() => handleMouseEnter(formattedMonth)}
                       onMouseLeave={() => handleMouseLeave()}
                     />
@@ -622,6 +624,7 @@ const ActivityCalendarPage: React.FC = () => {
                       bg={getYearColor(activityCount)} // Function to determine color for the year
                       borderRadius="md"
                       border={isYear ? "2px solid black" : ""}
+                      cursor="pointer" // Indicate that the box is clickable
                       onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
                       onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
                     />
