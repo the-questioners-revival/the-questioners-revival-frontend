@@ -19,11 +19,14 @@ import {
   eachWeekOfInterval,
   getISOWeek,
   addDays,
+  subDays,
+  getDay,
 } from "date-fns";
 import ActivityCalendarProvider from "../../providers/ActivityCalendarProvider";
 import GithubProvider from "../../providers/GithubProvider";
 import ProtectedPage from "../ProtectedPage";
 import CustomLayout from "../layout/CustomLayout";
+import { DAY_NAMES } from "../../utils";
 
 interface Activity {
   todos?: number;
@@ -226,14 +229,26 @@ const ActivityCalendarPage: React.FC = () => {
     }
   }, [contributions]);
 
-  const allDays = useMemo(
-    () =>
-      eachDayOfInterval({
-        start: startOfYear(new Date(year, 0, 1)),
-        end: endOfYear(new Date(year, 11, 31)),
-      }),
-    [year],
-  );
+
+  const allDays = useMemo(() => {
+    const firstDayOfYear = startOfYear(new Date(year, 0, 1));
+    const paddingDaysCount = (firstDayOfYear.getDay() + 6) % 7; // Get days to pad before the first Monday
+
+    // Create an array of padding days
+    const paddingDays = Array.from({ length: paddingDaysCount }, (_, i) =>
+      subDays(firstDayOfYear, paddingDaysCount - i)
+    );
+
+    // Get all the days of the current year
+    const yearDays = eachDayOfInterval({
+      start: firstDayOfYear,
+      end: endOfYear(new Date(year, 0, 1)),
+    });
+
+    // Combine padding days with the actual days
+    return [...paddingDays, ...yearDays];
+  }, [year]);
+
 
   const allWeeks = useMemo(() => {
     const startOfWeek = addDays(

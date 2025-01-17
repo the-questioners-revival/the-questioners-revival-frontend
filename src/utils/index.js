@@ -48,3 +48,5 @@ export const getRangeOfNumbers = (start: number, end: number) =>
   Array(end - start + 1)
     .fill('')
     .map((_, idx) => start + idx);
+
+export const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
