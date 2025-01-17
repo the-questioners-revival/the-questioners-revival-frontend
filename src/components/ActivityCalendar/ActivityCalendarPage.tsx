@@ -7,6 +7,7 @@ import {
   Tooltip,
   Button,
   Text,
+  HStack,
 } from "@chakra-ui/react";
 import {
   eachDayOfInterval,
@@ -47,8 +48,115 @@ interface ActivityData {
   years: { [year: string]: Activity };
 }
 
+const renderLegend = () => {
+  return (
+    <Grid templateColumns="repeat(6, 1fr)" gap={2} alignItems="center">
+      {/* Daily Legend */}
+      <HStack spacing={2} alignItems="center">
+        <Text>Daily</Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.600" w="20px" h="20px" borderRadius="md" />
+        <Text>15+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.400" w="20px" h="20px" borderRadius="md" />
+        <Text>10+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.200" w="20px" h="20px" borderRadius="md" />
+        <Text>6+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.100" w="20px" h="20px" borderRadius="md" />
+        <Text>1+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="gray.100" w="20px" h="20px" borderRadius="md" />
+        <Text>0 </Text>
+      </HStack>
+
+      {/* Weekly Legend */}
+      <HStack spacing={2} alignItems="center">
+        <Text>Weekly</Text>
+      </HStack>
+
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.600" w="20px" h="20px" borderRadius="md" />
+        <Text>50+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.400" w="20px" h="20px" borderRadius="md" />
+        <Text>20+</Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.200" w="20px" h="20px" borderRadius="md" />
+        <Text>10+</Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.100" w="20px" h="20px" borderRadius="md" />
+        <Text>1+</Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="gray.100" w="20px" h="20px" borderRadius="md" />
+        <Text>0</Text>
+      </HStack>
+
+      {/* Monthly Legend */}
+      <HStack spacing={2} alignItems="center">
+        <Text>Monthly</Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.600" w="20px" h="20px" borderRadius="md" />
+        <Text>250+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.400" w="20px" h="20px" borderRadius="md" />
+        <Text>100+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.200" w="20px" h="20px" borderRadius="md" />
+        <Text>50+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.100" w="20px" h="20px" borderRadius="md" />
+        <Text>1+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="gray.100" w="20px" h="20px" borderRadius="md" />
+        <Text>0 </Text>
+      </HStack>
+
+      {/* Yearly Legend */}
+      <HStack spacing={2} alignItems="center">
+        <Text>Yearly</Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.600" w="20px" h="20px" borderRadius="md" />
+        <Text>1800+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.400" w="20px" h="20px" borderRadius="md" />
+        <Text>1000+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.200" w="20px" h="20px" borderRadius="md" />
+        <Text>500+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="green.100" w="20px" h="20px" borderRadius="md" />
+        <Text>1+ </Text>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <Box bg="gray.100" w="20px" h="20px" borderRadius="md" />
+        <Text>0 </Text>
+      </HStack>
+    </Grid>
+  );
+};
+
 const getDayColor = (activityCount: number): string => {
-  if (activityCount > 20) return "green.600";
+  if (activityCount > 15) return "green.600";
   if (activityCount > 10) return "green.400";
   if (activityCount > 5) return "green.200";
   if (activityCount > 0) return "green.100";
@@ -229,14 +337,13 @@ const ActivityCalendarPage: React.FC = () => {
     }
   }, [contributions]);
 
-
   const allDays = useMemo(() => {
     const firstDayOfYear = startOfYear(new Date(year, 0, 1));
     const paddingDaysCount = (firstDayOfYear.getDay() + 6) % 7; // Get days to pad before the first Monday
 
     // Create an array of padding days
     const paddingDays = Array.from({ length: paddingDaysCount }, (_, i) =>
-      subDays(firstDayOfYear, paddingDaysCount - i)
+      subDays(firstDayOfYear, paddingDaysCount - i),
     );
 
     // Get all the days of the current year
@@ -248,7 +355,6 @@ const ActivityCalendarPage: React.FC = () => {
     // Combine padding days with the actual days
     return [...paddingDays, ...yearDays];
   }, [year]);
-
 
   const allWeeks = useMemo(() => {
     const startOfWeek = addDays(
@@ -373,11 +479,15 @@ const ActivityCalendarPage: React.FC = () => {
                 const dayOfWeek = DAY_NAMES[getDay(day)];
 
                 // Skip rendering for padding days
-                if (isPaddingDay) return <Box
-                  width="20px"
-                  height="20px"
-                  bg="transparent" borderRadius="md"
-                />
+                if (isPaddingDay)
+                  return (
+                    <Box
+                      width="20px"
+                      height="20px"
+                      bg="transparent"
+                      borderRadius="md"
+                    />
+                  );
 
                 const formattedDateLabel = format(day, "yyyy MMMM dd");
                 const activityCount =
@@ -519,6 +629,7 @@ const ActivityCalendarPage: React.FC = () => {
                 );
               })}
             </Grid>
+            {renderLegend()}
           </VStack>
         </Box>
       </CustomLayout>
