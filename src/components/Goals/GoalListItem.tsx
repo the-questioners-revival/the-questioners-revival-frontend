@@ -25,6 +25,7 @@ const GoalListItem = ({
       border="2px solid white"
       borderRadius="10"
       padding="5px 10px"
+      marginBottom="10px"
     >
       <Flex>
         <Text marginRight="10px">{goal.title}</Text>
