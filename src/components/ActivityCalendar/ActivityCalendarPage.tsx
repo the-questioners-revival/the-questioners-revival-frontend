@@ -357,20 +357,29 @@ const ActivityCalendarPage: React.FC = () => {
   }, [year]);
 
   const allWeeks = useMemo(() => {
-    const startOfWeek = addDays(
-      startOfYear(new Date(year, 0, 1)),
-      (1 - startOfYear(new Date(year, 0, 1)).getDay() + 7) % 7,
-    );
+    // Get the first day of the year
+    const startOfYearDate = new Date(year, 0, 1);
 
-    const weeks = eachWeekOfInterval(
-      {
-        start: startOfWeek,
-        end: endOfYear(new Date(year, 0, 1)),
-      },
-      { weekStartsOn: 1 },
-    );
+    // Get the day of the week for January 1st
+    const startDayOfWeek = startOfYearDate.getDay();
 
-    weeks.sort((a, b) => getISOWeek(a) - getISOWeek(b));
+    // Calculate the first Monday of the year
+    const daysToAdd = (1 - startDayOfWeek + 7) % 7; // Days to add to get to Monday
+    const startOfWeek = new Date(startOfYearDate);
+    startOfWeek.setDate(startOfYearDate.getDate() + daysToAdd);
+
+    // Get the end of the year date
+    const endOfYearDate = new Date(year, 11, 31);
+
+    const weeks = [];
+    let currentWeek = new Date(startOfWeek);
+
+    // Loop through each week and add it to the weeks array
+    while (currentWeek <= endOfYearDate) {
+      weeks.push(new Date(currentWeek)); // Add a copy of the current week
+      currentWeek.setDate(currentWeek.getDate() + 7); // Move to the next week
+    }
+
     return weeks;
   }, [year]);
 
@@ -529,7 +538,7 @@ const ActivityCalendarPage: React.FC = () => {
             <Grid templateColumns="repeat(8, 1fr)" gap={2}>
               {allWeeks.map((week, index) => {
                 const formattedWeek = format(week, "yyyy-ww"); // Format as 'year-week'
-                const formattedWeekLabel = `Week ${getISOWeek(week)} - ${format(week, "yyyy")}`;
+                const formattedWeekLabel = `Week ${index + 1} - ${format(week, "yyyy")}`;
                 const isThisWeek =
                   getISOWeek(week) === getISOWeek(today) &&
                   getYear(week) === getYear(today);
