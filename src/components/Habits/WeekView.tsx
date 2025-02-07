@@ -18,20 +18,23 @@ const WeekView = ({ onChange }: { onChange: Function }) => {
   };
 
   function generateWeeks(year?: any, minus?: boolean) {
-    const currentDate = moment(`${year}-01-01`);
+    let currentDate = moment(`${year}-01-01`);
+    const day = moment(currentDate).day();
+    // If it's not Monday (day !== 1), calculate how many days to add to get to the next Monday
+    if (day !== 1) {
+      const daysToAdd = (7 - day + 1) % 7;  // If it's not Monday, calculate days to next Monday
+      currentDate = currentDate.add(daysToAdd, 'days');
+    }
 
     const newWeeks: { startDate: moment.Moment; endDate: moment.Moment }[] = [];
-    const startOfYear = moment(currentDate).startOf('year');
+    const startOfYear = moment(currentDate);
     const endOfYear = moment(currentDate).endOf('year');
 
     let weekStart = startOfYear.clone();
     while (weekStart.isBefore(endOfYear)) {
-      const endOfMonth = moment(weekStart).endOf('month');
 
       const weekEnd =
-        weekStart.clone().endOf('week').add(1, 'day') > endOfMonth
-          ? endOfMonth
-          : weekStart.clone().endOf('week').add(1, 'day');
+        weekStart.clone().endOf('week').add(1, 'day');
       newWeeks.push({
         startDate: weekStart.clone().endOf('day'),
         endDate: weekEnd,
