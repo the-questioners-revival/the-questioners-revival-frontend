@@ -20,6 +20,7 @@ const ReviewListItem = ({
   return (
     <Flex
       justifyContent="space-between"
+      position="relative"
       bgColor={bgColor}
       color={color}
       border="2px solid white"
@@ -27,19 +28,18 @@ const ReviewListItem = ({
       padding="5px 10px"
     >
       <Box w="100%">
-        <Box marginRight="10px">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: sanitize(review?.text),
-            }}
-          ></div>
-        </Box>
+        <div
+          className="tiptap"
+          dangerouslySetInnerHTML={{
+            __html: sanitize(review?.text),
+          }}
+        ></div>
+      </Box>
 
+      <Flex position="absolute" right="20px" gap="15px" alignItems="center">
         <Box>
           <Tag>{review.type}</Tag>
         </Box>
-      </Box>
-      <Flex>
         <Flex
           w="100%"
           h="100%"
@@ -48,7 +48,6 @@ const ReviewListItem = ({
             setSelectedItem(review);
             setIsOpenEditReviewModal(true);
           }}
-          paddingRight="15px"
         >
           <EditIcon w={4} h={4} color={color} />
         </Flex>
