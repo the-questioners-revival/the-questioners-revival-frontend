@@ -93,7 +93,9 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
 
 
   return (
-    <Flex>
+    <Flex
+      direction={{ base: "column", md: "row" }}
+    >
       <Box flex="1" p={3} pl={0} pt={0}>
         <CategoryAccordion
           categories={categories}
@@ -106,16 +108,16 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
         />
       </Box>
 
-      <Box flex="3"  backgroundColor="white" borderRadius="5px" height='fit-content'>
-      {selectedItem ?
-        <Box p={3} pr={0} >
+      <Box flex="3" backgroundColor="white" borderRadius="5px" height='fit-content'>
+        {selectedItem ?
+          <Box p={3} pr={0} >
 
-        <EditableItemDetails
-          selectedItem={selectedItem}
-          saveChanges={saveChanges}
-        />
-        </Box>
-      :null}
+            <EditableItemDetails
+              selectedItem={selectedItem}
+              saveChanges={saveChanges}
+            />
+          </Box>
+          : null}
 
       </Box>
     </Flex>

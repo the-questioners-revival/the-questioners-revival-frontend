@@ -38,7 +38,7 @@ const CategoriesPage = () => {
         <Heading as="h2" size="lg" margin="20px 0px 10px 0px">
           Categories
         </Heading>
-        <Box>
+        <Box mb="20px">
           <CategoryTree
             categories={getLatestCategoriesData}
             getLatestCategories={getLatestCategories}
