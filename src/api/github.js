@@ -1,15 +1,12 @@
 import { GITHUB_KEY } from '../helpers/configuration';
 
-async function fetchGitHubContributions() {
+async function fetchGitHubContributions({from, to}) {
   const username = 'joesepherus'; // Replace with your GitHub username
-  const since = new Date();
-  since.setFullYear(since.getFullYear() - 1); // One year ago
-  const until = new Date(); // Current date
 
   const query = `
     query {
       user(login: "${username}") {
-        contributionsCollection(from: "${since.toISOString()}", to: "${until.toISOString()}") {
+        contributionsCollection(from: "${from.toISOString()}", to: "${to.toISOString()}") {
           contributionCalendar {
             totalContributions
             weeks {
@@ -37,12 +34,12 @@ async function fetchGitHubContributions() {
     throw new Error(`Error fetching contributions: ${response.statusText}`);
   }
 
-  const data = await response.json();
-  return {
-    res: {
-      data: data.data.user.contributionsCollection.contributionCalendar.weeks,
-    },
-  };
+  let data = await response.json();
+  let weeks = data.data.user.contributionsCollection.contributionCalendar.weeks;
+
+  const copy = structuredClone(weeks);
+  const res = {data:[...copy]};
+  return {res:res}
 }
 
 export default {

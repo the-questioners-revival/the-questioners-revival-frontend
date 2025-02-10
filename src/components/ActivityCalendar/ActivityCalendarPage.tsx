@@ -259,9 +259,11 @@ const ActivityCalendarPage: React.FC = () => {
 
   useEffect(() => {
     if (getDailyActivityCountsData) {
-      fetchGitHubContributions();
+      const from = new Date(`${year}-01-01`);
+      const to = new Date(`${year}-12-31`);
+      fetchGitHubContributions({ from, to });
     }
-  }, [getDailyActivityCountsData]);
+  }, [getDailyActivityCountsData, year]);
 
   useEffect(() => {
     if (fetchGitHubContributionsData) {
@@ -270,23 +272,31 @@ const ActivityCalendarPage: React.FC = () => {
   }, [fetchGitHubContributionsData]);
 
   useEffect(() => {
-    if (contributions) {
+    const newContributions = structuredClone(contributions);
+    if (newContributions) {
       // Initialize new aggregation objects
       const newDays: { [key: string]: Activity } = { ...activityData.days };
       const newWeeks: { [key: string]: Activity } = { ...activityData.weeks };
       const newMonths: { [key: string]: Activity } = { ...activityData.months };
       const newYears: { [key: string]: Activity } = { ...activityData.years };
 
-      const currentYear = new Date().getFullYear();
+      const currentYear = year;
 
-      contributions.forEach((week: any) => {
+      newContributions.forEach((week: any) => {
         week.contributionDays = week.contributionDays.filter((day: any) => {
           const year = new Date(day.date).getFullYear();
           return year === currentYear;
         });
       });
 
-      contributions.forEach((week: any) => {
+      // Reset all values to 0
+      Object.keys(newDays).forEach(key => (newDays[key].github = 0));
+      Object.keys(newWeeks).forEach(key => (newWeeks[key].github = 0));
+      Object.keys(newMonths).forEach(key => (newMonths[key].github = 0));
+      Object.keys(newYears).forEach(key => (newYears[key].github = 0));
+
+
+      newContributions.forEach((week: any) => {
         week.contributionDays.forEach((day: any) => {
           const formattedDate = day.date; // Full date for daily data
           const formattedWeek = `${format(day.date, "yyyy")}-${format(day.date, "ww")}`;
@@ -326,6 +336,7 @@ const ActivityCalendarPage: React.FC = () => {
           };
         });
       });
+      console.log("newMonths", newMonths);
       // Update the activity data state with new aggregated data
       setActivityData((prevData) => {
         return {
@@ -517,7 +528,7 @@ const ActivityCalendarPage: React.FC = () => {
                       width="20px"
                       height="20px"
 
-                        onClick={(e) => handleMouseEnter(formattedDate)}
+                      onClick={(e) => handleMouseEnter(formattedDate)}
                       bg={getDayColor(activityCount)} // Check if it's today
                       borderRadius="md"
                       border={isToday ? "2px solid black" : ""}
