@@ -32,8 +32,6 @@ const CategoriesPage = () => {
     }
   }, [createCategoryData]);
 
-  console.log('getLatestCategoriesData: ', getLatestCategoriesData);
-
   return (
     <ProtectedPage>
       <CustomLayout maxWidth={false}>
@@ -45,9 +43,6 @@ const CategoriesPage = () => {
             categories={getLatestCategoriesData}
             getLatestCategories={getLatestCategories}
             addCategory={(parentCategoryId, categoryName) => {
-              console.log('categoryName: ', categoryName);
-              console.log('parentCategoryId: ', parentCategoryId);
-              console.log('add category');
               createCategory({
                 name: categoryName,
                 category_id: parentCategoryId,
