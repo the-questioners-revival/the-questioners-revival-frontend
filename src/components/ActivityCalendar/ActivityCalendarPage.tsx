@@ -28,6 +28,7 @@ import GithubProvider from "../../providers/GithubProvider";
 import ProtectedPage from "../ProtectedPage";
 import CustomLayout from "../layout/CustomLayout";
 import { DAY_NAMES } from "../../utils";
+import CustomTooltip from "../custom/CustomTooltip";
 
 interface Activity {
   todos?: number;
@@ -356,7 +357,7 @@ const ActivityCalendarPage: React.FC = () => {
     return [...paddingDays, ...yearDays];
   }, [year]);
 
-const allWeeks = useMemo(() => {
+  const allWeeks = useMemo(() => {
     const startOfWeek = addDays(
       startOfYear(new Date(year, 0, 1)),
       (1 - startOfYear(new Date(year, 0, 1)).getDay() + 7) % 7,
@@ -499,22 +500,24 @@ const allWeeks = useMemo(() => {
                   : `${formattedDateLabel}`;
 
                 return (
-                  <Tooltip
+                  <CustomTooltip
+                    placement="top"
+                    hasArrow
                     label={
-                      <Box p="5px 5px">
+                      <Box p="5px 5px"
+                      >
                         <Box>{tooltipLabel}</Box>
                         <Box>{dayOfWeek}</Box>
                         <Box>{activityCount} contributions</Box>
                         {renderTooltipDetails("days")}
                       </Box>
                     }
-                    key={index}
-                    placement="top"
-                    hasArrow
                   >
                     <Box
                       width="20px"
                       height="20px"
+
+                        onClick={(e) => handleMouseEnter(formattedDate)}
                       bg={getDayColor(activityCount)} // Check if it's today
                       borderRadius="md"
                       border={isToday ? "2px solid black" : ""}
@@ -522,7 +525,7 @@ const allWeeks = useMemo(() => {
                       onMouseEnter={() => handleMouseEnter(formattedDate)}
                       onMouseLeave={() => handleMouseLeave()}
                     />
-                  </Tooltip>
+                  </CustomTooltip>
                 );
               })}
             </Grid>
@@ -539,13 +542,14 @@ const allWeeks = useMemo(() => {
                 const tooltipLabel = `${formattedWeekLabel} - ${activityCount} contributions`;
 
                 return (
-                  <Tooltip
+                  <CustomTooltip
                     label={
                       <>
                         <Box>{tooltipLabel}</Box>
                         {renderTooltipDetails("weeks")}
                       </>
                     }
+                    hasArrow
                     key={index}
                     placement="top"
                   >
@@ -559,7 +563,7 @@ const allWeeks = useMemo(() => {
                       onMouseEnter={() => handleMouseEnter(formattedWeek)}
                       onMouseLeave={() => handleMouseLeave()}
                     />
-                  </Tooltip>
+                  </CustomTooltip>
                 );
               })}
             </Grid>
@@ -575,7 +579,7 @@ const allWeeks = useMemo(() => {
                 const tooltipLabel = `${formattedMonthLabel} - ${activityCount} contributions`;
 
                 return (
-                  <Tooltip
+                  <CustomTooltip
                     label={
                       <>
                         <Box>{tooltipLabel}</Box>
@@ -583,6 +587,7 @@ const allWeeks = useMemo(() => {
                       </>
                     }
                     key={index}
+                    hasArrow
                     placement="top"
                   >
                     <Box
@@ -595,7 +600,7 @@ const allWeeks = useMemo(() => {
                       onMouseEnter={() => handleMouseEnter(formattedMonth)}
                       onMouseLeave={() => handleMouseLeave()}
                     />
-                  </Tooltip>
+                  </CustomTooltip>
                 );
               })}
             </Grid>
@@ -608,7 +613,7 @@ const allWeeks = useMemo(() => {
                 const isYear = year === getYear(today);
 
                 return (
-                  <Tooltip
+                  <CustomTooltip
                     label={
                       <>
                         <Box>{tooltipLabel}</Box>
@@ -617,6 +622,7 @@ const allWeeks = useMemo(() => {
                       </>
                     }
                     key={index}
+                    hasArrow
                     placement="top"
                   >
                     <Box
@@ -629,7 +635,7 @@ const allWeeks = useMemo(() => {
                       onMouseEnter={() => handleMouseEnter(year)} // Handle mouse enter event
                       onMouseLeave={() => handleMouseLeave()} // Handle mouse leave event
                     />
-                  </Tooltip>
+                  </CustomTooltip>
                 );
               })}
             </Grid>
