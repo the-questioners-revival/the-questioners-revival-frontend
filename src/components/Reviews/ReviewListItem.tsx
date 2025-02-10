@@ -36,7 +36,7 @@ const ReviewListItem = ({
         ></div>
       </Box>
 
-      <Flex position="absolute" right="20px" gap="15px" alignItems="center">
+      <Flex position="absolute" right="13px" gap="15px" alignItems="center">
         <Box>
           <Tag>{review.type}</Tag>
         </Box>
